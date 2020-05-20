@@ -1,21 +1,18 @@
 package constant;
 
-public enum ButtonLabel {
+public final class ButtonLabel {
+    private ButtonLabel(){
 
-    ADD_WORD("Додати нове слово"),
-    DICTIONARY("Dictionary"),
-    EDIT_DICTIONARY("Відредактувати дані"),
-    ENGLISH("From English to Ukrainian"),
-    LESSONS("Lessons"),
-    PRINT_ALL_WORD("Друк всіх слів"),
-    REMOVE_WORD("Видалити слово"),
-    UKRAINIAN("From Ukrainian to English"),
-    MAIN_MENU("/markup");
-
-
-    public String label;
-
-    ButtonLabel(String label) {
-        this.label = label;
     }
+
+    public static final String ADD_WORD = "Додати нове слово";
+    public static final String DICTIONARY = "Dictionary";
+    public static final String EDIT_DICTIONARY = "Відредактувати дані";
+    public static final String ENGLISH = "From English to Ukrainian";
+    public static final String LESSONS = "Lessons";
+    public static final String PRINT_ALL_WORD = "Друк всіх слів";
+    public static final String REMOVE_WORD = "Видалити слово";
+    public static final String UKRAINIAN = "From Ukrainian to English";
+    public static final String MAIN_MENU = "/markup";
+
 }
