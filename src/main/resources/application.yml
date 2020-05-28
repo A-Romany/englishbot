@@ -16,7 +16,7 @@ spring:
 telegram:
   token: 1154875410:AAHor7XVEQ2EJGuEJU2y_PFDx122P2ePAcs
   name: English bot
-  bot.server.url: https://63a5a65f.ngrok.io #TODO check if we can automate generation nd reading of this url
+  bot.server.url: https://299084bd9f25.ngrok.io
 
 server:
   port: 8090

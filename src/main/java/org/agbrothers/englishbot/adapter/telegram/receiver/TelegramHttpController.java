@@ -6,12 +6,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.Update;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 public class TelegramHttpController {
 
     private final ProcessingCore processingCore;
+    private final Set<String> chatRegistry = new HashSet<>();
 
     @Autowired
     public TelegramHttpController(ProcessingCore processingCore) {
@@ -21,13 +25,28 @@ public class TelegramHttpController {
     /**
      * This method parses telegram messages.
      *
-     * @param update
+     * @param update received message from Telegram channel
      */
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public void onUpdateReceived(@RequestBody Update update) {
-        if(update.hasMessage() && update.getMessage().hasText()) {
-            String messageText = update.getMessage().getText();
-            String chatId = update.getMessage().getChatId().toString();
+        String messageText = null;
+        String chatId = null;
+
+        if(update.hasMessage() && update.getMessage().hasText() ) {
+            messageText = update.getMessage().getText();
+            chatId = String.valueOf(update.getMessage().getChatId());
+        } else if(update.hasCallbackQuery()) {
+            messageText = update.getCallbackQuery().getData();
+            chatId = String.valueOf(update.getCallbackQuery().getMessage().getChatId());
+        }
+
+        if(messageText==null || chatId == null) {
+            return;
+        }
+
+        if(chatRegistry.add(chatId)){
+            processingCore.sendHelloMessage(chatId);
+        } else {
             processingCore.processMessage(chatId, messageText);
         }
     }
