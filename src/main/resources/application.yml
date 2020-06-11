@@ -1,0 +1,24 @@
+logging:
+  level:
+    root: info
+    org.springframework.web: info
+
+spring:
+  profiles:
+    active: development
+
+---
+# this is a development profile
+# use it for local development and testing
+spring:
+  profiles: development
+
+telegram:
+  token: 1154875410:AAHor7XVEQ2EJGuEJU2y_PFDx122P2ePAcs
+  name: English bot
+  bot.server.url: https://299084bd9f25.ngrok.io
+
+server:
+  port: 8090
+  servlet:
+    context-path: /
