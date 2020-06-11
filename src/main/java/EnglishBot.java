@@ -13,7 +13,7 @@ import static constant.ButtonLabel.*;
 
 public class EnglishBot extends TelegramLongPollingBot {
 
-    private final Set<Long> chatRegistry = new HashSet<>();
+    private final Set<Long> chatRegistry = new HashSet<>();//TODO set
 
     private static final String HELLO_MESSAGE = "Привіт, я дуже радий, що ти хочеш покращити свої знання англійської мови!!!" +
             " Маю надію, що я тобі в цьому допоможу!))"+
@@ -127,7 +127,14 @@ public class EnglishBot extends TelegramLongPollingBot {
             default:
                 return null;
         }
+
+
+
     }
+
+
+
+
 
     private String getChoiceMadeText(String chosenLabel){
         return YOU_CHOOSE + chosenLabel + ".";
