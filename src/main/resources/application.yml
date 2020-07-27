@@ -14,9 +14,10 @@ spring:
   profiles: development
 
 telegram:
-  token: 1154875410:AAHor7XVEQ2EJGuEJU2y_PFDx122P2ePAcs
+  token: 1153088687:AAGlMcZ6W2qvE_YaWlYkXTkg9W2Yg8XZL0U
   name: English bot
-  bot.server.url: https://299084bd9f25.ngrok.io
+  bot.server.url:  https://a4b9cb74b1bd.ngrok.io
+
 
 server:
   port: 8090

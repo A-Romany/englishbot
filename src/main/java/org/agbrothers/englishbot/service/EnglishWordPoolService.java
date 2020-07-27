@@ -1,13 +1,15 @@
-package service;
+package org.agbrothers.englishbot.service;
 
-import persistence.Word;
+import org.agbrothers.englishbot.persistence.Word;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-public class WordPoolService {
+@Service
+public class EnglishWordPoolService {
     private List<Word> wordList = new ArrayList<>();
 
-    public WordPoolService() {
+    public EnglishWordPoolService() {
         initHardcodedWordsRepository();
     }
 
@@ -39,7 +41,7 @@ public class WordPoolService {
         wordList.add(beige);
     }
 
-    public void wordPoolListEnglishLesson (List<Word> wordList) {
+    public void getWordPoolListEnglishLesson(List<Word> wordList) {
 
         int limit = wordList.size();
         Map<Integer, Word> englishLessons = new HashMap<>();
@@ -76,7 +78,7 @@ public class WordPoolService {
 
     public Set<Word> getRandomWordPool() {
         Collections.shuffle(wordList);
-        List<Word> words = wordList.subList(0,5);
+        List<Word> words = wordList.subList(0,7);
         return new HashSet<>(words);
     }
 }

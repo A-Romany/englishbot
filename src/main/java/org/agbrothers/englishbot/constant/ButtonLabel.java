@@ -1,4 +1,4 @@
-package constant;
+package org.agbrothers.englishbot.constant;
 
 public final class ButtonLabel {
     private ButtonLabel(){
@@ -14,5 +14,6 @@ public final class ButtonLabel {
     public static final String REMOVE_WORD = "Видалити слово";
     public static final String UKRAINIAN = "From Ukrainian to English";
     public static final String MAIN_MENU = "/markup";
+    public static final Integer COUNT_ANSWER = 5;
 
 }

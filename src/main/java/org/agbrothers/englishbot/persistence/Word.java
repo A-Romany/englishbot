@@ -1,16 +1,13 @@
-package persistence;
+package org.agbrothers.englishbot.persistence;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 public class Word {
-    @javax.persistence.Id
-    @GeneratedValue
+//    @javax.persistence.Id
+//    @GeneratedValue
     private Integer Id;
-    @Column
+//    @Column
     private String englishValue;
-    @Column
+//    @Column
     private String ukrainianValue;
 
     public Integer getId() {
