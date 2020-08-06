@@ -8,6 +8,10 @@ public class Lesson {
 
     private final Set<Word> wordPool;//word in Lesson
     private final List<Word> answersPool;
+    private int countCorrectAnswers =0;
+    private int countIncorrectAnswer=0;
+
+
 
     public Word getCurrentWord() {
         return currentWord;
@@ -46,10 +50,25 @@ public class Lesson {
             if(iterator.hasNext()){
                 answers.add(iterator.next());
             } else {
-                //TODO throw exception
                 break;
             }
         }
         return answers;
+    }
+
+    public int getCountCorrectAnswers() {
+        return countCorrectAnswers;
+    }
+
+    public void setCountCorrectAnswers(int countCorrectAnswers) {
+        this.countCorrectAnswers = countCorrectAnswers;
+    }
+
+    public int getCountIncorrectAnswer() {
+        return countIncorrectAnswer;
+    }
+
+    public void setCountIncorrectAnswer(int countIncorrectAnswer) {
+        this.countIncorrectAnswer = countIncorrectAnswer;
     }
 }

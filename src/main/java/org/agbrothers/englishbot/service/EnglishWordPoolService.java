@@ -1,5 +1,6 @@
 package org.agbrothers.englishbot.service;
 
+import org.agbrothers.englishbot.constant.ButtonLabel;
 import org.agbrothers.englishbot.persistence.Word;
 import org.springframework.stereotype.Service;
 
@@ -8,7 +9,7 @@ import java.util.*;
 @Service
 public class EnglishWordPoolService {
     private List<Word> wordList = new ArrayList<>();
-
+    public static final Integer COUNT_ANSWER = 10;
     public EnglishWordPoolService() {
         initHardcodedWordsRepository();
     }
@@ -41,44 +42,9 @@ public class EnglishWordPoolService {
         wordList.add(beige);
     }
 
-    public void getWordPoolListEnglishLesson(List<Word> wordList) {
-
-        int limit = wordList.size();
-        Map<Integer, Word> englishLessons = new HashMap<>();
-        int[] wordPoolListForEnglishLesson = new int[5];
-
-        Random rnd = new Random();
-        int check;
-        boolean tmp = false;
-        for (int i = 0; i < 5; i++) {
-            check = rnd.nextInt(limit);
-            for (int j = 0; j < i; j++) {
-                if (wordPoolListForEnglishLesson[j] == check) {
-                    i--;
-                    tmp = true;
-                    break;
-                }
-            }
-            if (!tmp) {
-                wordPoolListForEnglishLesson[i] = check;
-
-            }
-            tmp = false;
-        }
-
-        for (int i = 0; i < 5; i++) {
-
-            englishLessons.put(i, wordList.get(wordPoolListForEnglishLesson[i]));
-        }
-
-        for (int i = 0; i < 5; i++) {
-            System.out.println(englishLessons.get(i).getEnglishValue() + "  " + englishLessons.get(i).getId());
-        }
-    }
-
     public Set<Word> getRandomWordPool() {
         Collections.shuffle(wordList);
-        List<Word> words = wordList.subList(0,7);
+        List<Word> words = wordList.subList(0, COUNT_ANSWER);
         return new HashSet<>(words);
     }
 }

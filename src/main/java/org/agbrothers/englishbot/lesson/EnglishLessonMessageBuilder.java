@@ -2,11 +2,6 @@ package org.agbrothers.englishbot.lesson;
 
 import org.agbrothers.englishbot.persistence.Word;
 import org.agbrothers.englishbot.process.MessageBuilder;
-import org.agbrothers.englishbot.service.EnglishWordPoolService;
-
-import java.util.Iterator;
-
-import static org.agbrothers.englishbot.constant.ButtonLabel.ENGLISH;
 
 public class EnglishLessonMessageBuilder extends MessageBuilder {
 
@@ -19,14 +14,27 @@ public class EnglishLessonMessageBuilder extends MessageBuilder {
 
     @Override
     public String getResponseMessageText(String messageText) {//FIXME NullPointerException
-
+        String check="";
+        if(lesson.getCurrentWord()!=null){
+            if(lesson.getCurrentWord().getWordInUkrainian().equals(messageText)){
+                lesson.setCountCorrectAnswers(lesson.getCountCorrectAnswers()+1);
+                check="Ви відповіли правильно! \n";
+            }
+            else {
+                lesson.setCountIncorrectAnswer(lesson.getCountIncorrectAnswer()+1);
+                check="Відповідь не вірна! Правильна відповідь - "+lesson.getCurrentWord().getWordInUkrainian()+"!!!\n";
+            }
+        }
 
         Word wordQuestion = lesson.getNextWord();
         if(wordQuestion==null) {
-            return "Урок закінчено. Зачекайте формуються Ваші результати"+ RETURN_MAIN_MENU;
+            return check+"Урок закінчено. Правильних відповідей - " + lesson.getCountCorrectAnswers()+
+                    " із "+ (lesson.getCountIncorrectAnswer()+ lesson.getCountCorrectAnswers())+".\n\n"+
+                    "\n Для повторного проходження уроку натисніть "+"/From_English_to_Ukrainian\n"
+                    + RETURN_MAIN_MENU+ ",\nдля продовження навчання оберіть урок:";
         }
         else {
-            return wordQuestion.getEnglishValue();
+            return check+wordQuestion.getEnglishValue();
         }
 
     }

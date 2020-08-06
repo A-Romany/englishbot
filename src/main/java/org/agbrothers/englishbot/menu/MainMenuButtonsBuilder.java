@@ -19,8 +19,8 @@ public class MainMenuButtonsBuilder extends ButtonsBuilder {
         switch (messageText) {
             case LESSONS:
                 keyboardMap = new HashMap<>();
-                keyboardMap.put(ENGLISH, ENGLISH);
-                keyboardMap.put(UKRAINIAN, UKRAINIAN);
+                keyboardMap.put(ENGLISH, "From English to Ukrainian");
+                keyboardMap.put(UKRAINIAN, "From Ukrainian to English");
                 return keyboardMap;
             case DICTIONARY:
                 keyboardMap = new HashMap<>();

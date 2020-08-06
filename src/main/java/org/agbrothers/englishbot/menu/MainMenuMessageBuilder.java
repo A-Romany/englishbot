@@ -1,6 +1,5 @@
 package org.agbrothers.englishbot.menu;
 
-import org.agbrothers.englishbot.constant.State;
 import org.agbrothers.englishbot.process.MessageBuilder;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +19,6 @@ public class MainMenuMessageBuilder extends MessageBuilder {
                 return getChoiceMadeText(LESSONS) + MAKE_CHOICE +
                         RETURN_MAIN_MENU;
             case DICTIONARY:
-
                 return getChoiceMadeText(DICTIONARY) + MAKE_CHOICE +
                         RETURN_MAIN_MENU;
             case MAIN_MENU:

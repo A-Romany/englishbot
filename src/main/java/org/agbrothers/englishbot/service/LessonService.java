@@ -17,9 +17,10 @@ public class LessonService {
         this.lessonRegistry = new HashMap<>();
     }
 
-    //TODO getLesson(String chatId) from lessonRegistry
+
     public Lesson getLesson (String chatId){
-        if(!lessonRegistry.containsKey(chatId)){
+        if((!lessonRegistry.containsKey(chatId))||
+                (lessonRegistry.get(chatId).getCurrentWord()==null)){
             Lesson lesson = createLesson();
             lessonRegistry.put(chatId,lesson);
         }
@@ -31,5 +32,4 @@ public class LessonService {
         List<Word> answersPool = new ArrayList<>(wordPool);
         return new Lesson(wordPool, answersPool);
     }
-
 }
