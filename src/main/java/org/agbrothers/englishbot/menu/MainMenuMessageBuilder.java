@@ -40,7 +40,7 @@ public class MainMenuMessageBuilder extends MessageBuilder {
                         RETURN_MAIN_MENU;
 
             default:
-                return "НЕ ПИШИ ВСЯКУ ЄРЕСЬ" + RETURN_MAIN_MENU;
+                return "Не розумію, що ти маєш на увазі?" + RETURN_MAIN_MENU;
         }
     }
 }

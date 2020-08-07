@@ -2,12 +2,9 @@ package org.agbrothers.englishbot.persistence;
 
 
 public class Word {
-//    @javax.persistence.Id
-//    @GeneratedValue
+
     private Integer Id;
-//    @Column
     private String englishValue;
-//    @Column
     private String ukrainianValue;
 
     public Integer getId() {
@@ -17,6 +14,7 @@ public class Word {
     public void setId(Integer id) {
         Id = id;
     }
+
     public String getEnglishValue() {
         return englishValue;
     }
