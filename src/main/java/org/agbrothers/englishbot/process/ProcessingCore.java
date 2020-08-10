@@ -2,6 +2,7 @@ package org.agbrothers.englishbot.process;
 
 import org.agbrothers.englishbot.adapter.telegram.TelegramBot;
 import org.agbrothers.englishbot.constant.ButtonLabel;
+import org.agbrothers.englishbot.constant.LinkLabel;
 import org.agbrothers.englishbot.constant.State;
 import org.agbrothers.englishbot.lesson.EnglishLessonButtonBuilder;
 import org.agbrothers.englishbot.lesson.EnglishLessonMessageBuilder;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.agbrothers.englishbot.constant.State.MAIN_MENU;
+
 
 
 @Component
@@ -34,7 +36,7 @@ public class ProcessingCore {
         }
 
         switch (messageText) {
-            case ButtonLabel.MAIN_MENU:
+            case LinkLabel.MAIN_MENU:
                 stepRegistry.put(chatId, State.MAIN_MENU);
                 break;
             case ButtonLabel.ENGLISH:

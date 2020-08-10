@@ -1,8 +1,9 @@
 package org.agbrothers.englishbot.lesson;
 
+import org.agbrothers.englishbot.constant.LinkLabel;
 import org.agbrothers.englishbot.persistence.Word;
 import org.agbrothers.englishbot.process.MessageBuilder;
-import static org.agbrothers.englishbot.constant.ButtonLabel.*;
+import static org.agbrothers.englishbot.constant.MessageLabel.*;
 
 public class EnglishLessonMessageBuilder extends MessageBuilder {
 
@@ -31,7 +32,7 @@ public class EnglishLessonMessageBuilder extends MessageBuilder {
         if(wordQuestion==null) {
             return check+END_LESSON + lesson.getCountCorrectAnswers()+
                     " із "+ (lesson.getCountIncorrectAnswer()+ lesson.getCountCorrectAnswers())+".\n\n"+
-                    RETURN_LESSON+"/From_English_to_Ukrainian\n"
+                    RETURN_LESSON+ LinkLabel.ENGLISH+"\n"
                     + RETURN_MAIN_MENU+ NEXT_LESSON;
         }
         else {

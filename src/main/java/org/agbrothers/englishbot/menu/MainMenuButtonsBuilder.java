@@ -1,5 +1,6 @@
 package org.agbrothers.englishbot.menu;
 
+import org.agbrothers.englishbot.constant.ButtonLabel;
 import org.agbrothers.englishbot.process.ButtonsBuilder;
 import org.springframework.stereotype.Component;
 
@@ -7,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.agbrothers.englishbot.constant.ButtonLabel.*;
-
+import static org.agbrothers.englishbot.constant.LinkLabel.*;
 
 @Component
 public class MainMenuButtonsBuilder extends ButtonsBuilder {
@@ -19,8 +20,8 @@ public class MainMenuButtonsBuilder extends ButtonsBuilder {
         switch (messageText) {
             case LESSONS:
                 keyboardMap = new HashMap<>();
-                keyboardMap.put(ENGLISH, "From English to Ukrainian");
-                keyboardMap.put(UKRAINIAN, "From Ukrainian to English");
+                keyboardMap.put(ButtonLabel.ENGLISH, "From English to Ukrainian");
+                keyboardMap.put(ButtonLabel.UKRAINIAN, "From Ukrainian to English");
                 return keyboardMap;
             case DICTIONARY:
                 keyboardMap = new HashMap<>();

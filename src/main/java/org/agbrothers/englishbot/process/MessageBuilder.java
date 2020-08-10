@@ -2,7 +2,7 @@ package org.agbrothers.englishbot.process;
 
 import org.springframework.stereotype.Component;
 
-import static org.agbrothers.englishbot.constant.ButtonLabel.MAIN_MENU;
+import static org.agbrothers.englishbot.constant.LinkLabel.MAIN_MENU;
 
 @Component
 public abstract class MessageBuilder {

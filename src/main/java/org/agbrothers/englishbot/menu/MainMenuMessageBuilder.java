@@ -1,9 +1,11 @@
 package org.agbrothers.englishbot.menu;
 
+import org.agbrothers.englishbot.constant.ButtonLabel;
 import org.agbrothers.englishbot.process.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 import static org.agbrothers.englishbot.constant.ButtonLabel.*;
+import static org.agbrothers.englishbot.constant.LinkLabel.*;
 
 
 @Component
@@ -35,8 +37,8 @@ public class MainMenuMessageBuilder extends MessageBuilder {
             case ADD_WORD:
                 return getChoiceMadeText(ADD_WORD) + " Триває розробка додавання слів до словника" +
                         RETURN_MAIN_MENU;
-            case UKRAINIAN:
-                return getChoiceMadeText(UKRAINIAN) + " Триває розробка уроку" +
+            case ButtonLabel.UKRAINIAN:
+                return getChoiceMadeText(ButtonLabel.UKRAINIAN) + " Триває розробка уроку" +
                         RETURN_MAIN_MENU;
 
             default:
