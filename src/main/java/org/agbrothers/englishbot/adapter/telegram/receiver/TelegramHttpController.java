@@ -44,11 +44,7 @@ public class TelegramHttpController {
             return;
         }
 
-        if(chatRegistry.add(chatId)){
-            processingCore.sendHelloMessage(chatId);
-        } else {
-            processingCore.processMessage(chatId, messageText);
-        }
+        processingCore.processMessage(chatId, messageText);
     }
 
     /**
