@@ -9,7 +9,6 @@ public final class MessageLabel {
     public static final String CORRECT_ANSWER = "Ви відповіли правильно! \n";
     public static final String INCORRECT_ANSWER = "Відповідь не вірна! Правильна відповідь - ";
     public static final String NEWLINE = "\n";
-    public static final String PROBEL = " ";
-    public static final String FROM = "із";
+    public static final String SPACE = " ";
     public static final String POINT = ".";
 }

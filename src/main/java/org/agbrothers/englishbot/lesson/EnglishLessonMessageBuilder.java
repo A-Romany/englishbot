@@ -31,7 +31,7 @@ public class EnglishLessonMessageBuilder extends MessageBuilder {
         Word wordQuestion = lesson.getNextWord();
         if(wordQuestion==null) {
             return check+END_LESSON + lesson.getCountCorrectAnswers()+
-                    FROM+ (lesson.getCountIncorrectAnswer()+ lesson.getCountCorrectAnswers())+ POINT + NEWLINE +
+                    " із "+ (lesson.getCountIncorrectAnswer()+ lesson.getCountCorrectAnswers())+ POINT + NEWLINE +
                     NEWLINE + RETURN_LESSON+ LinkLabel.ENGLISH+ NEWLINE + RETURN_MAIN_MENU+ NEXT_LESSON;
         }
         else {
