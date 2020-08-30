@@ -24,16 +24,15 @@ public class EnglishLessonMessageBuilder extends MessageBuilder {
             }
             else {
                 lesson.setCountIncorrectAnswer(lesson.getCountIncorrectAnswer()+1);
-                check=INCORRECT_ANSWER+lesson.getCurrentWord().getWordInUkrainian()+"!!!\n";
+                check=INCORRECT_ANSWER+lesson.getCurrentWord().getWordInUkrainian()+ NEWLINE;
             }
         }
 
         Word wordQuestion = lesson.getNextWord();
         if(wordQuestion==null) {
             return check+END_LESSON + lesson.getCountCorrectAnswers()+
-                    " із "+ (lesson.getCountIncorrectAnswer()+ lesson.getCountCorrectAnswers())+".\n\n"+
-                    RETURN_LESSON+ LinkLabel.ENGLISH+"\n"
-                    + RETURN_MAIN_MENU+ NEXT_LESSON;
+                    FROM+ (lesson.getCountIncorrectAnswer()+ lesson.getCountCorrectAnswers())+ POINT + NEWLINE +
+                    NEWLINE + RETURN_LESSON+ LinkLabel.ENGLISH+ NEWLINE + RETURN_MAIN_MENU+ NEXT_LESSON;
         }
         else {
             return check+wordQuestion.getEnglishValue();

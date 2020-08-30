@@ -1,5 +1,6 @@
 package org.agbrothers.englishbot.process;
 
+import org.agbrothers.englishbot.constant.MessageLabel;
 import org.springframework.stereotype.Component;
 
 import static org.agbrothers.englishbot.constant.LinkLabel.MAIN_MENU;
@@ -21,7 +22,7 @@ public abstract class MessageBuilder {
     public abstract String getResponseMessageText(String messageText);
 
     protected String getChoiceMadeText(String chosenLabel){
-        return YOU_CHOOSE + chosenLabel + ".";
+        return YOU_CHOOSE + chosenLabel + MessageLabel.POINT;
     }
 
 }
