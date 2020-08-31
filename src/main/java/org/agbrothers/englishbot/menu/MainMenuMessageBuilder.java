@@ -40,7 +40,6 @@ public class MainMenuMessageBuilder extends MessageBuilder {
             case ButtonLabel.UKRAINIAN:
                 return getChoiceMadeText(ButtonLabel.UKRAINIAN) + " Триває розробка уроку" +
                         RETURN_MAIN_MENU;
-
             default:
                 return "Не розумію, що ти маєш на увазі?" + RETURN_MAIN_MENU;
         }

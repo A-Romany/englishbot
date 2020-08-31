@@ -33,6 +33,8 @@ public class TelegramBot extends TelegramWebhookBot {
     @Value("${telegram.name}")
     private String botName;
 
+    private static final int BUTTONS_IN_ROW = 2;
+
     /**
      * Register this component to be used for processing Telegram updates.
      *
@@ -70,9 +72,7 @@ public class TelegramBot extends TelegramWebhookBot {
         SendMessage sendMessage = new SendMessage();
         InlineKeyboardMarkup replyKeyboard = new InlineKeyboardMarkup();
         // add answers to the keyboard
-        buttonLabels.entrySet()
-                .iterator()
-                .forEachRemaining(e -> replyKeyboard.getKeyboard().add(createInlineKeyboardButtonsRow(e)));
+        replyKeyboard.setKeyboard(createInlineKeyboardButtonsRows(buttonLabels));
 
         sendMessage.setReplyMarkup(replyKeyboard)
                 .setChatId(chatId)
@@ -86,7 +86,21 @@ public class TelegramBot extends TelegramWebhookBot {
         }
     }
 
-    private List<InlineKeyboardButton> createInlineKeyboardButtonsRow(Map.Entry<String, String> button) {
+    private List<List<InlineKeyboardButton>> createInlineKeyboardButtonsRows(Map <String, String> buttonsMap) {
+        List<List<InlineKeyboardButton>> result = new ArrayList<>();
+        List<InlineKeyboardButton> row = null;
+
+        for (Map.Entry<String, String> button : buttonsMap.entrySet()){
+            if(row == null || row.size() == BUTTONS_IN_ROW){
+                row = new ArrayList<>();
+                result.add(row);
+            }
+            row.add(getInlineKeyboardButton(button));
+        }
+        return result;
+    }
+
+    private InlineKeyboardButton getInlineKeyboardButton (Map.Entry<String, String> button){
         String key = button.getKey();
         InlineKeyboardButton keyboardButton = new InlineKeyboardButton();
         if (key.toLowerCase().contains("https://") || key.toLowerCase().contains("http://")) {
@@ -94,9 +108,7 @@ public class TelegramBot extends TelegramWebhookBot {
         } else {
             keyboardButton.setText(button.getValue()).setCallbackData(key);
         }
-        List<InlineKeyboardButton> row = new ArrayList<>();
-        row.add(keyboardButton);
-        return row;
+        return keyboardButton;
     }
 
     @Override
