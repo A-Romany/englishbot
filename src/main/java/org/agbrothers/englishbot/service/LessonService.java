@@ -28,7 +28,7 @@ public class LessonService {
     }
 
     public Lesson createLesson(){
-        Set<Word> wordPool = englishWordPoolService.getRandomWordPool();
+        List<Word> wordPool = englishWordPoolService.getRandomWordPool();
         List<Word> answersPool = new ArrayList<>(wordPool);
         return new Lesson(wordPool, answersPool);
     }

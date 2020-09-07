@@ -2,28 +2,25 @@ package org.agbrothers.englishbot.lesson;
 
 import org.agbrothers.englishbot.persistence.Word;
 
+import java.security.SecureRandom;
 import java.util.*;
 
 public class Lesson {
 
-    private final Set<Word> wordPool;//word in Lesson
+    private final List<Word> wordPool;//word in Lesson
     private final List<Word> answersPool;
     private int countCorrectAnswers =0;
     private int countIncorrectAnswer=0;
-
-
+    private Word currentWord;
 
     public Word getCurrentWord() {
         return currentWord;
     }
 
-    private Word currentWord;
-
-    public Lesson(Set<Word> wordPool, List<Word> answersPool) {
+    public Lesson(List<Word> wordPool, List<Word> answersPool) {
         this.wordPool = wordPool;
         this.answersPool = answersPool;
     }
-
 
     public Word getNextWord() {
         Iterator<Word> iterator = wordPool.iterator();
@@ -36,21 +33,20 @@ public class Lesson {
         return currentWord;
     }
 
-    public Set<Word> getAnswers(Word currentWord) {
+    public List<Word> getAnswers(Word currentWord) {
         if(currentWord == null){
             return null;
         }
-        Set<Word> answers = new HashSet<>();
+        List<Word> answers = new ArrayList<>();
 
         answers.add(currentWord);
-        Collections.shuffle(answersPool);
-
-        Iterator<Word> iterator = answersPool.iterator();
-        while (answers.size()<5){
-            if(iterator.hasNext()){
-                answers.add(iterator.next());
-            } else {
-                break;
+        Collections.shuffle(answersPool, new SecureRandom());
+        for(int i=0;answers.size()<5;i+=2){
+            if(answersPool.get(i).equals(currentWord)){
+                System.out.println("Повтор");
+            }
+            else {
+                answers.add(answersPool.get(i));
             }
         }
         return answers;
