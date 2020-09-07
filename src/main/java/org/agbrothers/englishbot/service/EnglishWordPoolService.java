@@ -1,11 +1,13 @@
 package org.agbrothers.englishbot.service;
 
-import org.agbrothers.englishbot.constant.ButtonLabel;
 import org.agbrothers.englishbot.persistence.Word;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class EnglishWordPoolService {
@@ -33,7 +35,6 @@ public class EnglishWordPoolService {
 
     public List<Word> getRandomWordPool() {
         Collections.shuffle(wordList, new SecureRandom());
-        List<Word> words = wordList.subList(0, COUNT_ANSWER);
-        return new ArrayList<>(words);
+        return new ArrayList<>(wordList.subList(0, COUNT_ANSWER));
     }
 }

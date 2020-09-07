@@ -41,11 +41,8 @@ public class Lesson {
 
         answers.add(currentWord);
         Collections.shuffle(answersPool, new SecureRandom());
-        for(int i=0;answers.size()<5;i+=2){
-            if(answersPool.get(i).equals(currentWord)){
-                System.out.println("Повтор");
-            }
-            else {
+        for(int i=0;answers.size()<5;i++){
+            if(!answersPool.get(i).equals(currentWord)){
                 answers.add(answersPool.get(i));
             }
         }

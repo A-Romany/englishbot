@@ -1,6 +1,8 @@
 package org.agbrothers.englishbot.persistence;
 
 
+import java.util.Objects;
+
 public class Word {
 
     private Integer Id;
@@ -35,5 +37,25 @@ public class Word {
         Id = id;
         this.englishValue = englishValue;
         this.ukrainianValue = ukrainianValue;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Word word = (Word) o;
+
+        if (!Id.equals(word.Id)) return false;
+        if (!englishValue.equals(word.englishValue)) return false;
+        return ukrainianValue.equals(word.ukrainianValue);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Id.hashCode();
+        result = 31 * result + englishValue.hashCode();
+        result = 31 * result + ukrainianValue.hashCode();
+        return result;
     }
 }
