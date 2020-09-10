@@ -3,6 +3,7 @@
 
 # Log file
 *.log
+*.trace.db
 
 # Package Files #
 *.jar
@@ -24,3 +25,4 @@ hs_err_pid*
 /out/
 .idea/*
 /target/
+/db/englishbot.mv.db.mv.db
