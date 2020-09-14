@@ -1,14 +1,16 @@
 package org.agbrothers.englishbot.process;
 
 import org.agbrothers.englishbot.adapter.telegram.TelegramBot;
+import org.agbrothers.englishbot.buttonsbuilder.ButtonsBuilder;
 import org.agbrothers.englishbot.constant.ButtonLabel;
 import org.agbrothers.englishbot.constant.LinkLabel;
 import org.agbrothers.englishbot.constant.State;
-import org.agbrothers.englishbot.lesson.EnglishLessonButtonBuilder;
-import org.agbrothers.englishbot.lesson.EnglishLessonMessageBuilder;
-import org.agbrothers.englishbot.lesson.Lesson;
-import org.agbrothers.englishbot.menu.MainMenuButtonsBuilder;
-import org.agbrothers.englishbot.menu.MainMenuMessageBuilder;
+import org.agbrothers.englishbot.buttonsbuilder.EnglishLessonButtonBuilder;
+import org.agbrothers.englishbot.messagebuilder.EnglishLessonMessageBuilder;
+import org.agbrothers.englishbot.entity.Lesson;
+import org.agbrothers.englishbot.buttonsbuilder.MainMenuButtonsBuilder;
+import org.agbrothers.englishbot.messagebuilder.MainMenuMessageBuilder;
+import org.agbrothers.englishbot.messagebuilder.MessageBuilder;
 import org.agbrothers.englishbot.service.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

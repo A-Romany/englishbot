@@ -1,14 +1,14 @@
-package org.agbrothers.englishbot.lesson;
+package org.agbrothers.englishbot.messagebuilder;
 
 import org.agbrothers.englishbot.constant.LinkLabel;
-import org.agbrothers.englishbot.persistence.Word;
-import org.agbrothers.englishbot.process.MessageBuilder;
+import org.agbrothers.englishbot.entity.Lesson;
+import org.agbrothers.englishbot.entity.Word;
+
 import static org.agbrothers.englishbot.constant.MessageLabel.*;
 
 public class EnglishLessonMessageBuilder extends MessageBuilder {
 
     private final Lesson lesson;
-
 
     public EnglishLessonMessageBuilder(Lesson lesson) {
         this.lesson = lesson;
@@ -37,6 +37,5 @@ public class EnglishLessonMessageBuilder extends MessageBuilder {
         else {
             return check+wordQuestion.getEnglishValue();
         }
-
     }
 }
