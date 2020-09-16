@@ -1,11 +1,7 @@
-package org.agbrothers.englishbot.process;
+package org.agbrothers.englishbot.buttonsbuilder;
 
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
 import java.util.Map;
-
-import static org.agbrothers.englishbot.constant.ButtonLabel.*;
 
 @Component
 public abstract class ButtonsBuilder {

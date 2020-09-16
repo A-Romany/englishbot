@@ -1,12 +1,10 @@
-package org.agbrothers.englishbot.menu;
+package org.agbrothers.englishbot.messagebuilder;
 
 import org.agbrothers.englishbot.constant.ButtonLabel;
-import org.agbrothers.englishbot.process.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 import static org.agbrothers.englishbot.constant.ButtonLabel.*;
 import static org.agbrothers.englishbot.constant.LinkLabel.*;
-
 
 @Component
 public class MainMenuMessageBuilder extends MessageBuilder {

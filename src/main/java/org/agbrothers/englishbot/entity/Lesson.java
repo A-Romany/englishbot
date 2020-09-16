@@ -1,9 +1,10 @@
-package org.agbrothers.englishbot.lesson;
-
-import org.agbrothers.englishbot.persistence.Word;
+package org.agbrothers.englishbot.entity;
 
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 public class Lesson {
 

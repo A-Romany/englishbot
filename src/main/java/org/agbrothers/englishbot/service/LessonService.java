@@ -1,7 +1,8 @@
 package org.agbrothers.englishbot.service;
 
-import org.agbrothers.englishbot.lesson.Lesson;
-import org.agbrothers.englishbot.persistence.Word;
+import org.agbrothers.englishbot.entity.Lesson;
+import org.agbrothers.englishbot.entity.Word;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
