@@ -5,12 +5,12 @@ import javax.persistence.*;
 @Entity
 @Table
 public class Word {
-    @javax.persistence.Id
+    @Id @GeneratedValue
     @Column
     private Long Id;
-    @Column
+    @Column (nullable = false)
     private String englishValue;
-    @Column
+    @Column (nullable = false)
     private String ukrainianValue;
 
     public Long getId() {
