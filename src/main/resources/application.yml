@@ -22,7 +22,7 @@ spring:
 telegram:
   token: 1153088687:AAGlMcZ6W2qvE_YaWlYkXTkg9W2Yg8XZL0U
   name: English bot
-  bot.server.url: https://46252907a097.ngrok.io
+  bot.server.url: https://8d77f1935b6f.ngrok.io
 
 server:
   port: 8090

@@ -1,8 +1,6 @@
 package org.agbrothers.englishbot.persistence;
 
 
-import java.util.Objects;
-
 public class Word {
 
     private Integer Id;
