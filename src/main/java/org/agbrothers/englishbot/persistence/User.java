@@ -7,13 +7,12 @@ import javax.persistence.*;
 public class User {
     @Id @GeneratedValue
     @Column
-    private Long id;//TODO: AUTO GENERATE
+    private Long id;
     @Column (unique = true, nullable = false)
-    private String chatId;//TODO: UNIQUE
+    private String chatId;
     @Column
     private String stateId;
 
-    //TODO: EQUALS AND HASHCODE
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -33,8 +32,4 @@ public class User {
         result = 31 * result + stateId.hashCode();
         return result;
     }
-
-
-    //TODO: TEST
-
 }
