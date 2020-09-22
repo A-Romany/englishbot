@@ -1,17 +1,23 @@
-package org.agbrothers.englishbot.persistence;
+package org.agbrothers.englishbot.entity;
 
+import javax.persistence.*;
 
+@Entity
+@Table
 public class Word {
-
-    private Integer Id;
+    @Id @GeneratedValue
+    @Column
+    private Long Id;
+    @Column (nullable = false)
     private String englishValue;
+    @Column (nullable = false)
     private String ukrainianValue;
 
-    public Integer getId() {
+    public Long getId() {
         return Id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         Id = id;
     }
 
@@ -31,7 +37,9 @@ public class Word {
         this.ukrainianValue = wordInUkrainian;
     }
 
-    public Word(Integer id, String englishValue, String ukrainianValue) {
+    public Word() {}
+
+    public Word(Long id, String englishValue, String ukrainianValue) {
         Id = id;
         this.englishValue = englishValue;
         this.ukrainianValue = ukrainianValue;

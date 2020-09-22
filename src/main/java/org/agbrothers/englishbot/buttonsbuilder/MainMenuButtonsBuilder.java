@@ -1,12 +1,9 @@
-package org.agbrothers.englishbot.menu;
+package org.agbrothers.englishbot.buttonsbuilder;
 
 import org.agbrothers.englishbot.constant.ButtonLabel;
-import org.agbrothers.englishbot.process.ButtonsBuilder;
 import org.springframework.stereotype.Component;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import static org.agbrothers.englishbot.constant.ButtonLabel.*;
 import static org.agbrothers.englishbot.constant.LinkLabel.*;
 
