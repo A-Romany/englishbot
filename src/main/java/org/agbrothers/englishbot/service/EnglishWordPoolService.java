@@ -41,5 +41,4 @@ public class EnglishWordPoolService {
         Collections.shuffle(wordList, new SecureRandom());
         return new ArrayList<>(wordList.subList(0, COUNT_ANSWER));
     }
-
 }
