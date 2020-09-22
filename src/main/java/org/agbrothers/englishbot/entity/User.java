@@ -1,4 +1,4 @@
-package org.agbrothers.englishbot.persistence;
+package org.agbrothers.englishbot.entity;
 
 import javax.persistence.*;
 
