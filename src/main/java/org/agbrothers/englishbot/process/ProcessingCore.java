@@ -18,9 +18,6 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.agbrothers.englishbot.constant.State.MAIN_MENU;
-
-
 
 @Component
 public class ProcessingCore {
@@ -40,6 +37,7 @@ public class ProcessingCore {
         switch (messageText) {
             case LinkLabel.MAIN_MENU:
                 stepRegistry.put(chatId, State.MAIN_MENU);
+                lessonService.removeLesson(chatId);
                 break;
             case ButtonLabel.ENGLISH:
                 stepRegistry.put(chatId, State.ENGLISH_LESSON);
@@ -64,7 +62,7 @@ public class ProcessingCore {
 
     private MessageBuilder getMessageBuilder(String stateId, String chatId) {
         switch (stateId){
-            case MAIN_MENU:
+            case State.MAIN_MENU:
                 return new MainMenuMessageBuilder();
             case State.ENGLISH_LESSON:
                 Lesson lesson = lessonService.getLesson(chatId);
@@ -76,7 +74,7 @@ public class ProcessingCore {
 
     private ButtonsBuilder getButtonsBuilder(String stateId, String chatId){
         switch (stateId) {
-            case MAIN_MENU:
+            case State.MAIN_MENU:
                 return new MainMenuButtonsBuilder();
             case State.ENGLISH_LESSON:
                 Lesson lesson = lessonService.getLesson(chatId);
