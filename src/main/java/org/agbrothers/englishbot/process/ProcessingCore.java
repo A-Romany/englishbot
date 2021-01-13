@@ -23,8 +23,6 @@ import java.util.Map;
 public class ProcessingCore {
     private TelegramBot telegramBot;
     private LessonService lessonService;
-    private MessageBuilder messageBuilder;
-    private ButtonsBuilder buttonsBuilder;
     private Map<String, String> stepRegistry = new HashMap<>();
 
     public void processMessage(String chatId, String messageText) {
@@ -48,9 +46,9 @@ public class ProcessingCore {
         }
 
         stateId = getStateId(chatId);
-        messageBuilder = getMessageBuilder(stateId, chatId);
+        MessageBuilder messageBuilder = getMessageBuilder(stateId, chatId);
         String responseMessageText = messageBuilder.getResponseMessageText(messageText);
-        buttonsBuilder = getButtonsBuilder(stateId, chatId);
+        ButtonsBuilder buttonsBuilder = getButtonsBuilder(stateId, chatId);
         Map<String, String> keyboardButtons = buttonsBuilder.getKeyboardButtons(messageText);
 
         if(keyboardButtons == null){
