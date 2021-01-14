@@ -2,6 +2,7 @@ package org.agbrothers.englishbot.process;
 
 import org.agbrothers.englishbot.adapter.telegram.TelegramBot;
 import org.agbrothers.englishbot.buttonsbuilder.ButtonsBuilder;
+import org.agbrothers.englishbot.buttonsbuilder.UkrainianLessonButtonBuilder;
 import org.agbrothers.englishbot.constant.ButtonLabel;
 import org.agbrothers.englishbot.constant.LinkLabel;
 import org.agbrothers.englishbot.constant.State;
@@ -11,6 +12,7 @@ import org.agbrothers.englishbot.entity.Lesson;
 import org.agbrothers.englishbot.buttonsbuilder.MainMenuButtonsBuilder;
 import org.agbrothers.englishbot.messagebuilder.MainMenuMessageBuilder;
 import org.agbrothers.englishbot.messagebuilder.MessageBuilder;
+import org.agbrothers.englishbot.messagebuilder.UkrainianLessonMessageBuilder;
 import org.agbrothers.englishbot.service.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -65,8 +67,9 @@ public class ProcessingCore {
             case MAIN_MENU:
                 return new MainMenuMessageBuilder();
             case State.ENGLISH_LESSON:
-                Lesson lesson = lessonService.getLesson(chatId);
-                return new EnglishLessonMessageBuilder(lesson);
+                return new EnglishLessonMessageBuilder(lessonService.getLesson(chatId));
+            case State.UKRAINIAN_LESSON:
+                return new UkrainianLessonMessageBuilder(lessonService.getLesson(chatId));
             default:
                 return null;
         }
@@ -77,8 +80,9 @@ public class ProcessingCore {
             case MAIN_MENU:
                 return new MainMenuButtonsBuilder();
             case State.ENGLISH_LESSON:
-                Lesson lesson = lessonService.getLesson(chatId);
-                return new EnglishLessonButtonBuilder(lesson);
+                return new EnglishLessonButtonBuilder(lessonService.getLesson(chatId));
+            case State.UKRAINIAN_LESSON:
+                return new UkrainianLessonButtonBuilder(lessonService.getLesson(chatId));
             default:
                 return null;
         }
