@@ -2,10 +2,12 @@ package org.agbrothers.englishbot.service;
 
 import org.agbrothers.englishbot.entity.Lesson;
 import org.agbrothers.englishbot.entity.Word;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class LessonService {
@@ -17,7 +19,6 @@ public class LessonService {
         this.englishWordPoolService = englishWordPoolService;
         this.lessonRegistry = new HashMap<>();
     }
-
 
     public Lesson getLesson (String chatId){
         if((!lessonRegistry.containsKey(chatId))||
@@ -32,5 +33,9 @@ public class LessonService {
         List<Word> wordPool = englishWordPoolService.getRandomWordPool();
         List<Word> answersPool = new ArrayList<>(wordPool);
         return new Lesson(wordPool, answersPool);
+    }
+
+    public void removeLesson(String chatId){
+        lessonRegistry.remove(chatId);
     }
 }
