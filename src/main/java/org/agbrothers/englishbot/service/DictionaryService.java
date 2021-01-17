@@ -19,4 +19,8 @@ public class DictionaryService {
     public void addWord(Word word){
         wordRepository.saveAndFlush(word);
     }
+
+    public Word getWordFromRepository(String string){
+        return wordRepository.findByEnglishValue(string);
+    }
 }

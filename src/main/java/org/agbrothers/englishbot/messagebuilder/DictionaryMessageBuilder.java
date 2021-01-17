@@ -17,7 +17,7 @@ public class DictionaryMessageBuilder extends MessageBuilder{
                 return getChoiceMadeText(PRINT_ALL_WORD) + " Триває розробка друку слів зі словника" +
                         RETURN_MAIN_MENU;
             default:
-                return "Dictionary!!!Не розумію, що ти маєш на увазі?" + RETURN_MAIN_MENU;
+                return "Я вас не розумію. Повернутися в головне меню? " + RETURN_MAIN_MENU;
         }
     }
 }
