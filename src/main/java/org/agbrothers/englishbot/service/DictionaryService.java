@@ -20,6 +20,10 @@ public class DictionaryService {
         wordRepository.saveAndFlush(word);
     }
 
+    public void deleteWord(Word word){
+        wordRepository.delete(word);
+    }
+
     public Word getWordByEnglishValue(String string){
         return wordRepository.findByEnglishValue(string);
     }
