@@ -25,8 +25,8 @@ public class AddWordMessageBuilder extends MessageBuilder{
         if(wordData.length!=2 || !wordData[0].matches("^[a-zA-Z]+$") || !wordData[1].matches("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії'`’ʼ]+$")){
             return "Помилка в слові англійською або перекладі слова. Слово англійською має бути латиницею, переклад - лише кирилицею.";
         }
-        Word wordInDictionary = dictionaryService.getWordFromRepository(wordData[0]);
-        if(null!=wordInDictionary) {
+        Word wordInDictionary = dictionaryService.getWordByEnglishValue(wordData[0]);
+        if(wordInDictionary != null) {
             return "Слово " + wordInDictionary.getEnglishValue() + " - " + wordInDictionary.getUkrainianValue() + " вже існує у Вашому словнику.";
         }
         dictionaryService.addWord(new Word(wordData[0],wordData[1]));

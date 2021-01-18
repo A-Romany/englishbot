@@ -20,7 +20,7 @@ public class DictionaryService {
         wordRepository.saveAndFlush(word);
     }
 
-    public Word getWordFromRepository(String string){
+    public Word getWordByEnglishValue(String string){
         return wordRepository.findByEnglishValue(string);
     }
 }
