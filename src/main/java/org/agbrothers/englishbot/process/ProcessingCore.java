@@ -76,7 +76,7 @@ public class ProcessingCore {
             case State.ADD_WORD_TO_DICTIONARY:
                 return springApplicationContext.getBean(AddWordMessageBuilder.class);
             case State.DELETING_WORD:
-                return springApplicationContext.getBean(DeletingWord.class);
+                return springApplicationContext.getBean(DeletingWordMessageBuilder.class);
             case State.DICTIONARY:
                 return new DictionaryMessageBuilder();
             default:

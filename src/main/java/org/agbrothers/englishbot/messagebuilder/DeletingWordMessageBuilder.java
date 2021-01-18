@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import static org.agbrothers.englishbot.constant.ButtonLabel.REMOVE_WORD;
 
 @Component
-public class DeletingWord extends MessageBuilder {
+public class DeletingWordMessageBuilder extends MessageBuilder {
 
     private DictionaryService dictionaryService;
 
