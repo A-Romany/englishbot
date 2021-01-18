@@ -8,4 +8,5 @@ public class State {
     public static final String LESSONS = "Lesson";
     public static final String DICTIONARY = "Dictionary";
     public static final String ADD_WORD_TO_DICTIONARY = "Додати нове слово";
+    public static final String DELETING_WORD = "Видалити слово";
 }

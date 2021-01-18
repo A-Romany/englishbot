@@ -46,6 +46,9 @@ public class ProcessingCore {
             case ButtonLabel.ADD_WORD:
                 stepRegistry.put(chatId, State.ADD_WORD_TO_DICTIONARY);
                 break;
+            case ButtonLabel.REMOVE_WORD:
+                stepRegistry.put(chatId,State.DELETING_WORD);
+                break;
             case ButtonLabel.DICTIONARY:
                 stepRegistry.put(chatId, State.DICTIONARY);
                 break;
@@ -72,6 +75,8 @@ public class ProcessingCore {
                 return new UkrainianLessonMessageBuilder(lessonService.getLesson(chatId));
             case State.ADD_WORD_TO_DICTIONARY:
                 return springApplicationContext.getBean(AddWordMessageBuilder.class);
+            case State.DELETING_WORD:
+                return springApplicationContext.getBean(DeletingWord.class);
             case State.DICTIONARY:
                 return new DictionaryMessageBuilder();
             default:
