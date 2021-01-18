@@ -13,10 +13,10 @@ import java.util.Map;
 public class LessonService {
 
     private final Map<String, Lesson> lessonRegistry;
-    private final EnglishWordPoolService englishWordPoolService;
+    private final WordPoolService wordPoolService;
 
-    public LessonService(EnglishWordPoolService englishWordPoolService) {
-        this.englishWordPoolService = englishWordPoolService;
+    public LessonService(WordPoolService wordPoolService) {
+        this.wordPoolService = wordPoolService;
         this.lessonRegistry = new HashMap<>();
     }
 
@@ -30,7 +30,7 @@ public class LessonService {
     }
 
     public Lesson createLesson(){
-        List<Word> wordPool = englishWordPoolService.getRandomWordPool();
+        List<Word> wordPool = wordPoolService.getRandomWordPool();
         List<Word> answersPool = new ArrayList<>(wordPool);
         return new Lesson(wordPool, answersPool);
     }

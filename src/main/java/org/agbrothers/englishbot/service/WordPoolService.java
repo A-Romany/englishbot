@@ -9,12 +9,12 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class EnglishWordPoolService {
+public class WordPoolService {
 
     private final WordRepository wordRepository;
     public static final Integer COUNT_ANSWER = 10;
 
-    public EnglishWordPoolService(WordRepository wordRepository) {
+    public WordPoolService(WordRepository wordRepository) {
         this.wordRepository = wordRepository;
     }
 
