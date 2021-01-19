@@ -18,6 +18,9 @@ public class ProcessorHolder {
         processorNameByState.put(State.MAIN_MENU, "mainMenuProcessor");
         processorNameByState.put(State.ENGLISH_LESSON, "englishLessonProcessor");
         processorNameByState.put(State.UKRAINIAN_LESSON, "ukrainianLessonProcessor");
+        processorNameByState.put(State.DICTIONARY, "dictionaryProcessor");
+        processorNameByState.put(State.ADD_WORD_TO_DICTIONARY, "addWordDictionaryProcessor");
+        processorNameByState.put(State.DELETING_WORD, "deleteWordDictionaryProcessor");
     }
 
     public Processor getProcessorByState(String state) {

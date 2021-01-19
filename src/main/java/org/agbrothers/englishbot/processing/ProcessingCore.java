@@ -41,6 +41,16 @@ public class ProcessingCore {
             case ButtonLabel.UKRAINIAN:
                 stepRegistry.put(chatId, State.UKRAINIAN_LESSON);
                 break;
+            case ButtonLabel.ADD_WORD:
+                stepRegistry.put(chatId, State.ADD_WORD_TO_DICTIONARY);
+                break;
+            case ButtonLabel.REMOVE_WORD:
+                stepRegistry.put(chatId,State.DELETING_WORD);
+                break;
+            case ButtonLabel.EDIT_DICTIONARY:
+            case ButtonLabel.PRINT_ALL_WORD:
+                stepRegistry.put(chatId, State.DICTIONARY);
+                break;
         }
 
         stateId = getStateId(chatId);
