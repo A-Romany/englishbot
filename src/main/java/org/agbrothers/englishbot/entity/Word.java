@@ -5,6 +5,11 @@ import javax.persistence.*;
 @Entity
 @Table
 public class Word {
+
+    public Long getId() {
+        return id;
+    }
+
     @Id @GeneratedValue
     @Column
     private Long id;
@@ -12,6 +17,13 @@ public class Word {
     private String englishValue;
     @Column (nullable = false)
     private String ukrainianValue;
+
+    public Word(){}
+
+    public Word(String englishValue, String ukrainianValue) {
+        this.englishValue = englishValue;
+        this.ukrainianValue = ukrainianValue;
+    }
 
     public String getEnglishValue() {
         return englishValue;
@@ -39,5 +51,9 @@ public class Word {
         result = 31 * result + englishValue.hashCode();
         result = 31 * result + ukrainianValue.hashCode();
         return result;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

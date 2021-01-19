@@ -16,4 +16,5 @@ public final class MessageLabel {
     public static final String NEWLINE = "\n";
     public static final String SPACE = " ";
     public static final String POINT = ".";
+    public static final String MAKE_CHOICE = "Будь ласка, зробіть свій вибір";
 }
