@@ -27,9 +27,9 @@ spring:
       ddl-auto: update
 
 telegram:
-  token: 1154875410:AAHor7XVEQ2EJGuEJU2y_PFDx122P2ePAcs
+  token: 1153088687:AAGlMcZ6W2qvE_YaWlYkXTkg9W2Yg8XZL0U
   name: English bot
-  bot.server.url: https://1ba9b9aa8ea3.ngrok.io
+  bot.server.url: https://46252907a097.ngrok.io
 
 server:
   port: 8090
