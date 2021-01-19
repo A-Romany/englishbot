@@ -5,6 +5,11 @@ public final class MessageLabel {
     }
     public static final String RETURN_LESSON = "\n Для повторного проходження уроку натисніть ";
     public static final String END_LESSON = "Урок закінчено. Правильних відповідей - ";
+    public static final String LESSON_ENDING = "Урок закінчено. Правильних відповідей - %d" +
+            " із %d." + //count of words in lesson
+            "\n\n\n Для повторного проходження уроку натисніть %s" +
+            "\n %s," + //return to main menu
+            "\nдля продовження навчання оберіть урок:";
     public static final String NEXT_LESSON = ",\nдля продовження навчання оберіть урок:";
     public static final String CORRECT_ANSWER = "Ви відповіли правильно! \n";
     public static final String INCORRECT_ANSWER = "Відповідь не вірна! Правильна відповідь - ";

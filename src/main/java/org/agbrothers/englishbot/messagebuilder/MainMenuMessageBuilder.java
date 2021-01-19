@@ -4,6 +4,7 @@ import org.agbrothers.englishbot.constant.ButtonLabel;
 import org.springframework.stereotype.Component;
 
 import static org.agbrothers.englishbot.constant.ButtonLabel.*;
+import static org.agbrothers.englishbot.constant.CommonPhrase.RETURN_MAIN_MENU;
 import static org.agbrothers.englishbot.constant.LinkLabel.*;
 
 @Component
