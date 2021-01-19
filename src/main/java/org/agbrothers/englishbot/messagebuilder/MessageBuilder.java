@@ -12,7 +12,6 @@ public abstract class MessageBuilder {
             " Маю надію, що я тобі в цьому допоможу!)) "+
             "Для початку навчання натисни "+MAIN_MENU;
     protected static final String YOU_CHOOSE = "Ви вибрали ";
-    protected static final String RETURN_MAIN_MENU = "  Для повернення в головне меню натисніть "+ MAIN_MENU;
 
     public static String getHelloMessage(){
         return HELLO_MESSAGE;
