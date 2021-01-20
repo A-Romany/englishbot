@@ -1,14 +1,11 @@
 package org.agbrothers.englishbot.process;
 
 import org.agbrothers.englishbot.adapter.telegram.TelegramBot;
-import org.agbrothers.englishbot.buttonsbuilder.ButtonsBuilder;
-import org.agbrothers.englishbot.buttonsbuilder.UkrainianLessonButtonBuilder;
+import org.agbrothers.englishbot.buttonsbuilder.*;
 import org.agbrothers.englishbot.constant.ButtonLabel;
 import org.agbrothers.englishbot.constant.LinkLabel;
 import org.agbrothers.englishbot.constant.State;
-import org.agbrothers.englishbot.buttonsbuilder.EnglishLessonButtonBuilder;
 import org.agbrothers.englishbot.messagebuilder.*;
-import org.agbrothers.englishbot.buttonsbuilder.MainMenuButtonsBuilder;
 import org.agbrothers.englishbot.service.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -49,6 +46,9 @@ public class ProcessingCore {
             case ButtonLabel.REMOVE_WORD:
                 stepRegistry.put(chatId,State.DELETING_WORD);
                 break;
+            case ButtonLabel.PRINT_ALL_WORD:
+                stepRegistry.put(chatId, State.PRINTING_WORDS);
+                break;
             case ButtonLabel.DICTIONARY:
                 stepRegistry.put(chatId, State.DICTIONARY);
                 break;
@@ -77,6 +77,8 @@ public class ProcessingCore {
                 return springApplicationContext.getBean(AddWordMessageBuilder.class);
             case State.DELETING_WORD:
                 return springApplicationContext.getBean(DeletingWordMessageBuilder.class);
+            case State.PRINTING_WORDS:
+                return springApplicationContext.getBean(PrintingWordsMessageBuilder.class);
             case State.DICTIONARY:
                 return new DictionaryMessageBuilder();
             default:
@@ -91,6 +93,8 @@ public class ProcessingCore {
                 return new EnglishLessonButtonBuilder(lessonService.getLesson(chatId));
             case State.UKRAINIAN_LESSON:
                 return new UkrainianLessonButtonBuilder(lessonService.getLesson(chatId));
+            case State.PRINTING_WORDS:
+                return springApplicationContext.getBean(PrintingWordsButtonBuilder.class);
             default:
             case State.MAIN_MENU:
                 return new MainMenuButtonsBuilder();
