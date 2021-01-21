@@ -19,14 +19,17 @@ public class PrintingWordsMessageBuilder extends MessageBuilder{
 
     @Override
     public String getResponseMessageText(String messageText) {
-        int size = dictionaryService.getAllWords().size();
-        if(size<13){
-            String printAllWords="";
-            for (Word word : dictionaryService.getAllWords()){
-                printAllWords += word.getEnglishValue() + " - " + word.getUkrainianValue() + "\n";
-            }
-            return printAllWords;
-        }
-        return "слів більше 12";
+        //if(messageText.equals(PRINT_ALL_WORD)){
+            return "Як це блін працює????!!!!";
+        //}
+//        int size = dictionaryService.getAllWords().size();
+//        if(size<13){
+//            String printAllWords="";
+//            for (Word word : dictionaryService.getAllWords()){
+//                printAllWords += word.getEnglishValue() + " - " + word.getUkrainianValue() + "\n";
+//            }
+//            return printAllWords;
+//        }
+//        return "слів більше 12";
     }
 }
