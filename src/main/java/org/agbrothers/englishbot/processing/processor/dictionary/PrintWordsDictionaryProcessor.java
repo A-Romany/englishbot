@@ -18,8 +18,8 @@ public class PrintWordsDictionaryProcessor implements Processor {
     public void process(ProcessingExchange exchange)  {
         String messageText = exchange.getMessageText();
         List<Word> allSortWords = getSortAllWords(dictionaryService.getAllWords()); //FIXME the govnocode :)
-
         exchange.setResponseMessageText(getResponseMessageText(allSortWords, messageText));
+
         if(allSortWords.size()>=12){
             exchange.setResponseButtons(getKeyboardButtons(allSortWords));
         }
