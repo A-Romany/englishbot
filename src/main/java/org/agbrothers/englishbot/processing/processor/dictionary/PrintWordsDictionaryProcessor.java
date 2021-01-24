@@ -17,102 +17,73 @@ public class PrintWordsDictionaryProcessor implements Processor {
     @Override
     public void process(ProcessingExchange exchange)  {
         String messageText = exchange.getMessageText();
-        List<Word> allSortWords = getSortAllWords(dictionaryService.getAllWords()); //FIXME the govnocode :)
-        exchange.setResponseMessageText(getResponseMessageText(allSortWords, messageText));
+        List<Word> allWordsSorted = getAllWordsSorted();
 
-        if(allSortWords.size()>=12){
-            exchange.setResponseButtons(getKeyboardButtons(allSortWords));
+        if(allWordsSorted.size()<13){
+            exchange.setResponseMessageText(printWords(allWordsSorted));
+        }
+        else        {
+            exchange.setResponseMessageText(getResponseMessageText(allWordsSorted, messageText));
+            exchange.setResponseButtons(getKeyboardButtons(allWordsSorted));
         }
     }
 
-    private String getResponseMessageText (List<Word> list, String messageText){
-        Word currentWord = getCurrentFirstWordInDozen(list, messageText);
-
-        if(list.size()<13){
-            return printDozenWords(list);
+    private String getResponseMessageText (List<Word> list, String messageText) {
+        String currentWordEngVal;
+        if(getWordListsByFirstWord(list).containsKey(messageText)){
+            return printWords(getWordListsByFirstWord(list).get(messageText));
         }
         else {
-            if (messageText.equals(currentWord.getEnglishValue())) {
-                List<Word> subSortWords = getSubListWords(list, list.indexOf(currentWord));
-                return printDozenWords(subSortWords);
-            } else {
-                return "У словнику більше 10 слів. Будь ласка вибиріть діапозон слів для перегляду:";
-            }
+            return "У словнику більше 10 слів. Будь ласка виберіть діапазон слів для перегляду:";
         }
+    }
+
+    private Map<String, List<Word>> getWordListsByFirstWord(List<Word> allWordsSorted) {
+        Map<String,List<Word>> result = new HashMap<>();
+        int buttonsCount = allWordsSorted.size()%10 < 3
+                ? allWordsSorted.size()/10
+                : allWordsSorted.size()/10 + 1;
+
+        for(int i = 0; i < buttonsCount; i++){
+            if(i+1 == buttonsCount){
+                result.put(allWordsSorted.get(i*10).getEnglishValue(), allWordsSorted.subList(i*10,allWordsSorted.size()));
+            } else
+            result.put(allWordsSorted.get(i*10).getEnglishValue(), allWordsSorted.subList(i*10,i*10+10));
+        }
+        return result;
     }
 
     private Map<String, String> getKeyboardButtons(List<Word> list) {
-        int dozens = list.size()%10==0 ? list.size()/10 : list.size()/10 + 1;
-        Map<String, String> dozensWords =  new HashMap<>();
-        String firstWordOfDozen;
-        String lastWordOfDozen;
-        String valueDozensWords;
-        for (int i = 0; i < dozens; i++) {
+        int buttonsCount = list.size()%10 < 3
+                ? list.size()/10
+                : list.size()/10 + 1;
+        Map<String, String> result =  new HashMap<>();
+
+        for (int i = 0; i < buttonsCount; i++) {
+            String firstWordOfDozen;
+            String lastWordOfDozen;
             firstWordOfDozen = list.get(i*10).getEnglishValue();
-            if(i==dozens-1) {
-                 lastWordOfDozen = list.get(i*10+list.size()%10-1).getEnglishValue();
-                 if(list.size()%10==1||list.size()%10==2) {
-                     firstWordOfDozen = list.get(i * 10 - 10).getEnglishValue();
-                 }
+
+            if(i + 1 == buttonsCount) { //last button
+                 lastWordOfDozen = list.get(list.size()-1).getEnglishValue();
             }
             else {
                 lastWordOfDozen = list.get(i * 10 + 9).getEnglishValue();
             }
-            valueDozensWords = firstWordOfDozen + " - " + lastWordOfDozen;
-            dozensWords.put(firstWordOfDozen, valueDozensWords);
+            result.put(firstWordOfDozen, firstWordOfDozen + " - " + lastWordOfDozen);
         }
-        return dozensWords;
+        return result;
     }
 
-    private List<Word> getSortAllWords (List<Word> words){
-        List<Word> allWords = new ArrayList<>(words);
-        List<Word> allSortWords = new ArrayList<>();
-        List<String> englishWords = new ArrayList<>();
+    private List<Word> getAllWordsSorted(){
+        List<Word> allWords = dictionaryService.getAllWords();
 
-        for(Word word : allWords){
-            englishWords.add(word.getEnglishValue());
-        }
-
-        Collections.sort(englishWords);
-
-        for (String englishWord : englishWords) {
-            for (Word allWord : allWords) {
-                if (englishWord.equals(allWord.getEnglishValue())) {
-                    allSortWords.add(allWord);
-                    break;
-                }
-            }
-        }
-        return  allSortWords;
+        allWords.sort(Comparator.comparing(Word::getEnglishValue));
+        return allWords;
     }
 
-    private List<Word> getSubListWords (List<Word> list, int index){//TODO var count word to print
-        if ((list.size() - index)==1){
-            return list.subList(index,list.size()-1);
-        }
-        else if((list.size() - index)<13){
-            return list.subList(index, list.size());
-        }
-        return list.subList(index, (index+10));
-    }
 
-    private Word getCurrentFirstWordInDozen (List<Word> list, String messageText){
-        List<Word> englishValueForFirstWordOfDozen = new ArrayList<>();
-        Word currentWord = new Word();
-        for (int i = 0; i < list.size(); i++) {
-            if(i%10==0){
-                englishValueForFirstWordOfDozen.add(list.get(i));
-            }
-        }
-        for(Word word : englishValueForFirstWordOfDozen){
-            if(messageText.equals(word.getEnglishValue())){
-                currentWord = word;
-            }
-        }
-        return currentWord;
-    }
-
-    private String printDozenWords(List<Word> list){
+    private String printWords(List<Word> list){
         StringBuilder printWords = new StringBuilder();
         for (Word word : list){
             printWords.append(word.getEnglishValue()).append(" - ").
