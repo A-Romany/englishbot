@@ -47,8 +47,10 @@ public class ProcessingCore {
             case ButtonLabel.REMOVE_WORD:
                 stepRegistry.put(chatId,State.DELETING_WORD);
                 break;
-            case ButtonLabel.EDIT_DICTIONARY:
             case ButtonLabel.PRINT_ALL_WORD:
+                stepRegistry.put(chatId, State.PRINTING_WORDS);
+                break;
+            case ButtonLabel.EDIT_DICTIONARY:
                 stepRegistry.put(chatId, State.DICTIONARY);
                 break;
         }

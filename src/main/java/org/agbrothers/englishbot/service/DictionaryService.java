@@ -4,6 +4,8 @@ import org.agbrothers.englishbot.entity.Word;
 import org.agbrothers.englishbot.repository.WordRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DictionaryService {
     private final WordRepository wordRepository;
@@ -26,5 +28,9 @@ public class DictionaryService {
 
     public Word getWordByEnglishValue(String string){
         return wordRepository.findByEnglishValue(string);
+    }
+
+    public List<Word> getAllWords(){
+        return wordRepository.findAll();
     }
 }
