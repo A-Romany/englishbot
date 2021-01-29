@@ -14,9 +14,6 @@ public class DictionaryMessageBuilder extends MessageBuilder{
             case EDIT_DICTIONARY:
                 return getChoiceMadeText(EDIT_DICTIONARY) + " Триває розробка редагування слів зі словника" +
                         CommonPhrase.RETURN_MAIN_MENU;
-            case PRINT_ALL_WORD:
-                return getChoiceMadeText(PRINT_ALL_WORD) + " Триває розробка друку слів зі словника" +
-                        CommonPhrase.RETURN_MAIN_MENU;
             default:
                 return "Я вас не розумію. Повернутися в головне меню? " + CommonPhrase.RETURN_MAIN_MENU;
         }

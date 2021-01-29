@@ -21,6 +21,7 @@ public class ProcessorHolder {
         processorNameByState.put(State.DICTIONARY, "dictionaryProcessor");
         processorNameByState.put(State.ADD_WORD_TO_DICTIONARY, "addWordDictionaryProcessor");
         processorNameByState.put(State.DELETING_WORD, "deleteWordDictionaryProcessor");
+        processorNameByState.put(State.PRINTING_WORDS, "printWordsDictionaryProcessor");
     }
 
     public Processor getProcessorByState(String state) {

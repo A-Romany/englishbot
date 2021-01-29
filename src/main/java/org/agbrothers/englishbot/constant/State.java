@@ -9,4 +9,5 @@ public class State {
     public static final String DICTIONARY = "Dictionary";
     public static final String ADD_WORD_TO_DICTIONARY = "Adding a new word";
     public static final String DELETING_WORD = "Deleting a word";
+    public static final String PRINTING_WORDS = "Printing words";
 }
