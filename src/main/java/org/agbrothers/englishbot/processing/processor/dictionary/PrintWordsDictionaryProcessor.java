@@ -9,67 +9,64 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+import static org.agbrothers.englishbot.constant.CommonPhrase.RETURN_MAIN_MENU;
+import static org.agbrothers.englishbot.constant.MessageLabel.MAKE_CHOICE;
+
 @Component
 public class PrintWordsDictionaryProcessor implements Processor {
 
     private DictionaryService dictionaryService;
 
     @Override
-    public void process(ProcessingExchange exchange)  {
-        String messageText = exchange.getMessageText();
+    public void process(ProcessingExchange exchange) {
         List<Word> allWordsSorted = getAllWordsSorted();
 
-        if(allWordsSorted.size()<13){
-            exchange.setResponseMessageText(printWords(allWordsSorted));
-        }
-        else        {
-            exchange.setResponseMessageText(getResponseMessageText(allWordsSorted, messageText));
-            exchange.setResponseButtons(getKeyboardButtons(allWordsSorted));
-        }
-    }
-
-    private String getResponseMessageText (List<Word> list, String messageText) {
-        String currentWordEngVal;
-        if(getWordListsByFirstWord(list).containsKey(messageText)){
-            return printWords(getWordListsByFirstWord(list).get(messageText));
+        if (allWordsSorted.size() < 13){
+            exchange.setResponseMessageText(printWords(allWordsSorted) + "\n" + RETURN_MAIN_MENU);
         }
         else {
-            return "У словнику більше 10 слів. Будь ласка виберіть діапазон слів для перегляду:";
+            String messageText = exchange.getMessageText();
+            exchange.setResponseMessageText(getResponseMessageText(allWordsSorted, messageText));
+            exchange.setResponseButtons(getKeyboardButtons(getWordListsByFirstWord( allWordsSorted)));
         }
     }
 
-    private Map<String, List<Word>> getWordListsByFirstWord(List<Word> allWordsSorted) {
-        Map<String,List<Word>> result = new HashMap<>();
-        int buttonsCount = allWordsSorted.size()%10 < 3
-                ? allWordsSorted.size()/10
-                : allWordsSorted.size()/10 + 1;
-
-        for(int i = 0; i < buttonsCount; i++){
-            if(i+1 == buttonsCount){
-                result.put(allWordsSorted.get(i*10).getEnglishValue(), allWordsSorted.subList(i*10,allWordsSorted.size()));
-            } else
-            result.put(allWordsSorted.get(i*10).getEnglishValue(), allWordsSorted.subList(i*10,i*10+10));
+    private String getResponseMessageText(List<Word> list, String messageText) {
+        String result = MAKE_CHOICE;
+        Map<String, List<Word>> wordListsByFirstWord = getWordListsByFirstWord(list);
+        if ((list.size() > 12) && (!wordListsByFirstWord.containsKey(messageText))) {
+            result = "У словнику більше 10 слів. Будь ласка виберіть діапазон слів для перегляду:";
+        }
+        else if (wordListsByFirstWord.containsKey(messageText)) {
+            result = printWords(wordListsByFirstWord.get(messageText)) + "\n" + RETURN_MAIN_MENU;
         }
         return result;
     }
 
-    private Map<String, String> getKeyboardButtons(List<Word> list) {
-        int buttonsCount = list.size()%10 < 3
-                ? list.size()/10
-                : list.size()/10 + 1;
-        Map<String, String> result =  new HashMap<>();
+    private Map<String, List<Word>> getWordListsByFirstWord(List<Word> allWordsSorted) {
+        Map<String, List<Word>> result = new LinkedHashMap<>();
+        int dozensCount = allWordsSorted.size() % 10 < 3
+                ? allWordsSorted.size()/10
+                : allWordsSorted.size()/10 + 1;
 
-        for (int i = 0; i < buttonsCount; i++) {
-            String firstWordOfDozen;
-            String lastWordOfDozen;
-            firstWordOfDozen = list.get(i*10).getEnglishValue();
-
-            if(i + 1 == buttonsCount) { //last button
-                 lastWordOfDozen = list.get(list.size()-1).getEnglishValue();
+        for (int i = 0; i<dozensCount; i++) {
+            int firstWordIndex = i*10; //currentDozen
+            if (i + 1 == dozensCount) {
+                result.put(allWordsSorted.get(firstWordIndex).getEnglishValue(), allWordsSorted.subList(firstWordIndex,allWordsSorted.size()));
             }
             else {
-                lastWordOfDozen = list.get(i * 10 + 9).getEnglishValue();
+                result.put(allWordsSorted.get(firstWordIndex).getEnglishValue(), allWordsSorted.subList(firstWordIndex, firstWordIndex + 10));
             }
+        }
+        return result;
+    }
+
+    private Map<String, String> getKeyboardButtons(Map<String, List<Word>> wordListsByFirstWord) {
+        Map<String, String> result =  new LinkedHashMap<>();
+
+        for (Map.Entry<String, List<Word>> entry : wordListsByFirstWord.entrySet()) {
+            String firstWordOfDozen = entry.getKey();
+            String lastWordOfDozen = entry.getValue().get(entry.getValue().size()-1).getEnglishValue();
             result.put(firstWordOfDozen, firstWordOfDozen + " - " + lastWordOfDozen);
         }
         return result;
@@ -82,7 +79,6 @@ public class PrintWordsDictionaryProcessor implements Processor {
         return allWords;
     }
 
-
     private String printWords(List<Word> list){
         StringBuilder printWords = new StringBuilder();
         for (Word word : list){
@@ -93,7 +89,7 @@ public class PrintWordsDictionaryProcessor implements Processor {
     }
 
     @Autowired
-    public void  setDictionaryService(DictionaryService dictionaryService){
+    public void  setDictionaryService(DictionaryService dictionaryService) {
         this.dictionaryService = dictionaryService;
     }
 }
