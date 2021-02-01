@@ -18,12 +18,12 @@ public class DeleteWordDictionaryProcessor implements Processor {
     public void process(ProcessingExchange exchange) {
         String messageText = exchange.getMessageText();
         if (messageText.equals(REMOVE_WORD)) {
-            exchange.setResponseMessageText("Введіть слово англійською");
+            exchange.setResponseMessageText("Введіть слово англійською малими латинськими літерами");
             return;
         }
-        if (!messageText.matches("^[a-zA-Z]+$")) {
+        if (!messageText.matches("^[a-z]+$")) {
             exchange.setResponseMessageText("Помилка в написанні слова англійською," +
-                    " воно має бути написано тільки латиницею.");
+                    " воно має бути написано тільки малими латинськими літерами.");
             return;
         }
         Word wordInDictionary = dictionaryService.getWordByEnglishValue(messageText);

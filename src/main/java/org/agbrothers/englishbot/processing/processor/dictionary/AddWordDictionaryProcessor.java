@@ -16,14 +16,14 @@ public class AddWordDictionaryProcessor implements Processor {
     @Override
     public void process(ProcessingExchange exchange) {
         String messageText = exchange.getMessageText();
-        if (messageText.equals(ADD_WORD)){
+        if (messageText.equals(ADD_WORD)) {
             exchange.setResponseMessageText("Введіть слово англійською та його переклад через пробіл");
             return;
         }
 
         String[] wordData = messageText.split(" ");
         String errorMessage = validateWordData(wordData);
-        if( errorMessage != null) {
+        if ( errorMessage != null) {
             exchange.setResponseMessageText(errorMessage);
             return;
         }
@@ -43,9 +43,10 @@ public class AddWordDictionaryProcessor implements Processor {
      * @return validation error message, {@code null} if validation succeeded
      */
     private String validateWordData(String[] wordData) {
-        if(isValidWordData(wordData)){
+        if(isValidWordData(wordData)) {
             return "Помилка в слові англійською або перекладі слова. " +
-                    "Слово англійською має бути латиницею, переклад - лише кирилицею.";
+                    "Слово англійською має бути латиницею, переклад - лише кирилицею. " +
+                    "Слова вводити малими літерами.";
         }
         Word wordInDictionary = dictionaryService.getWordByEnglishValue(wordData[0]);
         if(wordInDictionary != null) {
@@ -57,7 +58,7 @@ public class AddWordDictionaryProcessor implements Processor {
 
     private boolean isValidWordData(String[] wordData) {
         return wordData.length!=2
-                || !wordData[0].matches("^[a-zA-Z]+$")
-                || !wordData[1].matches("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії'`’ʼ]+$");
+                || !wordData[0].matches("^[a-z]+$")
+                || !wordData[1].matches("^[а-щьюяґєії'`’ʼ]+$");
     }
 }

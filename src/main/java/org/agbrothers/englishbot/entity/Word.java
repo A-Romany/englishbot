@@ -13,7 +13,7 @@ public class Word {
     @Id @GeneratedValue
     @Column
     private Long id;
-    @Column (nullable = false)
+    @Column (nullable = false, unique = true)
     private String englishValue;
     @Column (nullable = false)
     private String ukrainianValue;
