@@ -19,8 +19,9 @@ public class WordPoolService {
     }
 
     public List<Word> getRandomWordPool() {
-        List<Word> allWorld = wordRepository.findAll();
-        Collections.shuffle(allWorld);
-        return new ArrayList<>(allWorld. subList(0, COUNT_ANSWER));
+        List<Long> wordIds = wordRepository.getWordIds();
+        Collections.shuffle(wordIds);
+        List<Long> lessonWordsIds = new ArrayList<>(wordIds.subList(0, COUNT_ANSWER));
+        return wordRepository.findWordsByIdIn(lessonWordsIds);
     }
 }
