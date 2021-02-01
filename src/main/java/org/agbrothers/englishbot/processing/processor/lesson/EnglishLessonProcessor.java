@@ -3,7 +3,7 @@ package org.agbrothers.englishbot.processing.processor.lesson;
 import org.agbrothers.englishbot.entity.Word;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +23,7 @@ public class EnglishLessonProcessor extends LessonProcessor {
 
     @Override
     protected Map<String, String> formAnswersMap(List<Word> answers) {
-        Map<String, String> keyboardMap =  new HashMap<>();
+        Map<String, String> keyboardMap =  new LinkedHashMap<>();
         for (Word answer : answers) {
             keyboardMap.put(answer.getUkrainianValue(), answer.getUkrainianValue());
         }

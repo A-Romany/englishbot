@@ -35,18 +35,18 @@ public class Lesson {
     }
 
     public List<Word> getAnswers(Word currentWord) {
-        if(currentWord == null){
-            return null;
+        if (currentWord == null) {
+            return Collections.emptyList();
         }
         List<Word> answers = new ArrayList<>();
-
         answers.add(currentWord);
         Collections.shuffle(answersPool, new SecureRandom());
-        for(int i=0;answers.size()<5;i++){
-            if(!answersPool.get(i).equals(currentWord)){
+        for (int i=0;answers.size()<5;i++) {
+            if (!answersPool.get(i).equals(currentWord)) {
                 answers.add(answersPool.get(i));
             }
         }
+        Collections.shuffle(answers, new SecureRandom());
         return answers;
     }
 
