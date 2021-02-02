@@ -16,19 +16,19 @@ public class AddWordDictionaryProcessor implements Processor {
     @Override
     public void process(ProcessingExchange exchange) {
         String messageText = exchange.getMessageText();
-        if (messageText.equals(ADD_WORD)){
+        if (messageText.equals(ADD_WORD)) {
             exchange.setResponseMessageText("Введіть слово англійською та його переклад через пробіл");
             return;
         }
 
         String[] wordData = messageText.split(" ");
         String errorMessage = validateWordData(wordData);
-        if( errorMessage != null) {
+        if ( errorMessage != null) {
             exchange.setResponseMessageText(errorMessage);
             return;
         }
-        String englishValue = wordData[0];
-        String ukrainianValue = wordData[1];
+        String englishValue = wordData[0].toLowerCase();
+        String ukrainianValue = wordData[1].toLowerCase();
         dictionaryService.addWord(new Word(englishValue, ukrainianValue));
         exchange.setResponseMessageText("Слово " + englishValue +  " - " + ukrainianValue + " було додано до словника.");
     }
@@ -43,12 +43,12 @@ public class AddWordDictionaryProcessor implements Processor {
      * @return validation error message, {@code null} if validation succeeded
      */
     private String validateWordData(String[] wordData) {
-        if(isValidWordData(wordData)){
+        if (isValidWordData(wordData)) {
             return "Помилка в слові англійською або перекладі слова. " +
                     "Слово англійською має бути латиницею, переклад - лише кирилицею.";
         }
-        Word wordInDictionary = dictionaryService.getWordByEnglishValue(wordData[0]);
-        if(wordInDictionary != null) {
+        Word wordInDictionary = dictionaryService.getWordByEnglishValue(wordData[0].toLowerCase());
+        if (wordInDictionary != null) {
             return "Слово " + wordInDictionary.getEnglishValue() +
                     " - " + wordInDictionary.getUkrainianValue() + " вже існує у Вашому словнику.";
         }

@@ -26,13 +26,13 @@ public class DeleteWordDictionaryProcessor implements Processor {
                     " воно має бути написано тільки латиницею.");
             return;
         }
-        Word wordInDictionary = dictionaryService.getWordByEnglishValue(messageText);
+        Word wordInDictionary = dictionaryService.getWordByEnglishValue(messageText.toLowerCase());
         if (wordInDictionary == null) {
-            exchange.setResponseMessageText("Слово " + messageText + " відсутнє у Вашому словнику.");
+            exchange.setResponseMessageText("Слово " + messageText.toLowerCase() + " відсутнє у Вашому словнику.");
             return;
         }
         dictionaryService.deleteWord(wordInDictionary);
-        exchange.setResponseMessageText("Слово " + messageText + " було видалено словника.");
+        exchange.setResponseMessageText("Слово " + wordInDictionary + " було видалено словника.");
     }
 
     @Autowired
