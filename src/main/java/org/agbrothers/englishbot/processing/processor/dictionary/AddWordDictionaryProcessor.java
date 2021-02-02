@@ -27,8 +27,8 @@ public class AddWordDictionaryProcessor implements Processor {
             exchange.setResponseMessageText(errorMessage);
             return;
         }
-        String englishValue = wordData[0];
-        String ukrainianValue = wordData[1];
+        String englishValue = wordData[0].toLowerCase();
+        String ukrainianValue = wordData[1].toLowerCase();
         dictionaryService.addWord(new Word(englishValue, ukrainianValue));
         exchange.setResponseMessageText("Слово " + englishValue +  " - " + ukrainianValue + " було додано до словника.");
     }
@@ -43,13 +43,12 @@ public class AddWordDictionaryProcessor implements Processor {
      * @return validation error message, {@code null} if validation succeeded
      */
     private String validateWordData(String[] wordData) {
-        if(isValidWordData(wordData)) {
+        if (isValidWordData(wordData)) {
             return "Помилка в слові англійською або перекладі слова. " +
-                    "Слово англійською має бути латиницею, переклад - лише кирилицею. " +
-                    "Слова вводити малими літерами.";
+                    "Слово англійською має бути латиницею, переклад - лише кирилицею.";
         }
-        Word wordInDictionary = dictionaryService.getWordByEnglishValue(wordData[0]);
-        if(wordInDictionary != null) {
+        Word wordInDictionary = dictionaryService.getWordByEnglishValue(wordData[0].toLowerCase());
+        if (wordInDictionary != null) {
             return "Слово " + wordInDictionary.getEnglishValue() +
                     " - " + wordInDictionary.getUkrainianValue() + " вже існує у Вашому словнику.";
         }
@@ -58,7 +57,7 @@ public class AddWordDictionaryProcessor implements Processor {
 
     private boolean isValidWordData(String[] wordData) {
         return wordData.length!=2
-                || !wordData[0].matches("^[a-z]+$")
-                || !wordData[1].matches("^[а-щьюяґєії'`’ʼ]+$");
+                || !wordData[0].matches("^[a-zA-Z]+$")
+                || !wordData[1].matches("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії'`’ʼ]+$");
     }
 }

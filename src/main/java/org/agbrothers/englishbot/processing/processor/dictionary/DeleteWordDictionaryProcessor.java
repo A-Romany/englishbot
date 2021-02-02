@@ -18,21 +18,21 @@ public class DeleteWordDictionaryProcessor implements Processor {
     public void process(ProcessingExchange exchange) {
         String messageText = exchange.getMessageText();
         if (messageText.equals(REMOVE_WORD)) {
-            exchange.setResponseMessageText("Введіть слово англійською малими латинськими літерами");
+            exchange.setResponseMessageText("Введіть слово англійською");
             return;
         }
-        if (!messageText.matches("^[a-z]+$")) {
+        if (!messageText.matches("^[a-zA-Z]+$")) {
             exchange.setResponseMessageText("Помилка в написанні слова англійською," +
-                    " воно має бути написано тільки малими латинськими літерами.");
+                    " воно має бути написано тільки латиницею.");
             return;
         }
-        Word wordInDictionary = dictionaryService.getWordByEnglishValue(messageText);
+        Word wordInDictionary = dictionaryService.getWordByEnglishValue(messageText.toLowerCase());
         if (wordInDictionary == null) {
-            exchange.setResponseMessageText("Слово " + messageText + " відсутнє у Вашому словнику.");
+            exchange.setResponseMessageText("Слово " + messageText.toLowerCase() + " відсутнє у Вашому словнику.");
             return;
         }
         dictionaryService.deleteWord(wordInDictionary);
-        exchange.setResponseMessageText("Слово " + messageText + " було видалено словника.");
+        exchange.setResponseMessageText("Слово " + wordInDictionary + " було видалено словника.");
     }
 
     @Autowired
