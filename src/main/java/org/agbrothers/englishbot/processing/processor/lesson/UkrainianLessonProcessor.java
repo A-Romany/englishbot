@@ -3,6 +3,7 @@ package org.agbrothers.englishbot.processing.processor.lesson;
 import org.agbrothers.englishbot.entity.Word;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,11 +23,13 @@ public class UkrainianLessonProcessor extends LessonProcessor {
     }
 
     @Override
-    protected Map<String, String> formAnswersMap(List<Word> answers) {
+    protected List <Map<String, String>> formAnswersMap(List<Word> answers) {
+        List <Map<String, String>> keyboardMaps = new ArrayList<>();
         Map<String, String> keyboardMap =  new LinkedHashMap<>();
         for (Word answer : answers) {
             keyboardMap.put(answer.getEnglishValue(), answer.getEnglishValue());
         }
-        return keyboardMap;
+        keyboardMaps.add(keyboardMap);
+        return keyboardMaps;
     }
 }

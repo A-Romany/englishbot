@@ -68,7 +68,7 @@ public class TelegramBot extends TelegramWebhookBot {
      * @param messageText   the text of the message
      * @param buttonLabels  the labels for buttons
      */
-    public void sendMessageWithKeyboard(String chatId, String messageText, Map<String, String> buttonLabels) {
+    public void sendMessageWithKeyboard(String chatId, String messageText, List <Map<String, String>> buttonLabels) {
         SendMessage sendMessage = new SendMessage();
         InlineKeyboardMarkup replyKeyboard = new InlineKeyboardMarkup();
         // add answers to the keyboard
@@ -86,21 +86,24 @@ public class TelegramBot extends TelegramWebhookBot {
         }
     }
 
-    private List<List<InlineKeyboardButton>> createInlineKeyboardButtonsRows(Map <String, String> buttonsMap) {
+    private List<List<InlineKeyboardButton>> createInlineKeyboardButtonsRows(List <Map <String, String>> buttonsMaps) {
         List<List<InlineKeyboardButton>> result = new ArrayList<>();
         List<InlineKeyboardButton> row = null;
 
-        for (Map.Entry<String, String> button : buttonsMap.entrySet()){
-            if(row == null || row.size() == BUTTONS_IN_ROW){
-                row = new ArrayList<>();
-                result.add(row);
+        for (Map <String, String> buttonsMap : buttonsMaps) {
+            for (Map.Entry<String, String> button : buttonsMap.entrySet()) {
+                if (row == null || row.size() == BUTTONS_IN_ROW) {
+                    row = new ArrayList<>();
+                    result.add(row);
+                }
+                row.add(getInlineKeyboardButton(button));
             }
-            row.add(getInlineKeyboardButton(button));
+            row = null;
         }
-        return result;
+                return result;
     }
 
-    private InlineKeyboardButton getInlineKeyboardButton (Map.Entry<String, String> button){
+    private InlineKeyboardButton getInlineKeyboardButton (Map.Entry<String, String> button) {
         String key = button.getKey();
         InlineKeyboardButton keyboardButton = new InlineKeyboardButton();
         if (key.toLowerCase().contains("https://") || key.toLowerCase().contains("http://")) {

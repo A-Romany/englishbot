@@ -1,8 +1,6 @@
 package org.agbrothers.englishbot.processing.processor.lesson;
 
 import org.agbrothers.englishbot.constant.ButtonLabel;
-import org.agbrothers.englishbot.constant.CommonPhrase;
-import org.agbrothers.englishbot.constant.LinkLabel;
 import org.agbrothers.englishbot.constant.MessageLabel;
 import org.agbrothers.englishbot.entity.Lesson;
 import org.agbrothers.englishbot.entity.Word;
@@ -11,9 +9,12 @@ import org.agbrothers.englishbot.processing.processor.Processor;
 import org.agbrothers.englishbot.service.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.agbrothers.englishbot.constant.LinkLabel.MAIN_MENU;
 
 public abstract class LessonProcessor implements Processor {
 
@@ -23,7 +24,7 @@ public abstract class LessonProcessor implements Processor {
 
     protected abstract String getValueToTranslate(Word word);
 
-    protected abstract Map<String, String> formAnswersMap(List<Word> answers);
+    protected abstract List <Map<String, String>> formAnswersMap(List<Word> answers);
 
     @Override
     public void process(ProcessingExchange exchange) {
@@ -38,9 +39,9 @@ public abstract class LessonProcessor implements Processor {
 
     protected String getResponseMessageText(String messageText, Lesson lesson) {
         String result = "";
-        if(lesson.getCurrentWord()!=null){
+        if (lesson.getCurrentWord() != null) {
             String correctAnswer = getCorrectAnswer(lesson.getCurrentWord());
-            if(correctAnswer.equals(messageText)){
+            if (correctAnswer.equals(messageText)) {
                 lesson.setCountCorrectAnswers(lesson.getCountCorrectAnswers()+1);
                 result = MessageLabel.CORRECT_ANSWER;
             }
@@ -51,31 +52,35 @@ public abstract class LessonProcessor implements Processor {
         }
 
         Word wordQuestion = lesson.getNextWord();
-        if(wordQuestion==null) {
-            return result + String.format(MessageLabel.LESSON_ENDING,
+        if (wordQuestion == null) {
+            return result + String.format(MessageLabel.LESSON_ENDING + MessageLabel.MAKE_CHOICE,
                     lesson.getCountCorrectAnswers(),
-                    (lesson.getCountIncorrectAnswer()+ lesson.getCountCorrectAnswers()),
-                    LinkLabel.ENGLISH,
-                    CommonPhrase.RETURN_MAIN_MENU);
+                    (lesson.getCountIncorrectAnswer()+ lesson.getCountCorrectAnswers()) );
         }
         else {
             return result + getValueToTranslate(wordQuestion);
         }
     }
 
-    protected Map<String, String> getKeyboardButtons(Lesson lesson) {
-        List<Word> answers =lesson.getAnswers(lesson.getCurrentWord());
-        if(answers == null){
-            return getMenuButtons();
+    protected List <Map<String, String>> getKeyboardButtons(Lesson lesson) {
+        List<Word> answers = lesson.getAnswers(lesson.getCurrentWord());
+        if (!answers.isEmpty() ){
+            return formAnswersMap(answers);
         }
-        return formAnswersMap(answers);
+        return getMenuButtons();
     }
 
-    protected Map<String, String> getMenuButtons() {
+    protected List <Map<String, String>> getMenuButtons() {
+        List <Map<String, String>> keyboardMaps = new ArrayList<>();
         Map<String, String> keyboardMap =  new HashMap<>();
         keyboardMap.put(ButtonLabel.ENGLISH, "From English to Ukrainian");
         keyboardMap.put(ButtonLabel.UKRAINIAN, "From Ukrainian to English");
-        return keyboardMap;
+        keyboardMaps.add(keyboardMap);
+
+        keyboardMap =  new HashMap<>();
+        keyboardMap.put(MAIN_MENU, "Повернутись в головне меню");
+        keyboardMaps.add(keyboardMap);
+        return keyboardMaps;
     }
 
     @Autowired

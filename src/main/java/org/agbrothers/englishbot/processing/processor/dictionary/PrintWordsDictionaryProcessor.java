@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 import static org.agbrothers.englishbot.constant.CommonPhrase.RETURN_MAIN_MENU;
+import static org.agbrothers.englishbot.constant.LinkLabel.MAIN_MENU;
 import static org.agbrothers.englishbot.constant.MessageLabel.MAKE_CHOICE;
 
 @Component
@@ -27,7 +28,7 @@ public class PrintWordsDictionaryProcessor implements Processor {
         else {
             String messageText = exchange.getMessageText();
             exchange.setResponseMessageText(getResponseMessageText(allWordsSorted, messageText));
-            exchange.setResponseButtons(getKeyboardButtons(getWordListsByFirstWord( allWordsSorted)));
+            exchange.setResponseButtons(getKeyboardButtons(getWordListsByFirstWord(allWordsSorted)));
         }
     }
 
@@ -38,7 +39,7 @@ public class PrintWordsDictionaryProcessor implements Processor {
             result = "У словнику більше 10 слів. Будь ласка виберіть діапазон слів для перегляду:";
         }
         else if (wordListsByFirstWord.containsKey(messageText)) {
-            result = printWords(wordListsByFirstWord.get(messageText)) + "\n" + RETURN_MAIN_MENU;
+            result = printWords(wordListsByFirstWord.get(messageText));
         }
         return result;
     }
@@ -61,18 +62,25 @@ public class PrintWordsDictionaryProcessor implements Processor {
         return result;
     }
 
-    private Map<String, String> getKeyboardButtons(Map<String, List<Word>> wordListsByFirstWord) {
-        Map<String, String> result =  new LinkedHashMap<>();
+    private List <Map<String, String>> getKeyboardButtons(Map<String, List<Word>> wordListsByFirstWord) {
+
+        List <Map<String, String>> resultMaps = new ArrayList<>();
+        Map<String, String> resultMap =  new LinkedHashMap<>();
 
         for (Map.Entry<String, List<Word>> entry : wordListsByFirstWord.entrySet()) {
             String firstWordOfDozen = entry.getKey();
             String lastWordOfDozen = entry.getValue().get(entry.getValue().size()-1).getEnglishValue();
-            result.put(firstWordOfDozen, firstWordOfDozen + " - " + lastWordOfDozen);
+            resultMap.put(firstWordOfDozen, firstWordOfDozen + " - " + lastWordOfDozen);
         }
-        return result;
+        resultMaps.add(resultMap);
+
+        Map<String,String> mainMenuButton = new HashMap<>();
+        mainMenuButton.put(MAIN_MENU, "Повернутись в головне меню");
+        resultMaps.add(mainMenuButton);
+        return resultMaps;
     }
 
-    private List<Word> getAllWordsSorted(){
+    private List<Word> getAllWordsSorted() {
         List<Word> allWords = dictionaryService.getAllWords();
 
         allWords.sort(Comparator.comparing(Word::getEnglishValue));
