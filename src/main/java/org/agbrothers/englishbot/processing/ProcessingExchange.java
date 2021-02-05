@@ -1,12 +1,7 @@
 package org.agbrothers.englishbot.processing;
 
-import org.agbrothers.englishbot.constant.State;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.agbrothers.englishbot.constant.LinkLabel.MAIN_MENU;
 
 public class ProcessingExchange {
     private String state;
@@ -59,15 +54,5 @@ public class ProcessingExchange {
 
     public void setResponseButtons(List <Map<String, String>> responseButtons) {
         this.responseButtons = responseButtons;
-        addMainMenuButton(responseButtons);
-    }
-
-    public List<Map<String,String>> addMainMenuButton(List<Map<String, String>> result) {
-        if (!state.equals(State.MAIN_MENU)) {
-            Map<String, String> mainMenuButton = new HashMap<>();
-            mainMenuButton.put(MAIN_MENU, "Повернутись в головне меню");
-            result.add(mainMenuButton);
-        }
-        return result;
     }
 }
