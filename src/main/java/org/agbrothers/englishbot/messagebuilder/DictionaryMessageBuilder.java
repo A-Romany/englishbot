@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import static org.agbrothers.englishbot.constant.ButtonLabel.*;
 
 @Component
-public class DictionaryMessageBuilder extends MessageBuilder{
+public class DictionaryMessageBuilder extends MessageBuilder {
 
     @Override
     public String getResponseMessageText(String label) {

@@ -14,8 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.agbrothers.englishbot.constant.LinkLabel.MAIN_MENU;
-
 public abstract class LessonProcessor implements Processor {
 
     private LessonService lessonService;
@@ -24,7 +22,7 @@ public abstract class LessonProcessor implements Processor {
 
     protected abstract String getValueToTranslate(Word word);
 
-    protected abstract List <Map<String, String>> formAnswersMap(List<Word> answers);
+    protected abstract List<Map<String, String>> formAnswersMap(List<Word> answers);
 
     @Override
     public void process(ProcessingExchange exchange) {
@@ -42,7 +40,7 @@ public abstract class LessonProcessor implements Processor {
         if (lesson.getCurrentWord() != null) {
             String correctAnswer = getCorrectAnswer(lesson.getCurrentWord());
             if (correctAnswer.equals(messageText)) {
-                lesson.setCountCorrectAnswers(lesson.getCountCorrectAnswers()+1);
+                lesson.setCountCorrectAnswers(lesson.getCountCorrectAnswers() + 1);
                 result = MessageLabel.CORRECT_ANSWER;
             }
             else {
@@ -62,24 +60,21 @@ public abstract class LessonProcessor implements Processor {
         }
     }
 
-    protected List <Map<String, String>> getKeyboardButtons(Lesson lesson) {
+    protected List<Map<String, String>> getKeyboardButtons(Lesson lesson) {
         List<Word> answers = lesson.getAnswers(lesson.getCurrentWord());
-        if (!answers.isEmpty() ){
+        if (!answers.isEmpty()) {
             return formAnswersMap(answers);
         }
         return getMenuButtons();
     }
 
-    protected List <Map<String, String>> getMenuButtons() {
-        List <Map<String, String>> keyboardMaps = new ArrayList<>();
-        Map<String, String> keyboardMap =  new HashMap<>();
+    protected List<Map<String, String>> getMenuButtons() {
+        List<Map<String, String>> keyboardMaps = new ArrayList<>();
+        Map<String, String> keyboardMap = new HashMap<>();
         keyboardMap.put(ButtonLabel.ENGLISH, "From English to Ukrainian");
         keyboardMap.put(ButtonLabel.UKRAINIAN, "From Ukrainian to English");
         keyboardMaps.add(keyboardMap);
 
-        keyboardMap =  new HashMap<>();
-        keyboardMap.put(MAIN_MENU, "Повернутись в головне меню");
-        keyboardMaps.add(keyboardMap);
         return keyboardMaps;
     }
 

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @Component
 public class ProcessingCore {
     private TelegramBot telegramBot;
@@ -25,7 +24,7 @@ public class ProcessingCore {
 
     public void processMessage(String chatId, String messageText) {
         String stateId = getStateId(chatId);
-        if(stateId == null){
+        if (stateId == null) {
             sendHelloMessage(chatId);
             stepRegistry.put(chatId, State.MAIN_MENU);
         }
@@ -45,7 +44,7 @@ public class ProcessingCore {
                 stepRegistry.put(chatId, State.ADD_WORD_TO_DICTIONARY);
                 break;
             case ButtonLabel.REMOVE_WORD:
-                stepRegistry.put(chatId,State.DELETING_WORD);
+                stepRegistry.put(chatId, State.DELETING_WORD);
                 break;
             case ButtonLabel.PRINT_ALL_WORD:
                 stepRegistry.put(chatId, State.PRINTING_WORDS);
@@ -68,7 +67,7 @@ public class ProcessingCore {
             return;
         }
 
-        if(exchange.getResponseButtons() == null){
+        if (exchange.getResponseButtons() == null) {
             telegramBot.sendTextMessage(chatId, exchange.getResponseMessageText());
         } else {
             telegramBot.sendMessageWithKeyboard(chatId, exchange.getResponseMessageText(), exchange.getResponseButtons());
@@ -79,7 +78,7 @@ public class ProcessingCore {
         return stepRegistry.get(chatId);
     }
 
-    public void sendHelloMessage(String chatId){
+    public void sendHelloMessage(String chatId) {
         telegramBot.sendTextMessage(chatId, MessageBuilder.getHelloMessage());
     }
 

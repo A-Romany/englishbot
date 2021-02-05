@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 import static org.agbrothers.englishbot.constant.CommonPhrase.RETURN_MAIN_MENU;
-import static org.agbrothers.englishbot.constant.LinkLabel.MAIN_MENU;
 import static org.agbrothers.englishbot.constant.MessageLabel.MAKE_CHOICE;
 
 @Component
@@ -22,7 +21,7 @@ public class PrintWordsDictionaryProcessor implements Processor {
     public void process(ProcessingExchange exchange) {
         List<Word> allWordsSorted = getAllWordsSorted();
 
-        if (allWordsSorted.size() < 13){
+        if (allWordsSorted.size() < 13) {
             exchange.setResponseMessageText(printWords(allWordsSorted) + "\n" + RETURN_MAIN_MENU);
         }
         else {
@@ -47,13 +46,13 @@ public class PrintWordsDictionaryProcessor implements Processor {
     private Map<String, List<Word>> getWordListsByFirstWord(List<Word> allWordsSorted) {
         Map<String, List<Word>> result = new LinkedHashMap<>();
         int dozensCount = allWordsSorted.size() % 10 < 3
-                ? allWordsSorted.size()/10
-                : allWordsSorted.size()/10 + 1;
+                ? allWordsSorted.size() / 10
+                : allWordsSorted.size() / 10 + 1;
 
-        for (int i = 0; i<dozensCount; i++) {
-            int firstWordIndex = i*10; //currentDozen
+        for (int i = 0; i < dozensCount; i++) {
+            int firstWordIndex = i * 10; //currentDozen
             if (i + 1 == dozensCount) {
-                result.put(allWordsSorted.get(firstWordIndex).getEnglishValue(), allWordsSorted.subList(firstWordIndex,allWordsSorted.size()));
+                result.put(allWordsSorted.get(firstWordIndex).getEnglishValue(), allWordsSorted.subList(firstWordIndex, allWordsSorted.size()));
             }
             else {
                 result.put(allWordsSorted.get(firstWordIndex).getEnglishValue(), allWordsSorted.subList(firstWordIndex, firstWordIndex + 10));
@@ -62,21 +61,18 @@ public class PrintWordsDictionaryProcessor implements Processor {
         return result;
     }
 
-    private List <Map<String, String>> getKeyboardButtons(Map<String, List<Word>> wordListsByFirstWord) {
+    private List<Map<String, String>> getKeyboardButtons(Map<String, List<Word>> wordListsByFirstWord) {
 
-        List <Map<String, String>> resultMaps = new ArrayList<>();
-        Map<String, String> resultMap =  new LinkedHashMap<>();
+        List<Map<String, String>> resultMaps = new ArrayList<>();
+        Map<String, String> resultMap = new LinkedHashMap<>();
 
         for (Map.Entry<String, List<Word>> entry : wordListsByFirstWord.entrySet()) {
             String firstWordOfDozen = entry.getKey();
-            String lastWordOfDozen = entry.getValue().get(entry.getValue().size()-1).getEnglishValue();
+            String lastWordOfDozen = entry.getValue().get(entry.getValue().size() - 1).getEnglishValue();
             resultMap.put(firstWordOfDozen, firstWordOfDozen + " - " + lastWordOfDozen);
         }
         resultMaps.add(resultMap);
 
-        Map<String,String> mainMenuButton = new HashMap<>();
-        mainMenuButton.put(MAIN_MENU, "Повернутись в головне меню");
-        resultMaps.add(mainMenuButton);
         return resultMaps;
     }
 
@@ -87,9 +83,9 @@ public class PrintWordsDictionaryProcessor implements Processor {
         return allWords;
     }
 
-    private String printWords(List<Word> list){
+    private String printWords(List<Word> list) {
         StringBuilder printWords = new StringBuilder();
-        for (Word word : list){
+        for (Word word : list) {
             printWords.append(word.getEnglishValue()).append(" - ").
                     append(word.getUkrainianValue()).append("\n");
         }
@@ -97,7 +93,7 @@ public class PrintWordsDictionaryProcessor implements Processor {
     }
 
     @Autowired
-    public void  setDictionaryService(DictionaryService dictionaryService) {
+    public void setDictionaryService(DictionaryService dictionaryService) {
         this.dictionaryService = dictionaryService;
     }
 }

@@ -90,7 +90,7 @@ public class TelegramBot extends TelegramWebhookBot {
         List<List<InlineKeyboardButton>> result = new ArrayList<>();
         List<InlineKeyboardButton> row = null;
 
-        for (Map <String, String> buttonsMap : buttonsMaps) {
+        for (Map<String, String> buttonsMap : buttonsMaps) {
             for (Map.Entry<String, String> button : buttonsMap.entrySet()) {
                 if (row == null || row.size() == BUTTONS_IN_ROW) {
                     row = new ArrayList<>();
@@ -100,7 +100,7 @@ public class TelegramBot extends TelegramWebhookBot {
             }
             row = null;
         }
-                return result;
+        return result;
     }
 
     private InlineKeyboardButton getInlineKeyboardButton (Map.Entry<String, String> button) {
@@ -132,4 +132,3 @@ public class TelegramBot extends TelegramWebhookBot {
         return null;
     }
 }
-
