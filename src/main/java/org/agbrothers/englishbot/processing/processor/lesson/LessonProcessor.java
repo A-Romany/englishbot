@@ -11,7 +11,7 @@ import org.agbrothers.englishbot.processing.processor.Processor;
 import org.agbrothers.englishbot.service.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,41 +38,39 @@ public abstract class LessonProcessor implements Processor {
 
     protected String getResponseMessageText(String messageText, Lesson lesson) {
         String result = "";
-        if(lesson.getCurrentWord()!=null){
-            String correctAnswer = getCorrectAnswer(lesson.getCurrentWord());
-            if(correctAnswer.equals(messageText)){
-                lesson.setCountCorrectAnswers(lesson.getCountCorrectAnswers()+1);
+        if (lessonService.getCurrentWord() != null) {
+            String correctAnswer = getCorrectAnswer(lessonService.getCurrentWord());
+            if (correctAnswer.equals(messageText)) {
+                lessonService.setCountCorrectAnswers(lessonService.getCountCorrectAnswers() + 1);
                 result = MessageLabel.CORRECT_ANSWER;
-            }
-            else {
-                lesson.setCountIncorrectAnswer(lesson.getCountIncorrectAnswer() + 1);
+            } else {
+                lessonService.setCountIncorrectAnswer(lessonService.getCountIncorrectAnswer() + 1);
                 result = MessageLabel.INCORRECT_ANSWER + correctAnswer + MessageLabel.NEWLINE;
             }
         }
 
-        Word wordQuestion = lesson.getNextWord();
-        if(wordQuestion==null) {
+        Word wordQuestion = lessonService.getNextWord(lesson);
+        if (wordQuestion == null) {
             return result + String.format(MessageLabel.LESSON_ENDING,
-                    lesson.getCountCorrectAnswers(),
-                    (lesson.getCountIncorrectAnswer()+ lesson.getCountCorrectAnswers()),
+                    lessonService.getCountCorrectAnswers(),
+                    (lessonService.getCountIncorrectAnswer() + lessonService.getCountCorrectAnswers()),
                     LinkLabel.ENGLISH,
                     CommonPhrase.RETURN_MAIN_MENU);
-        }
-        else {
+        } else {
             return result + getValueToTranslate(wordQuestion);
         }
     }
 
     protected Map<String, String> getKeyboardButtons(Lesson lesson) {
-        List<Word> answers =lesson.getAnswers(lesson.getCurrentWord());
-        if(answers == null){
+        List<Word> answers = lessonService.getAnswers(lessonService.getCurrentWord(), lesson);
+        if (answers == null) {
             return getMenuButtons();
         }
         return formAnswersMap(answers);
     }
 
     protected Map<String, String> getMenuButtons() {
-        Map<String, String> keyboardMap =  new HashMap<>();
+        Map<String, String> keyboardMap = new LinkedHashMap<>();
         keyboardMap.put(ButtonLabel.ENGLISH, "From English to Ukrainian");
         keyboardMap.put(ButtonLabel.UKRAINIAN, "From Ukrainian to English");
         return keyboardMap;
