@@ -15,7 +15,7 @@ public class MainMenuButtonsBuilder extends ButtonsBuilder {
     public List <Map<String, String>> getKeyboardButtons(String messageText) {
 
         List <Map<String, String>> keyboardMaps= new ArrayList<>();
-        Map<String, String> keyboardMap = new HashMap<>();
+        Map<String, String> keyboardMap = new LinkedHashMap<>();
         switch (messageText) {
             case LESSONS:
                 keyboardMap.put(ButtonLabel.ENGLISH, "From English to Ukrainian");

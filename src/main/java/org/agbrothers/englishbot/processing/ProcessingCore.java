@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -82,7 +83,7 @@ public class ProcessingCore {
     }
 
     private Map<String, String> getMainMenuButton() {
-        Map<String, String> mainMenuButton = new HashMap<>();
+        Map<String, String> mainMenuButton = new LinkedHashMap<>();
         mainMenuButton.put(MAIN_MENU, "Повернутись в головне меню");
         return mainMenuButton;
     }
