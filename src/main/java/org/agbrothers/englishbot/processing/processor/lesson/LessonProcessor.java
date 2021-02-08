@@ -38,13 +38,13 @@ public abstract class LessonProcessor implements Processor {
 
     protected String getResponseMessageText(String messageText, Lesson lesson) {
         String result = "";
-        if (lessonService.getCurrentWord() != null) {
-            String correctAnswer = getCorrectAnswer(lessonService.getCurrentWord());
+        if (lesson.getCurrentWord() != null) {
+            String correctAnswer = getCorrectAnswer(lesson.getCurrentWord());
             if (correctAnswer.equals(messageText)) {
-                lessonService.setCountCorrectAnswers(lessonService.getCountCorrectAnswers() + 1);
+                lesson.setCountCorrectAnswers(lesson.getCountCorrectAnswers() + 1);
                 result = MessageLabel.CORRECT_ANSWER;
             } else {
-                lessonService.setCountIncorrectAnswer(lessonService.getCountIncorrectAnswer() + 1);
+                lesson.setCountIncorrectAnswer(lesson.getCountIncorrectAnswer() + 1);
                 result = MessageLabel.INCORRECT_ANSWER + correctAnswer + MessageLabel.NEWLINE;
             }
         }
@@ -52,8 +52,8 @@ public abstract class LessonProcessor implements Processor {
         Word wordQuestion = lessonService.getNextWord(lesson);
         if (wordQuestion == null) {
             return result + String.format(MessageLabel.LESSON_ENDING,
-                    lessonService.getCountCorrectAnswers(),
-                    (lessonService.getCountIncorrectAnswer() + lessonService.getCountCorrectAnswers()),
+                    lesson.getCountCorrectAnswers(),
+                    (lesson.getCountIncorrectAnswer() + lesson.getCountCorrectAnswers()),
                     LinkLabel.ENGLISH,
                     CommonPhrase.RETURN_MAIN_MENU);
         } else {
@@ -62,7 +62,7 @@ public abstract class LessonProcessor implements Processor {
     }
 
     protected Map<String, String> getKeyboardButtons(Lesson lesson) {
-        List<Word> answers = lessonService.getAnswers(lessonService.getCurrentWord(), lesson);
+        List<Word> answers = lessonService.getAnswers(lesson.getCurrentWord(), lesson);
         if (answers == null) {
             return getMenuButtons();
         }

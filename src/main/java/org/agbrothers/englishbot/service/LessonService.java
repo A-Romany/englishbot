@@ -12,13 +12,7 @@ public class LessonService {
 
     private final Map<String, Lesson> lessonRegistry;
     private final WordPoolService wordPoolService;
-    private int countCorrectAnswers = 0;
-    private int countIncorrectAnswer = 0;
-    private Word currentWord;
 
-    public Word getCurrentWord() {
-        return currentWord;
-    }
 
     public LessonService(WordPoolService wordPoolService) {
         this.wordPoolService = wordPoolService;
@@ -27,7 +21,7 @@ public class LessonService {
 
     public Lesson getLesson(String chatId) {
         if ((!lessonRegistry.containsKey(chatId)) ||
-                (getCurrentWord() == null)) {
+                (lessonRegistry.get(chatId).getCurrentWord() == null)) {
             Lesson lesson = createLesson();
             lessonRegistry.put(chatId, lesson);
         }
@@ -37,7 +31,6 @@ public class LessonService {
     public Lesson createLesson() {
         List<Word> wordPool = wordPoolService.getRandomWordPool();
         List<Word> answersPool = new ArrayList<>(wordPool);
-        countCorrectAnswers = countIncorrectAnswer = 0;
         return new Lesson(wordPool, answersPool);
     }
 
@@ -48,12 +41,12 @@ public class LessonService {
     public Word getNextWord(Lesson lesson) {
         Iterator<Word> iterator = lesson.getWordPool().iterator();
         if (iterator.hasNext()) {
-            currentWord = iterator.next();
+            lesson.setCurrentWord(iterator.next());
             iterator.remove();
         } else {
-            currentWord = null;
+            lesson.setCurrentWord(null);
         }
-        return currentWord;
+        return lesson.getCurrentWord();
     }
 
     public List<Word> getAnswers(Word currentWord, Lesson lesson) {
@@ -73,21 +66,5 @@ public class LessonService {
         }
         Collections.shuffle(answers, new SecureRandom());
         return answers;
-    }
-
-    public int getCountCorrectAnswers() {
-        return countCorrectAnswers;
-    }
-
-    public void setCountCorrectAnswers(int countCorrectAnswers) {
-        this.countCorrectAnswers = countCorrectAnswers;
-    }
-
-    public int getCountIncorrectAnswer() {
-        return countIncorrectAnswer;
-    }
-
-    public void setCountIncorrectAnswer(int countIncorrectAnswer) {
-        this.countIncorrectAnswer = countIncorrectAnswer;
     }
 }
