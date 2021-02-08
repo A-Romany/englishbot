@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 import static org.agbrothers.englishbot.constant.ButtonLabel.*;
-import static org.agbrothers.englishbot.constant.LinkLabel.*;
+import static org.agbrothers.englishbot.constant.LinkLabel.MAIN_MENU;
 
 @Component
 public class MainMenuButtonsBuilder extends ButtonsBuilder {
@@ -15,6 +15,7 @@ public class MainMenuButtonsBuilder extends ButtonsBuilder {
     public List <Map<String, String>> getKeyboardButtons(String messageText) {
 
         List <Map<String, String>> keyboardMaps= new ArrayList<>();
+
         Map<String, String> keyboardMap = new LinkedHashMap<>();
         switch (messageText) {
             case LESSONS:
