@@ -17,11 +17,9 @@ public class MainMenuMessageBuilder extends MessageBuilder {
             case MAIN_MENU:
                 return MAKE_CHOICE;
             case DICTIONARY:
-                return getChoiceMadeText(DICTIONARY) + MAKE_CHOICE +
-                        RETURN_MAIN_MENU;
+                return getChoiceMadeText(DICTIONARY) + MAKE_CHOICE;
             case LESSONS:
-                return getChoiceMadeText(LESSONS) + MAKE_CHOICE +
-                        RETURN_MAIN_MENU;
+                return getChoiceMadeText(LESSONS) + MAKE_CHOICE;
             default:
                 return "Не розумію, що ти маєш на увазі?" + RETURN_MAIN_MENU;
         }

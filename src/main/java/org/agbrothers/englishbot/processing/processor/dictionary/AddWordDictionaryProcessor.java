@@ -23,14 +23,14 @@ public class AddWordDictionaryProcessor implements Processor {
 
         String[] wordData = messageText.split(" ");
         String errorMessage = validateWordData(wordData);
-        if ( errorMessage != null) {
+        if (errorMessage != null) {
             exchange.setResponseMessageText(errorMessage);
             return;
         }
         String englishValue = wordData[0].toLowerCase();
         String ukrainianValue = wordData[1].toLowerCase();
         dictionaryService.addWord(new Word(englishValue, ukrainianValue));
-        exchange.setResponseMessageText("Слово " + englishValue +  " - " + ukrainianValue + " було додано до словника.");
+        exchange.setResponseMessageText("Слово " + englishValue + " - " + ukrainianValue + " було додано до словника.");
     }
 
     @Autowired
@@ -56,7 +56,7 @@ public class AddWordDictionaryProcessor implements Processor {
     }
 
     private boolean isValidWordData(String[] wordData) {
-        return wordData.length!=2
+        return wordData.length != 2
                 || !wordData[0].matches("^[a-zA-Z]+$")
                 || !wordData[1].matches("^[А-ЩЬЮЯҐЄІЇа-щьюяґєії'`’ʼ]+$");
     }

@@ -13,45 +13,48 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
+import static org.agbrothers.englishbot.constant.LinkLabel.MAIN_MENU;
 
 @Component
 public class ProcessingCore {
     private TelegramBot telegramBot;
     private LessonService lessonService;
-    private final Map<String, String> stepRegistry = new HashMap<>();
+    private final Map<String, String> stateByChatId = new HashMap<>();
     private ProcessorHolder processorHolder;
 
-    public void processMessage(String chatId, String messageText) {
+    public void processUserRequest(String chatId, String messageText) {
         String stateId = getStateId(chatId);
-        if(stateId == null){
+        if (stateId == null) {
             sendHelloMessage(chatId);
-            stepRegistry.put(chatId, State.MAIN_MENU);
+            stateByChatId.put(chatId, State.MAIN_MENU);
         }
 
         switch (messageText) {
             case LinkLabel.MAIN_MENU:
-                stepRegistry.put(chatId, State.MAIN_MENU);
+                stateByChatId.put(chatId, State.MAIN_MENU);
                 lessonService.removeLesson(chatId);
                 break;
             case ButtonLabel.ENGLISH:
-                stepRegistry.put(chatId, State.ENGLISH_LESSON);
+                stateByChatId.put(chatId, State.ENGLISH_LESSON);
                 break;
             case ButtonLabel.UKRAINIAN:
-                stepRegistry.put(chatId, State.UKRAINIAN_LESSON);
+                stateByChatId.put(chatId, State.UKRAINIAN_LESSON);
                 break;
             case ButtonLabel.ADD_WORD:
-                stepRegistry.put(chatId, State.ADD_WORD_TO_DICTIONARY);
+                stateByChatId.put(chatId, State.ADD_WORD_TO_DICTIONARY);
                 break;
             case ButtonLabel.REMOVE_WORD:
-                stepRegistry.put(chatId,State.DELETING_WORD);
+                stateByChatId.put(chatId, State.DELETING_WORD);
                 break;
             case ButtonLabel.PRINT_ALL_WORD:
-                stepRegistry.put(chatId, State.PRINTING_WORDS);
+                stateByChatId.put(chatId, State.PRINTING_WORDS);
                 break;
             case ButtonLabel.EDIT_DICTIONARY:
-                stepRegistry.put(chatId, State.DICTIONARY);
+                stateByChatId.put(chatId, State.DICTIONARY);
                 break;
         }
 
@@ -68,18 +71,28 @@ public class ProcessingCore {
             return;
         }
 
-        if(exchange.getResponseButtons() == null){
+        if (exchange.getResponseButtons() == null) {
             telegramBot.sendTextMessage(chatId, exchange.getResponseMessageText());
         } else {
-            telegramBot.sendMessageWithKeyboard(chatId, exchange.getResponseMessageText(), exchange.getResponseButtons());
+            List<Map<String, String>> responseButtons = exchange.getResponseButtons();
+            if (!State.MAIN_MENU.equals(stateByChatId.get(chatId))) {
+                responseButtons.add(getMainMenuButton());
+            }
+            telegramBot.sendMessageWithKeyboard(chatId, exchange.getResponseMessageText(), responseButtons);
         }
     }
 
-    private String getStateId(String chatId) {
-        return stepRegistry.get(chatId);
+    private Map<String, String> getMainMenuButton() {
+        Map<String, String> mainMenuButton = new LinkedHashMap<>();
+        mainMenuButton.put(MAIN_MENU, "Повернутись в головне меню");
+        return mainMenuButton;
     }
 
-    public void sendHelloMessage(String chatId){
+    private String getStateId(String chatId) {
+        return stateByChatId.get(chatId);
+    }
+
+    public void sendHelloMessage(String chatId) {
         telegramBot.sendTextMessage(chatId, MessageBuilder.getHelloMessage());
     }
 
