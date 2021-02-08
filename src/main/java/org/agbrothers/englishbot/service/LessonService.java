@@ -13,7 +13,6 @@ public class LessonService {
     private final Map<String, Lesson> lessonRegistry;
     private final WordPoolService wordPoolService;
 
-
     public LessonService(WordPoolService wordPoolService) {
         this.wordPoolService = wordPoolService;
         this.lessonRegistry = new HashMap<>();
@@ -49,18 +48,17 @@ public class LessonService {
         return lesson.getCurrentWord();
     }
 
-    public List<Word> getAnswers(Word currentWord, Lesson lesson) {
-        if (currentWord == null) {
+    public List<Word> getAnswers(Lesson lesson) {
+        if (lesson.getCurrentWord() == null) {
             return Collections.emptyList();
         }
         List<Word> answers = new ArrayList<>();
-        answers.add(currentWord);
-
+        answers.add(lesson.getCurrentWord());
 
         List<Word> answersPool = lesson.getAnswersPool();
         Collections.shuffle(answersPool, new SecureRandom());
         for (int i = 0; answers.size() < 5; i++) {
-            if (!answersPool.get(i).equals(currentWord)) {
+            if (!answersPool.get(i).equals(lesson.getCurrentWord())) {
                 answers.add(answersPool.get(i));
             }
         }

@@ -62,7 +62,7 @@ public abstract class LessonProcessor implements Processor {
     }
 
     protected Map<String, String> getKeyboardButtons(Lesson lesson) {
-        List<Word> answers = lessonService.getAnswers(lesson.getCurrentWord(), lesson);
+        List<Word> answers = lessonService.getAnswers(lesson);
         if (answers == null) {
             return getMenuButtons();
         }
