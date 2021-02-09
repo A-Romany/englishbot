@@ -9,8 +9,8 @@ import org.agbrothers.englishbot.processing.processor.Processor;
 import org.agbrothers.englishbot.service.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.LinkedHashMap;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,15 +52,13 @@ public abstract class LessonProcessor implements Processor {
         if (wordQuestion == null) {
             return result + String.format(MessageLabel.LESSON_ENDING,
                     lesson.getCountCorrectAnswers(),
-                    (lesson.getCountIncorrectAnswer() + lesson.getCountCorrectAnswers()),
-                    LinkLabel.ENGLISH,
-                    CommonPhrase.RETURN_MAIN_MENU);
+                    (lesson.getCountIncorrectAnswer() + lesson.getCountCorrectAnswers()));
         } else {
             return result + getValueToTranslate(wordQuestion);
         }
     }
 
-    protected Map<String, String> getKeyboardButtons(Lesson lesson) {
+    protected List <Map<String, String>> getKeyboardButtons(Lesson lesson) {
         List<Word> answers = lessonService.getAnswers(lesson);
          if (!answers.isEmpty()) {
             return formAnswersMap(answers);
@@ -70,7 +68,7 @@ public abstract class LessonProcessor implements Processor {
 
     protected List<Map<String, String>> getMenuButtons() {
         List<Map<String, String>> keyboardMaps = new ArrayList<>();
-        Map<String, String> keyboardMap = new HashMap<>();
+        Map<String, String> keyboardMap = new LinkedHashMap<>();
         keyboardMap.put(ButtonLabel.ENGLISH, "From English to Ukrainian");
         keyboardMap.put(ButtonLabel.UKRAINIAN, "From Ukrainian to English");
         keyboardMaps.add(keyboardMap);
