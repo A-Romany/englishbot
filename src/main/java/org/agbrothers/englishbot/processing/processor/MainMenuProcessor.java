@@ -6,6 +6,7 @@ import org.agbrothers.englishbot.processing.ProcessingExchange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -20,7 +21,7 @@ public class MainMenuProcessor implements Processor {
         String responseMessageText = mainMenuMessageBuilder.getResponseMessageText(requestMessageText);
         exchange.setResponseMessageText(responseMessageText);
 
-        Map<String, String> keyboardButtons = mainMenuButtonsBuilder.getKeyboardButtons(requestMessageText);
+        List<Map<String, String>> keyboardButtons = mainMenuButtonsBuilder.getKeyboardButtons(requestMessageText);
         exchange.setResponseButtons(keyboardButtons);
     }
 

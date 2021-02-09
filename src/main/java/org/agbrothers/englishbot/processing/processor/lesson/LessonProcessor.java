@@ -1,8 +1,6 @@
 package org.agbrothers.englishbot.processing.processor.lesson;
 
 import org.agbrothers.englishbot.constant.ButtonLabel;
-import org.agbrothers.englishbot.constant.CommonPhrase;
-import org.agbrothers.englishbot.constant.LinkLabel;
 import org.agbrothers.englishbot.constant.MessageLabel;
 import org.agbrothers.englishbot.entity.Lesson;
 import org.agbrothers.englishbot.entity.Word;
@@ -12,6 +10,7 @@ import org.agbrothers.englishbot.service.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.LinkedHashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +22,7 @@ public abstract class LessonProcessor implements Processor {
 
     protected abstract String getValueToTranslate(Word word);
 
-    protected abstract Map<String, String> formAnswersMap(List<Word> answers);
+    protected abstract List<Map<String, String>> formAnswersMap(List<Word> answers);
 
     @Override
     public void process(ProcessingExchange exchange) {
@@ -63,17 +62,20 @@ public abstract class LessonProcessor implements Processor {
 
     protected Map<String, String> getKeyboardButtons(Lesson lesson) {
         List<Word> answers = lessonService.getAnswers(lesson);
-        if (answers == null) {
-            return getMenuButtons();
+         if (!answers.isEmpty()) {
+            return formAnswersMap(answers);
         }
-        return formAnswersMap(answers);
+        return getMenuButtons();
     }
 
-    protected Map<String, String> getMenuButtons() {
-        Map<String, String> keyboardMap = new LinkedHashMap<>();
+    protected List<Map<String, String>> getMenuButtons() {
+        List<Map<String, String>> keyboardMaps = new ArrayList<>();
+        Map<String, String> keyboardMap = new HashMap<>();
         keyboardMap.put(ButtonLabel.ENGLISH, "From English to Ukrainian");
         keyboardMap.put(ButtonLabel.UKRAINIAN, "From Ukrainian to English");
-        return keyboardMap;
+        keyboardMaps.add(keyboardMap);
+
+        return keyboardMaps;
     }
 
     @Autowired

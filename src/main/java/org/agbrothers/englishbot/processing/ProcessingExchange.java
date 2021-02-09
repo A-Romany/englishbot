@@ -1,5 +1,6 @@
 package org.agbrothers.englishbot.processing;
 
+import java.util.List;
 import java.util.Map;
 
 public class ProcessingExchange {
@@ -7,7 +8,7 @@ public class ProcessingExchange {
     private String chatId;
     private String messageText;
     private String responseMessageText;
-    private Map<String, String> responseButtons;
+    private List <Map<String, String>> responseButtons;
 
     public ProcessingExchange(String state, String chatId, String messageText) {
         this.state = state;
@@ -47,11 +48,11 @@ public class ProcessingExchange {
         this.responseMessageText = responseMessageText;
     }
 
-    public Map<String, String> getResponseButtons() {
+    public List<Map<String, String>> getResponseButtons() {
         return responseButtons;
     }
 
-    public void setResponseButtons(Map<String, String> responseButtons) {
+    public void setResponseButtons(List <Map<String, String>> responseButtons) {
         this.responseButtons = responseButtons;
     }
 }

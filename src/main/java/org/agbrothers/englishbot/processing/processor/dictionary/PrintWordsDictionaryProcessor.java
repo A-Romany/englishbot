@@ -21,13 +21,13 @@ public class PrintWordsDictionaryProcessor implements Processor {
     public void process(ProcessingExchange exchange) {
         List<Word> allWordsSorted = getAllWordsSorted();
 
-        if (allWordsSorted.size() < 13){
+        if (allWordsSorted.size() < 13) {
             exchange.setResponseMessageText(printWords(allWordsSorted) + "\n" + RETURN_MAIN_MENU);
         }
         else {
             String messageText = exchange.getMessageText();
             exchange.setResponseMessageText(getResponseMessageText(allWordsSorted, messageText));
-            exchange.setResponseButtons(getKeyboardButtons(getWordListsByFirstWord( allWordsSorted)));
+            exchange.setResponseButtons(getKeyboardButtons(getWordListsByFirstWord(allWordsSorted)));
         }
     }
 
@@ -38,7 +38,7 @@ public class PrintWordsDictionaryProcessor implements Processor {
             result = "У словнику більше 10 слів. Будь ласка виберіть діапазон слів для перегляду:";
         }
         else if (wordListsByFirstWord.containsKey(messageText)) {
-            result = printWords(wordListsByFirstWord.get(messageText)) + "\n" + RETURN_MAIN_MENU;
+            result = printWords(wordListsByFirstWord.get(messageText));
         }
         return result;
     }
@@ -46,13 +46,13 @@ public class PrintWordsDictionaryProcessor implements Processor {
     private Map<String, List<Word>> getWordListsByFirstWord(List<Word> allWordsSorted) {
         Map<String, List<Word>> result = new LinkedHashMap<>();
         int dozensCount = allWordsSorted.size() % 10 < 3
-                ? allWordsSorted.size()/10
-                : allWordsSorted.size()/10 + 1;
+                ? allWordsSorted.size() / 10
+                : allWordsSorted.size() / 10 + 1;
 
-        for (int i = 0; i<dozensCount; i++) {
-            int firstWordIndex = i*10; //currentDozen
+        for (int i = 0; i < dozensCount; i++) {
+            int firstWordIndex = i * 10; //currentDozen
             if (i + 1 == dozensCount) {
-                result.put(allWordsSorted.get(firstWordIndex).getEnglishValue(), allWordsSorted.subList(firstWordIndex,allWordsSorted.size()));
+                result.put(allWordsSorted.get(firstWordIndex).getEnglishValue(), allWordsSorted.subList(firstWordIndex, allWordsSorted.size()));
             }
             else {
                 result.put(allWordsSorted.get(firstWordIndex).getEnglishValue(), allWordsSorted.subList(firstWordIndex, firstWordIndex + 10));
@@ -61,27 +61,31 @@ public class PrintWordsDictionaryProcessor implements Processor {
         return result;
     }
 
-    private Map<String, String> getKeyboardButtons(Map<String, List<Word>> wordListsByFirstWord) {
-        Map<String, String> result =  new LinkedHashMap<>();
+    private List<Map<String, String>> getKeyboardButtons(Map<String, List<Word>> wordListsByFirstWord) {
+
+        List<Map<String, String>> resultMaps = new ArrayList<>();
+        Map<String, String> resultMap = new LinkedHashMap<>();
 
         for (Map.Entry<String, List<Word>> entry : wordListsByFirstWord.entrySet()) {
             String firstWordOfDozen = entry.getKey();
-            String lastWordOfDozen = entry.getValue().get(entry.getValue().size()-1).getEnglishValue();
-            result.put(firstWordOfDozen, firstWordOfDozen + " - " + lastWordOfDozen);
+            String lastWordOfDozen = entry.getValue().get(entry.getValue().size() - 1).getEnglishValue();
+            resultMap.put(firstWordOfDozen, firstWordOfDozen + " - " + lastWordOfDozen);
         }
-        return result;
+        resultMaps.add(resultMap);
+
+        return resultMaps;
     }
 
-    private List<Word> getAllWordsSorted(){
+    private List<Word> getAllWordsSorted() {
         List<Word> allWords = dictionaryService.getAllWords();
 
         allWords.sort(Comparator.comparing(Word::getEnglishValue));
         return allWords;
     }
 
-    private String printWords(List<Word> list){
+    private String printWords(List<Word> list) {
         StringBuilder printWords = new StringBuilder();
-        for (Word word : list){
+        for (Word word : list) {
             printWords.append(word.getEnglishValue()).append(" - ").
                     append(word.getUkrainianValue()).append("\n");
         }
@@ -89,7 +93,7 @@ public class PrintWordsDictionaryProcessor implements Processor {
     }
 
     @Autowired
-    public void  setDictionaryService(DictionaryService dictionaryService) {
+    public void setDictionaryService(DictionaryService dictionaryService) {
         this.dictionaryService = dictionaryService;
     }
 }

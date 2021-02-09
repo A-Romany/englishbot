@@ -1,6 +1,8 @@
 package org.agbrothers.englishbot.buttonsbuilder;
 
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -12,6 +14,6 @@ public abstract class ButtonsBuilder {
      * @param messageText specified messageText
      * @return keyboard as {@code Map}
      */
-    public abstract Map<String, String> getKeyboardButtons(String messageText);
+    public abstract List<Map<String, String>> getKeyboardButtons(String messageText);
 
 }
