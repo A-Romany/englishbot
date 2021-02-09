@@ -9,8 +9,8 @@ import org.agbrothers.englishbot.processing.processor.Processor;
 import org.agbrothers.englishbot.service.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.LinkedHashMap;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,27 +42,27 @@ public abstract class LessonProcessor implements Processor {
             if (correctAnswer.equals(messageText)) {
                 lesson.setCountCorrectAnswers(lesson.getCountCorrectAnswers() + 1);
                 result = MessageLabel.CORRECT_ANSWER;
-            }
-            else {
+            } else {
                 lesson.setCountIncorrectAnswer(lesson.getCountIncorrectAnswer() + 1);
                 result = MessageLabel.INCORRECT_ANSWER + correctAnswer + MessageLabel.NEWLINE;
             }
         }
 
-        Word wordQuestion = lesson.getNextWord();
+        Word wordQuestion = lessonService.getNextWord(lesson);
         if (wordQuestion == null) {
-            return result + String.format(MessageLabel.LESSON_ENDING + MessageLabel.MAKE_CHOICE,
+            return result + String.format(MessageLabel.LESSON_ENDING,
                     lesson.getCountCorrectAnswers(),
-                    (lesson.getCountIncorrectAnswer()+ lesson.getCountCorrectAnswers()) );
-        }
-        else {
+                    (lesson.getCountIncorrectAnswer() + lesson.getCountCorrectAnswers()),
+                    LinkLabel.ENGLISH,
+                    CommonPhrase.RETURN_MAIN_MENU);
+        } else {
             return result + getValueToTranslate(wordQuestion);
         }
     }
 
-    protected List<Map<String, String>> getKeyboardButtons(Lesson lesson) {
-        List<Word> answers = lesson.getAnswers(lesson.getCurrentWord());
-        if (!answers.isEmpty()) {
+    protected Map<String, String> getKeyboardButtons(Lesson lesson) {
+        List<Word> answers = lessonService.getAnswers(lesson);
+         if (!answers.isEmpty()) {
             return formAnswersMap(answers);
         }
         return getMenuButtons();
