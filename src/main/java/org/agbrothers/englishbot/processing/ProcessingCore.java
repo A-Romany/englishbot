@@ -28,19 +28,47 @@ public class ProcessingCore {
     private UserService userService;
 
     public void processUserRequest(String chatId, String messageText) {
-        User user = userService.containsUser(chatId)
-                ? userService.getUserByChatId(chatId)
-                : new User(chatId);
+        User user = userService.getUserByChatId(chatId);
+        if (null == user) {
+            user = new User(chatId);
+        }
 
         if (user.getStateId() == null) {
             sendHelloMessage(user.getChatId());
             user.setStateId(State.MAIN_MENU);
         }
 
+        applyUserSate(messageText, user);
+
+        ProcessingExchange exchange = new ProcessingExchange(user, messageText);
+
+        Processor processor = processorFactory.getProcessorByState(user.getStateId());
+        try {
+            processor.process(exchange);
+        } catch (ProcessingException e) {
+            //log and send error message
+            telegramBot.sendTextMessage(user.getChatId(), CommonPhrase.ERROR_MESSAGE);
+            return;
+        }
+
+        if (exchange.getResponseButtons() == null) {
+            telegramBot.sendTextMessage(user.getChatId(), exchange.getResponseMessageText());
+        } else {
+            List<Map<String, String>> responseButtons = exchange.getResponseButtons();
+            if (!State.MAIN_MENU.equals(user.getChatId())) {
+                responseButtons.add(getMainMenuButton());
+            }
+            telegramBot.sendMessageWithKeyboard(user.getChatId(), exchange.getResponseMessageText(), responseButtons);
+        }
+
+        userService.saveAndFlushUser(user);
+    }
+
+    private void applyUserSate(String messageText, User user) {
         switch (messageText) {
             case LinkLabel.MAIN_MENU:
                 user.setStateId(State.MAIN_MENU);
-                lessonService.removeLesson(chatId);
+                lessonService.removeLesson(user.getChatId());
                 break;
             case ButtonLabel.ENGLISH:
                 user.setStateId(State.ENGLISH_LESSON);
@@ -60,30 +88,6 @@ public class ProcessingCore {
             case ButtonLabel.EDIT_DICTIONARY:
                 user.setStateId(State.DICTIONARY);
                 break;
-        }
-
-        userService.saveAndFlushUser(user);
-        String stateId = user.getStateId();
-
-        ProcessingExchange exchange = new ProcessingExchange(stateId, chatId, messageText);
-
-        Processor processor = processorFactory.getProcessorByState(stateId);
-        try {
-            processor.process(exchange);
-        } catch (ProcessingException e) {
-            //log and send error message
-            telegramBot.sendTextMessage(chatId, CommonPhrase.ERROR_MESSAGE);
-            return;
-        }
-
-        if (exchange.getResponseButtons() == null) {
-            telegramBot.sendTextMessage(chatId, exchange.getResponseMessageText());
-        } else {
-            List<Map<String, String>> responseButtons = exchange.getResponseButtons();
-            if (!State.MAIN_MENU.equals(user.getChatId())) {
-                responseButtons.add(getMainMenuButton());
-            }
-            telegramBot.sendMessageWithKeyboard(chatId, exchange.getResponseMessageText(), responseButtons);
         }
     }
 
@@ -108,7 +112,7 @@ public class ProcessingCore {
     }
 
     @Autowired
-    public void setProcessingChainConfig(ProcessorFactory processorFactory) {
+    public void setProcessorFactory(ProcessorFactory processorFactory) {
         this.processorFactory = processorFactory;
     }
 

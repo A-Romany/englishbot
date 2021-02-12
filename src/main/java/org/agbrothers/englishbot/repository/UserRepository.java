@@ -16,4 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT user FROM User user WHERE user.chatId = :chatId")
     User getUserByChatId(@Param("chatId") String chatId);
+
+    User findUserByChatId(String chatId);
 }

@@ -16,11 +16,7 @@ public class UserService {
         userRepository.saveAndFlush(user);
     }
 
-    public boolean containsUser(String chatId) {
-        return userRepository.getChatIdsUser().contains(chatId);
-    }
-
     public User getUserByChatId(String chatId) {
-        return userRepository.getUserByChatId(chatId);
+        return userRepository.findUserByChatId(chatId);
     }
 }
