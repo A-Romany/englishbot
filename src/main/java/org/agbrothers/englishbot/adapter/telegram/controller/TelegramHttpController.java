@@ -40,7 +40,7 @@ public class TelegramHttpController {
             return;
         }
 
-        processingCore.processMessage(chatId, messageText);
+        processingCore.processUserRequest(chatId, messageText);
     }
 
     /**
