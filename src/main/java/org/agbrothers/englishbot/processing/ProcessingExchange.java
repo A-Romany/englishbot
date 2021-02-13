@@ -1,38 +1,26 @@
 package org.agbrothers.englishbot.processing;
 
+import org.agbrothers.englishbot.entity.User;
+
 import java.util.List;
 import java.util.Map;
 
 public class ProcessingExchange {
-    private String state;
-    private String chatId;
+    private User user;
     private String messageText;
     private String responseMessageText;
     private List <Map<String, String>> responseButtons;
 
-    public ProcessingExchange(String state, String chatId, String messageText) {
-        this.state = state;
-        this.chatId = chatId;
+    public ProcessingExchange(User user, String messageText) {
+        this.user = user;
         this.messageText = messageText;
     }
 
-    public String getState() {
-        return state;
+    public User getUser() {
+        return user;
     }
 
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(String chatId) {
-        this.chatId = chatId;
-    }
-
-    public String getMessageText() {
+     public String getMessageText() {
         return messageText;
     }
 

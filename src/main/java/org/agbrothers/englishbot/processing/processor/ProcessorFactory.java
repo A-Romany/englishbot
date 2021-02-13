@@ -8,12 +8,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class ProcessorHolder {
+public class ProcessorFactory {
 
     private final Map<String, String> processorNameByState;
     private Map<String, Processor> processorByName;
 
-    public ProcessorHolder() {
+    public ProcessorFactory() {
         processorNameByState = new HashMap<>();
         processorNameByState.put(State.MAIN_MENU, "mainMenuProcessor");
         processorNameByState.put(State.ENGLISH_LESSON, "englishLessonProcessor");
