@@ -26,7 +26,7 @@ public abstract class LessonProcessor implements Processor {
 
     @Override
     public void process(ProcessingExchange exchange) {
-        Lesson lesson = lessonService.getLesson(exchange.getChatId());
+        Lesson lesson = lessonService.getLesson(exchange.getUser().getChatId());
         String messageText = exchange.getMessageText();
 
         String responseMessageText = getResponseMessageText(messageText, lesson);
