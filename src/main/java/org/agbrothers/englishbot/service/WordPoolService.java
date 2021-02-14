@@ -12,7 +12,7 @@ import java.util.List;
 public class WordPoolService {
 
     private final WordRepository wordRepository;
-    public static final Integer COUNT_ANSWER = 10;
+    public static final Integer WORD_POOL_SIZE = 10;
 
     public WordPoolService(WordRepository wordRepository) {
         this.wordRepository = wordRepository;
@@ -21,7 +21,7 @@ public class WordPoolService {
     public List<Word> getRandomWordPool() {
         List<Long> wordIds = wordRepository.getWordIds();
         Collections.shuffle(wordIds);
-        List<Long> lessonWordsIds = new ArrayList<>(wordIds.subList(0, COUNT_ANSWER));
+        List<Long> lessonWordsIds = new ArrayList<>(wordIds.subList(0, WORD_POOL_SIZE));
         return wordRepository.findWordsByIdIn(lessonWordsIds);
     }
 }
