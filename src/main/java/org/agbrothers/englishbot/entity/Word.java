@@ -10,15 +10,17 @@ public class Word {
         return id;
     }
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column
     private Long id;
-    @Column (nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String englishValue;
-    @Column (nullable = false)
+    @Column(nullable = false)
     private String ukrainianValue;
 
-    public Word(){}
+    public Word() {
+    }
 
     public Word(String englishValue, String ukrainianValue) {
         this.englishValue = englishValue;
@@ -40,6 +42,7 @@ public class Word {
 
         Word word = (Word) o;
 
+        if (id == null || word.getId() == null) return false;
         if (!id.equals(word.id)) return false;
         if (!englishValue.equals(word.englishValue)) return false;
         return ukrainianValue.equals(word.ukrainianValue);
