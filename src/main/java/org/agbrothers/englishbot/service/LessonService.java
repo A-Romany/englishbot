@@ -10,12 +10,16 @@ import java.util.*;
 @Service
 public class LessonService {
 
-    private final Map<String, Lesson> lessonRegistry;
+    private Map<String, Lesson> lessonRegistry;
     private final WordPoolService wordPoolService;
 
     public LessonService(WordPoolService wordPoolService) {
         this.wordPoolService = wordPoolService;
         this.lessonRegistry = new HashMap<>();
+    }
+
+    public void setLessonRegistry (Map<String,Lesson> lessonRegistry) {
+        this.lessonRegistry = lessonRegistry;
     }
 
     public Lesson getLesson(String chatId) {
