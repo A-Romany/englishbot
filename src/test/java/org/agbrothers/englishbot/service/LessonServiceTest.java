@@ -26,7 +26,7 @@ class LessonServiceTest {
         Lesson result = lessonService.getLesson(chatId);
 
         assertEquals(lesson, result);
-        verify(wordPoolService, times(1)).getRandomWordPool();
+        verify(wordPoolService, never()).getRandomWordPool();
     }
 
     @Test
