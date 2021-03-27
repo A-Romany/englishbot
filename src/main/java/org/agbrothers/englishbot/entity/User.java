@@ -14,6 +14,9 @@ public class User {
     @Column
     private String stateId;
 
+    @OneToOne(mappedBy = "user")
+    private Lesson lesson;
+
     public User() {
 
     }
@@ -44,6 +47,14 @@ public class User {
 
     public void setStateId(String stateId) {
         this.stateId = stateId;
+    }
+
+    public Lesson getLesson() {
+        return lesson;
+    }
+
+    public void setLesson(Lesson lesson) {
+        this.lesson = lesson;
     }
 
     @Override
