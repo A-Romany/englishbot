@@ -7,7 +7,10 @@ on:
       - develop
       - 'feature/**'
   pull_request:
-    branches: [ 'feature/**' ]
+    branches:
+      - master
+      - develop
+      - 'feature/**'
 
 jobs:
   build:
