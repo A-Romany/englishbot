@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import static org.agbrothers.englishbot.constant.ButtonLabel.ADD_WORD;
+import static org.agbrothers.englishbot.constant.CommonPhrase.TYPED_WORD_ERROR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -56,9 +57,8 @@ class AddWordDictionaryProcessorTest {
         String result2 = exchange2.getResponseMessageText();
         assertEquals("Слово fly - муха було додано до словника.", result2);
 
-        ArgumentCaptor<Word> captor1 = ArgumentCaptor.forClass(Word.class);
-        verify(dictionaryService, times(2)).addWord(captor1.capture());
-        assertEquals("fly", captor1.getValue().getEnglishValue());
+        verify(dictionaryService, times(2)).addWord(captor.capture());
+        assertEquals("fly", captor.getValue().getEnglishValue());
 
         verify(dictionaryService, times(2)).addWord(any(Word.class));
     }
@@ -87,13 +87,13 @@ class AddWordDictionaryProcessorTest {
         addWordDictionaryProcessor.process(exchange3);
 
         String result1 = exchange1.getResponseMessageText();
-        assertEquals("Помилка в слові англійською або перекладі слова. Слово англійською має бути латиницею, переклад - лише кирилицею.", result1);
+        assertEquals(TYPED_WORD_ERROR, result1);
 
         String result2 = exchange2.getResponseMessageText();
-        assertEquals("Помилка в слові англійською або перекладі слова. Слово англійською має бути латиницею, переклад - лише кирилицею.", result2);
+        assertEquals(TYPED_WORD_ERROR, result2);
 
         String result3 = exchange3.getResponseMessageText();
-        assertEquals("Помилка в слові англійською або перекладі слова. Слово англійською має бути латиницею, переклад - лише кирилицею.", result3);
+        assertEquals(TYPED_WORD_ERROR, result3);
 
         verify(dictionaryService, never()).addWord(any(Word.class));
     }
