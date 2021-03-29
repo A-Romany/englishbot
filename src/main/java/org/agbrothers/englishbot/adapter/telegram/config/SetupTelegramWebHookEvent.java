@@ -2,10 +2,12 @@ package org.agbrothers.englishbot.adapter.telegram.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.http.HttpEntity;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -13,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 
+@Profile("development")
 @Component
 public class SetupTelegramWebHookEvent implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -23,14 +26,15 @@ public class SetupTelegramWebHookEvent implements ApplicationListener<ContextRef
     @Value("${telegram.token}")
     private String botToken;
 
-    @Value("${telegram.bot.server.url}")
-    private String botServerUrl;
+    private RestTemplate restTemplate;
+
+    private NgrokTunnelStarter ngrokTunnelStarter;
 
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        RestTemplate restTemplate = new RestTemplate();
+    public void onApplicationEvent(ContextRefreshedEvent contextStartedEvent) {
+        String serverUrl = ngrokTunnelStarter.getNgrokBotServerUrl();
 
-        String url = TELEGRAM_URL_TEMPLATE.replace("{bot_token}", botToken).replace("{bot_server_url}", botServerUrl);
+        String url = TELEGRAM_URL_TEMPLATE.replace("{bot_token}", botToken).replace("{bot_server_url}", serverUrl);
 
         URI uri = URI.create(url);
         ResponseEntity<String> responseEntity = restTemplate.exchange(uri, HttpMethod.GET, null, String.class);
@@ -39,6 +43,16 @@ public class SetupTelegramWebHookEvent implements ApplicationListener<ContextRef
             throw new RuntimeException("Setting web hook failed. Check configuration.");
         }
 
-        LOGGER.info("Web hook was set");
+        LOGGER.info("Web hook was set to " + serverUrl);
+    }
+
+    @Autowired
+    public void setNgrokTunnelStarter(NgrokTunnelStarter ngrokTunnelStarter) {
+        this.ngrokTunnelStarter = ngrokTunnelStarter;
+    }
+
+    @Autowired
+    public void setRestTemplate(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 }

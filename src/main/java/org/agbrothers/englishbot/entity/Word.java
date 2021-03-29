@@ -42,7 +42,8 @@ public class Word {
 
         Word word = (Word) o;
 
-        if (id == null || !id.equals(word.id)) return false;
+        if (id == null || word.getId() == null) return false;
+        if (!id.equals(word.id)) return false;
         if (!englishValue.equals(word.englishValue)) return false;
         return ukrainianValue.equals(word.ukrainianValue);
     }
