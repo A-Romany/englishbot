@@ -21,6 +21,10 @@ public class AddWordDictionaryProcessor implements Processor {
             return;
         }
 
+        messageText = messageText.trim().replaceAll("[ ]{2,}", " ");
+
+        exchange.setMessageText(messageText);
+
         String[] wordData = messageText.split(" ");
         String errorMessage = validateWordData(wordData);
         if (errorMessage != null) {
