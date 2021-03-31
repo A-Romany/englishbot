@@ -71,9 +71,16 @@ public class User {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + chatId.hashCode();
-        result = 31 * result + stateId.hashCode();
+        int result = 31;
+        if(id != null) {
+            result = 31 * id.hashCode();
+        }
+        if(chatId != null) {
+            result = 31 * result + chatId.hashCode();
+        }
+        if(stateId != null) {
+            result = 31 * result + stateId.hashCode();
+        }
         return result;
     }
 }

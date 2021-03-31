@@ -55,9 +55,16 @@ public class Word {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + englishValue.hashCode();
-        result = 31 * result + ukrainianValue.hashCode();
+        int result = 31;
+        if(id != null) {
+            result = 31 * id.hashCode();
+        }
+        if(englishValue != null) {
+            result = 31 * result + englishValue.hashCode();
+        }
+        if(ukrainianValue != null) {
+            result = 31 * result + ukrainianValue.hashCode();
+        }
         return result;
     }
 }

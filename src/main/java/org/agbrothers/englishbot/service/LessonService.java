@@ -21,11 +21,11 @@ public class LessonService {
     }
 
     public Lesson getLesson(User user) {
-        if ((lessonRepository.findLessonByUser(user)==null)
-                || (lessonRepository.findLessonByUser(user).getCurrentWord() == null)) {
+        if (lessonRepository.findLessonByUser(user) == null) {
+            return createLesson(user);
+        } else if (lessonRepository.findLessonByUser(user).getCurrentWord() == null) {
             removeLesson(lessonRepository.findLessonByUser(user));
-            Lesson lesson = createLesson(user);
-            lessonRepository.saveAndFlush(lesson);
+            return createLesson(user);
         }
         return lessonRepository.findLessonByUser(user);
     }
@@ -33,7 +33,7 @@ public class LessonService {
     public Lesson createLesson(User user) {
         List<Word> wordPool = wordPoolService.getRandomWordPool();
         List<Word> answersPool = new ArrayList<>(wordPool);
-        return new Lesson(wordPool, answersPool, user);
+        return lessonRepository.saveAndFlush(new Lesson(wordPool, answersPool, user));
     }
 
     public void removeLesson(Lesson lesson) {
