@@ -14,6 +14,9 @@ public class User {
     @Column
     private String stateId;
 
+    @OneToOne(mappedBy = "user")
+    private Lesson lesson;
+
     public User() {
 
     }
@@ -46,6 +49,14 @@ public class User {
         this.stateId = stateId;
     }
 
+    public Lesson getLesson() {
+        return lesson;
+    }
+
+    public void setLesson(Lesson lesson) {
+        this.lesson = lesson;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -60,9 +71,16 @@ public class User {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + chatId.hashCode();
-        result = 31 * result + stateId.hashCode();
+        int result = 31;
+        if(id != null) {
+            result = 31 * id.hashCode();
+        }
+        if(chatId != null) {
+            result = 31 * result + chatId.hashCode();
+        }
+        if(stateId != null) {
+            result = 31 * result + stateId.hashCode();
+        }
         return result;
     }
 }
