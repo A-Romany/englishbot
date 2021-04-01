@@ -6,7 +6,6 @@ import javax.persistence.*;
 @Table
 public class Word {
 
-
     @Id
     @GeneratedValue
     @Column

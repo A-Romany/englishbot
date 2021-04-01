@@ -3,7 +3,7 @@ package org.agbrothers.englishbot.entity;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "bot_user")
 public class User {
     @Id
     @GeneratedValue
