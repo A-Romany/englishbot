@@ -1,7 +1,9 @@
 package org.agbrothers.englishbot.service;
 
 import org.agbrothers.englishbot.entity.Lesson;
+import org.agbrothers.englishbot.entity.User;
 import org.agbrothers.englishbot.entity.Word;
+import org.agbrothers.englishbot.repository.LessonRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -10,96 +12,100 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class LessonServiceTest {
+    final LessonRepository lessonRepository = mock(LessonRepository.class);
     final WordPoolService wordPoolService = mock(WordPoolService.class);
-    final LessonService lessonService = new LessonService(wordPoolService);
+    final LessonService lessonService = new LessonService(wordPoolService, lessonRepository);
 
     @Test
     void getLesson_LessonWithCurrentWordExists_ExpectNoLessonCreation() {
         List<Word> words = Collections.singletonList(new Word());
-        Lesson lesson = new Lesson(words, words);
+        User user = new User();
+        Lesson lesson = new Lesson(words, words, user);
         lesson.setCurrentWord(new Word());
-        String chatId = "testChatId";
-        Map<String, Lesson> lessonRegistry = new HashMap<>();
-        lessonRegistry.put(chatId, lesson);
-        lessonService.setLessonRegistry(lessonRegistry);
 
-        Lesson result = lessonService.getLesson(chatId);
+        when(lessonRepository.findLessonByUser(user)).thenReturn(lesson);
 
-        assertEquals(lesson, result);
+        lessonService.getLesson(user);
+
         verify(wordPoolService, never()).getRandomWordPool();
+        verify(lessonRepository, never()).saveAndFlush(any(Lesson.class));
     }
 
     @Test
     void getLesson_NoLesson_ExpectNewLesson() {
-        String chatId = "testChatId";
-        Map<String, Lesson> lessonRegistry = new HashMap<>();
-        lessonService.setLessonRegistry(lessonRegistry);
-        List<Word> words = Collections.singletonList(new Word());
+        User user = new User();
+        when(lessonRepository.findLessonByUser(user)).thenReturn(null);
 
-        when(wordPoolService.getRandomWordPool()).thenReturn(words);
+        lessonService.getLesson(user);
 
-        Lesson result = lessonService.getLesson(chatId);
-
-        assertNotNull(result);
-        assertEquals(result, lessonRegistry.get(chatId));
+        verify(wordPoolService).getRandomWordPool();
+        verify(lessonRepository).saveAndFlush(any(Lesson.class));
     }
 
     @Test
     void getLesson_NoCurrentWordInLesson_ExpectNewLesson() {
         List<Word> words = Collections.singletonList(new Word());
-        Lesson lesson = new Lesson(words, words);
-        String chatId = "testChatId";
-        Map<String, Lesson> lessonRegistry = new HashMap<>();
-        lessonRegistry.put(chatId, lesson);
-        lessonService.setLessonRegistry(lessonRegistry);
+        User user = new User();
+        Lesson lesson = new Lesson(words, words, user);
 
+        when(lessonRepository.findLessonByUser(user)).thenReturn(lesson);
         when(wordPoolService.getRandomWordPool()).thenReturn(words);
 
-        Lesson result = lessonService.getLesson(chatId);
+        lessonService.getLesson(user);
 
-        assertNotNull(result);
-        assertNotEquals(lesson, result);
-        assertEquals(lessonRegistry.get(chatId), result);
-        assertNotEquals(lessonRegistry.get(chatId), lesson);
         verify(wordPoolService).getRandomWordPool();
+        verify(lessonRepository).delete(any(Lesson.class));
+        verify(lessonRepository).saveAndFlush(any(Lesson.class));
     }
 
     @Test
     void createLesson() {
         List<Word> words = Collections.singletonList(new Word());
+        User user = new User();
 
         when(wordPoolService.getRandomWordPool()).thenReturn(words);
 
-        Lesson lesson = lessonService.createLesson();
+        lessonService.createLesson(user);
 
         verify(wordPoolService).getRandomWordPool();
-        assertEquals(lesson.getAnswersPool(), words);
-        assertEquals(lesson.getWordPool(), words);
+        verify(lessonRepository).saveAndFlush(any(Lesson.class));
     }
 
     @Test
-    void removeLesson() {
-        String chatId = "testChatId";
-        Map<String, Lesson> lessonRegistry = new HashMap<>();
-        lessonService.setLessonRegistry(lessonRegistry);
-        Lesson lesson = new Lesson(Collections.emptyList(), Collections.emptyList());
-        lessonRegistry.put(chatId, lesson);
+    void removeLesson_NoUser_ExpectLessonNotRemoved() {
+        List<Word> words = Collections.singletonList(new Word());
+        User user = new User();
+        Lesson lesson = new Lesson(words, words, user);
 
-        lessonRegistry.remove(chatId);
+        when(lessonRepository.findLessonByUser(user)).thenReturn(null);
+        lessonService.removeLesson(lesson, user);
 
-        assertNull(lessonRegistry.get(chatId));
+        verify(wordPoolService, never()).getRandomWordPool();
+        verify(lessonRepository, never()).saveAndFlush(any(Lesson.class));
+        verify(lessonRepository, never()).delete(any(Lesson.class));
+    }
+
+    @Test
+    void removeLesson_HasUser_ExpectRemoveLesson() {
+        List<Word> words = Collections.singletonList(new Word());
+        User user = new User();
+        Lesson lesson = new Lesson(words, words, user);
+
+        when(lessonRepository.findLessonByUser(user)).thenReturn(lesson);
+        lessonService.removeLesson(lesson, user);
+
+        verify(wordPoolService, never()).getRandomWordPool();
+        verify(lessonRepository, never()).saveAndFlush(any(Lesson.class));
+        verify(lessonRepository).delete(any(Lesson.class));
     }
 
     @Test
     void getNextWord_HasNextWord_ExpectCurrentWord() {
         List<Word> words = new ArrayList<>();
         words.add(new Word());
-        Lesson lesson = new Lesson(words, words);
+        User user = new User();
+        Lesson lesson = new Lesson(words, words, user);
         lesson.setCurrentWord(new Word());
-        String chatId = "testChatId";
-        Map<String, Lesson> lessonRegistry = new HashMap<>();
-        lessonRegistry.put(chatId, lesson);
-        lessonService.setLessonRegistry(lessonRegistry);
 
         Word result = lessonService.getNextWord(lesson);
 
@@ -111,11 +117,8 @@ class LessonServiceTest {
     @Test
     void getNextWord_HasNotNextWord_ExpectNullCurrentWord() {
         List<Word> words = new ArrayList<>();
-        Lesson lesson = new Lesson(words, words);
-        String chatId = "testChatId";
-        Map<String, Lesson> lessonRegistry = new HashMap<>();
-        lessonRegistry.put(chatId, lesson);
-        lessonService.setLessonRegistry(lessonRegistry);
+        User user = new User();
+        Lesson lesson = new Lesson(words, words, user);
 
         Word result = lessonService.getNextWord(lesson);
 
@@ -125,7 +128,8 @@ class LessonServiceTest {
     @Test
     void getAnswers_NoCurrentWordInLesson_ExpectEmptyList() {
         List<Word> words = new ArrayList<>();
-        Lesson lesson = new Lesson(words, words);
+        User user = new User();
+        Lesson lesson = new Lesson(words, words, user);
 
         List<Word> result = lessonService.getAnswers(lesson);
 
@@ -135,11 +139,12 @@ class LessonServiceTest {
 
     @Test
     void getAnswers_HasCurrentWordInLesson_ExpectAnswerList() {
+        User user = new User();
         List<Word> words = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             words.add(new Word());
         }
-        Lesson lesson = new Lesson(words, words);
+        Lesson lesson = new Lesson(words, words, user);
         lesson.setCurrentWord(words.get(0));
 
         List<Word> result = lessonService.getAnswers(lesson);

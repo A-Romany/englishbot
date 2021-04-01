@@ -6,10 +6,6 @@ import javax.persistence.*;
 @Table
 public class Word {
 
-    public Long getId() {
-        return id;
-    }
-
     @Id
     @GeneratedValue
     @Column
@@ -35,6 +31,14 @@ public class Word {
         return ukrainianValue;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -50,16 +54,16 @@ public class Word {
 
     @Override
     public int hashCode() {
-        int result = 0;
-        if (id != null) {
-            result = id.hashCode();
+        int result = 31;
+        if(id != null) {
+            result = 31 * id.hashCode();
         }
-        result = 31 * result + englishValue.hashCode();
-        result = 31 * result + ukrainianValue.hashCode();
+        if(englishValue != null) {
+            result = 31 * result + englishValue.hashCode();
+        }
+        if(ukrainianValue != null) {
+            result = 31 * result + ukrainianValue.hashCode();
+        }
         return result;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }

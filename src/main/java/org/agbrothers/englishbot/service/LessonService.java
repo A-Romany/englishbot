@@ -1,7 +1,9 @@
 package org.agbrothers.englishbot.service;
 
 import org.agbrothers.englishbot.entity.Lesson;
+import org.agbrothers.englishbot.entity.User;
 import org.agbrothers.englishbot.entity.Word;
+import org.agbrothers.englishbot.repository.LessonRepository;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -10,35 +12,34 @@ import java.util.*;
 @Service
 public class LessonService {
 
-    private Map<String, Lesson> lessonRegistry;
+    private final LessonRepository lessonRepository;
     private final WordPoolService wordPoolService;
 
-    public LessonService(WordPoolService wordPoolService) {
+    public LessonService(WordPoolService wordPoolService, LessonRepository lessonRepository) {
         this.wordPoolService = wordPoolService;
-        this.lessonRegistry = new HashMap<>();
+        this.lessonRepository = lessonRepository;
     }
 
-    public void setLessonRegistry (Map<String,Lesson> lessonRegistry) {
-        this.lessonRegistry = lessonRegistry;
-    }
-
-    public Lesson getLesson(String chatId) {
-        if ((!lessonRegistry.containsKey(chatId)) ||
-                (lessonRegistry.get(chatId).getCurrentWord() == null)) {
-            Lesson lesson = createLesson();
-            lessonRegistry.put(chatId, lesson);
+    public Lesson getLesson(User user) {
+        if (lessonRepository.findLessonByUser(user) == null) {
+            return createLesson(user);
+        } else if (lessonRepository.findLessonByUser(user).getCurrentWord() == null) {
+            removeLesson(lessonRepository.findLessonByUser(user), user);
+            return createLesson(user);
         }
-        return lessonRegistry.get(chatId);
+        return lessonRepository.findLessonByUser(user);
     }
 
-    public Lesson createLesson() {
+    public Lesson createLesson(User user) {
         List<Word> wordPool = wordPoolService.getRandomWordPool();
         List<Word> answersPool = new ArrayList<>(wordPool);
-        return new Lesson(wordPool, answersPool);
+        return lessonRepository.saveAndFlush(new Lesson(wordPool, answersPool, user));
     }
 
-    public void removeLesson(String chatId) {
-        lessonRegistry.remove(chatId);
+    public void removeLesson(Lesson lesson, User user) {
+        if(lessonRepository.findLessonByUser(user) != null) {
+            lessonRepository.delete(lesson);
+        }
     }
 
     public Word getNextWord(Lesson lesson) {
