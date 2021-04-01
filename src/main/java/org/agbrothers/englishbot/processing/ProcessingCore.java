@@ -68,7 +68,7 @@ public class ProcessingCore {
         switch (messageText) {
             case LinkLabel.MAIN_MENU:
                 user.setStateId(State.MAIN_MENU);
-                //lessonService.removeLesson(user.getLesson());
+                lessonService.removeLesson(user.getLesson(), user);
                 break;
             case ButtonLabel.ENGLISH:
                 user.setStateId(State.ENGLISH_LESSON);

@@ -28,6 +28,7 @@ class LessonServiceTest {
         lessonService.getLesson(user);
 
         verify(wordPoolService, never()).getRandomWordPool();
+        verify(lessonRepository, never()).saveAndFlush(any(Lesson.class));
     }
 
     @Test
@@ -37,7 +38,8 @@ class LessonServiceTest {
 
         lessonService.getLesson(user);
 
-        verify(lessonRepository, times(1)).saveAndFlush(any(Lesson.class));
+        verify(wordPoolService).getRandomWordPool();
+        verify(lessonRepository).saveAndFlush(any(Lesson.class));
     }
 
     @Test
@@ -51,8 +53,9 @@ class LessonServiceTest {
 
         lessonService.getLesson(user);
 
-        verify(lessonRepository,times(1)).delete(any(Lesson.class));
-        verify(lessonRepository, times(1)).saveAndFlush(any(Lesson.class));
+        verify(wordPoolService).getRandomWordPool();
+        verify(lessonRepository).delete(any(Lesson.class));
+        verify(lessonRepository).saveAndFlush(any(Lesson.class));
     }
 
     @Test
@@ -65,15 +68,18 @@ class LessonServiceTest {
         lessonService.createLesson(user);
 
         verify(wordPoolService).getRandomWordPool();
-        verify(lessonRepository,times(1)).saveAndFlush(any(Lesson.class));
+        verify(lessonRepository).saveAndFlush(any(Lesson.class));
     }
 
     @Test
     void removeLesson() {
         List<Word> words = Collections.singletonList(new Word());
         User user = new User();
-        lessonService.removeLesson(new Lesson(words, words, user));
-        verify(lessonRepository, times(1)).delete(any(Lesson.class));
+
+        lessonService.removeLesson(new Lesson(words, words, user), user);
+
+        verify(wordPoolService, never()).getRandomWordPool();
+        verify(lessonRepository).delete(any(Lesson.class));
     }
 
     @Test
