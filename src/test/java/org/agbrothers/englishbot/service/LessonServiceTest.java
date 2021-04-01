@@ -72,7 +72,7 @@ class LessonServiceTest {
     }
 
     @Test
-    void removeLesson_NoUser_ExpectRemoveUser() {
+    void removeLesson_NoUser_ExpectLessonNotRemoved() {
         List<Word> words = Collections.singletonList(new Word());
         User user = new User();
         Lesson lesson = new Lesson(words, words, user);
@@ -81,11 +81,12 @@ class LessonServiceTest {
         lessonService.removeLesson(lesson, user);
 
         verify(wordPoolService, never()).getRandomWordPool();
+        verify(lessonRepository, never()).saveAndFlush(any(Lesson.class));
         verify(lessonRepository, never()).delete(any(Lesson.class));
     }
 
     @Test
-    void removeLesson_HasUser_ExpectRemoveUser() {
+    void removeLesson_HasUser_ExpectRemoveLesson() {
         List<Word> words = Collections.singletonList(new Word());
         User user = new User();
         Lesson lesson = new Lesson(words, words, user);
@@ -94,6 +95,7 @@ class LessonServiceTest {
         lessonService.removeLesson(lesson, user);
 
         verify(wordPoolService, never()).getRandomWordPool();
+        verify(lessonRepository, never()).saveAndFlush(any(Lesson.class));
         verify(lessonRepository).delete(any(Lesson.class));
     }
 
