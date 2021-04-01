@@ -17,9 +17,7 @@ spring:
       driverClassName: org.postgresql.Driver
       username: postgres
       password: dbpwd
-  h2.console:
-    enabled: true
-    path: /h2-console
+      initialization-mode: always
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
