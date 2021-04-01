@@ -72,11 +72,26 @@ class LessonServiceTest {
     }
 
     @Test
-    void removeLesson() {
+    void removeLesson_NoUser_ExpectRemoveUser() {
         List<Word> words = Collections.singletonList(new Word());
         User user = new User();
+        Lesson lesson = new Lesson(words, words, user);
 
-        lessonService.removeLesson(new Lesson(words, words, user), user);
+        when(lessonRepository.findLessonByUser(user)).thenReturn(null);
+        lessonService.removeLesson(lesson, user);
+
+        verify(wordPoolService, never()).getRandomWordPool();
+        verify(lessonRepository, never()).delete(any(Lesson.class));
+    }
+
+    @Test
+    void removeLesson_HasUser_ExpectRemoveUser() {
+        List<Word> words = Collections.singletonList(new Word());
+        User user = new User();
+        Lesson lesson = new Lesson(words, words, user);
+
+        when(lessonRepository.findLessonByUser(user)).thenReturn(lesson);
+        lessonService.removeLesson(lesson, user);
 
         verify(wordPoolService, never()).getRandomWordPool();
         verify(lessonRepository).delete(any(Lesson.class));
