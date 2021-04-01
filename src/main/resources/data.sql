@@ -1,5 +1,6 @@
-
-INSERT INTO PUBLIC.WORD(ID, ENGLISH_VALUE, UKRAINIAN_VALUE) VALUES
+-- insert default values to db
+INSERT INTO PUBLIC.WORD(ID, ENGLISH_VALUE, UKRAINIAN_VALUE)
+    SELECT * FROM (VALUES
          (1, 'black', 'чорний'),
          (2, 'grey', 'сірий'),
          (3, 'green', 'зелений'),
@@ -12,5 +13,5 @@ INSERT INTO PUBLIC.WORD(ID, ENGLISH_VALUE, UKRAINIAN_VALUE) VALUES
          (10, 'orange', 'жовтогарячий'),
          (11, 'purple', 'фіолетовий'),
          (12, 'beige', 'бежевий'),
-         (13, 'gold', 'золотий')
-         ;
+         (13, 'gold', 'золотий')) as DEFAULT_VALUES
+    WHERE NOT EXISTS (SELECT * FROM PUBLIC.WORD);
