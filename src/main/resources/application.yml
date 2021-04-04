@@ -43,10 +43,10 @@ server:
 spring:
   profiles: production
   datasource:
-    url: jdbc:postgresql://ec2-34-195-233-155.compute-1.amazonaws.com:5432/d4kbbl55smkq8p
+    url: jdbc:postgresql://ec2-54-155-208-5.eu-west-1.compute.amazonaws.com:5432/d1jm225heaha02
     driverClassName: org.postgresql.Driver
-    username: krjpnhcpiaffrr
-    password: 4be52fe389621dbc04b662f914767ad3bce080840fbaa2da92914f38566ae2d8
+    username: iosuyotdecsxag
+    password: 75128467b3dfdfce279518531d20164e75e6d4230cc518e1c2f809482a974743
     initialization-mode: always
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -61,7 +61,7 @@ spring:
 
 telegram:
   token: 1154875410:AAHor7XVEQ2EJGuEJU2y_PFDx122P2ePAcs
-  bot-url: https://arcane-ocean-32556.herokuapp.com/
+  bot-url: https://agenglishbot.herokuapp.com/
   name: English bot
 
 server:
