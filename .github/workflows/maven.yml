@@ -6,14 +6,6 @@ on:
       - master
       - develop
       - 'feature/**'
-  pull_request:
-    types:
-      - opened
-      - edited
-    branches:
-      - master
-      - develop
-      - 'feature/**'
 
 jobs:
   build:
