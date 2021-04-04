@@ -37,3 +37,33 @@ server:
   port: 8090
   servlet:
     context-path: /
+
+
+---
+spring:
+  profiles: production
+  datasource:
+    url: jdbc:postgresql://ec2-34-195-233-155.compute-1.amazonaws.com:5432/d4kbbl55smkq8p
+    driverClassName: org.postgresql.Driver
+    username: krjpnhcpiaffrr
+    password: 4be52fe389621dbc04b662f914767ad3bce080840fbaa2da92914f38566ae2d8
+    initialization-mode: always
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+telegram:
+  token: 1154875410:AAHor7XVEQ2EJGuEJU2y_PFDx122P2ePAcs
+  bot-url: https://arcane-ocean-32556.herokuapp.com/
+  name: English bot
+
+server:
+  servlet:
+    context-path: /
