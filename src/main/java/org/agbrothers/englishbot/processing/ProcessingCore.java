@@ -31,6 +31,7 @@ public class ProcessingCore {
         User user = userService.getUserByChatId(chatId);
         if (null == user) {
             user = new User(chatId);
+            userService.saveAndFlushUser(user);
         }
 
         if (user.getStateId() == null) {
