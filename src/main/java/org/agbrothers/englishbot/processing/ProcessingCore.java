@@ -30,8 +30,7 @@ public class ProcessingCore {
     public void processUserRequest(String chatId, String messageText) {
         User user = userService.getUserByChatId(chatId);
         if (null == user) {
-            user = new User(chatId);
-            userService.saveAndFlushUser(user);
+            user = userService.saveAndFlushUser(new User(chatId));
         }
 
         if (user.getStateId() == null) {
@@ -89,6 +88,9 @@ public class ProcessingCore {
             case ButtonLabel.EDIT_DICTIONARY:
                 user.setStateId(State.DICTIONARY);
                 break;
+            default:
+                throw new UnsupportedOperationException("Failed to change user state. Unknown command " +
+                        messageText);
         }
     }
 
