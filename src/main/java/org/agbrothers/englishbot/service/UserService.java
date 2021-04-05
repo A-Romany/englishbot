@@ -12,8 +12,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void saveAndFlushUser(User user) {
-        userRepository.saveAndFlush(user);
+    public User saveAndFlushUser(User user) {
+        return userRepository.saveAndFlush(user);
     }
 
     public User getUserByChatId(String chatId) {
