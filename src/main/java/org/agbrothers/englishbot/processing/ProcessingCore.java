@@ -88,9 +88,6 @@ public class ProcessingCore {
             case ButtonLabel.EDIT_DICTIONARY:
                 user.setStateId(State.DICTIONARY);
                 break;
-            default:
-                throw new UnsupportedOperationException("Failed to change user state. Unknown command " +
-                        messageText);
         }
     }
 
