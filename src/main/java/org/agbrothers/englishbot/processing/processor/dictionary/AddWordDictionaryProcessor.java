@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import static org.agbrothers.englishbot.constant.ButtonLabel.ADD_WORD;
+import static org.agbrothers.englishbot.constant.CommonPhrase.TYPED_WORD_ERROR;
 
 @Component
 public class AddWordDictionaryProcessor implements Processor {
@@ -52,8 +53,7 @@ public class AddWordDictionaryProcessor implements Processor {
      */
     private String validateWordData(String[] wordData) {
         if (isValidWordData(wordData)) {
-            return "Помилка в слові англійською або перекладі слова. " +
-                    "Слово англійською має бути латиницею, переклад - лише кирилицею.";
+            return TYPED_WORD_ERROR;
         }
         Word wordInDictionary = dictionaryService.getWordByEnglishValue(wordData[0].toLowerCase());
         if (wordInDictionary != null) {

@@ -34,7 +34,11 @@ public class ProcessingExchange {
     }
 
     public void appendResponseMessageText(String responseMessageText) {
-        this.responseMessageText = this.responseMessageText + "\n" + responseMessageText;
+        if (this.responseMessageText.equals("")) {
+            this.responseMessageText = responseMessageText;
+        } else {
+            this.responseMessageText = this.responseMessageText + "\n" + responseMessageText;
+        }
     }
 
     public List<Map<String, String>> getResponseButtons() {
