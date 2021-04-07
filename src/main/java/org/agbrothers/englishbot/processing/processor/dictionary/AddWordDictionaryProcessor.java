@@ -1,5 +1,6 @@
 package org.agbrothers.englishbot.processing.processor.dictionary;
 
+import org.agbrothers.englishbot.constant.State;
 import org.agbrothers.englishbot.entity.Word;
 import org.agbrothers.englishbot.processing.ProcessingExchange;
 import org.agbrothers.englishbot.processing.processor.Processor;
@@ -17,7 +18,8 @@ public class AddWordDictionaryProcessor implements Processor {
     public void process(ProcessingExchange exchange) {
         String messageText = exchange.getMessageText();
         if (messageText.equals(ADD_WORD)) {
-            exchange.setResponseMessageText("Введіть слово англійською та його переклад через пробіл");
+            exchange.appendResponseMessageText("Введіть слово англійською та його переклад через пробіл");
+            exchange.setExchangeState(State.READY_TO_SEND);
             return;
         }
 
@@ -28,13 +30,15 @@ public class AddWordDictionaryProcessor implements Processor {
         String[] wordData = messageText.split(" ");
         String errorMessage = validateWordData(wordData);
         if (errorMessage != null) {
-            exchange.setResponseMessageText(errorMessage);
+            exchange.appendResponseMessageText(errorMessage);
+            exchange.setExchangeState(State.READY_TO_SEND);
             return;
         }
         String englishValue = wordData[0].toLowerCase();
         String ukrainianValue = wordData[1].toLowerCase();
         dictionaryService.addWord(new Word(englishValue, ukrainianValue));
-        exchange.setResponseMessageText("Слово " + englishValue + " - " + ukrainianValue + " було додано до словника.");
+        exchange.appendResponseMessageText("Слово " + englishValue + " - " + ukrainianValue + " було додано до словника.");
+        exchange.setExchangeState(State.READY_TO_SEND);
     }
 
     @Autowired

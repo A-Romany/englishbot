@@ -13,9 +13,9 @@ import java.util.*;
 public class LessonService {
 
     private final LessonRepository lessonRepository;
-    private final WordPoolService wordPoolService;
+    private final WordService wordPoolService;
 
-    public LessonService(WordPoolService wordPoolService, LessonRepository lessonRepository) {
+    public LessonService(WordService wordPoolService, LessonRepository lessonRepository) {
         this.wordPoolService = wordPoolService;
         this.lessonRepository = lessonRepository;
     }

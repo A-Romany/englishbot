@@ -1,5 +1,6 @@
 package org.agbrothers.englishbot.processing.processor.dictionary;
 
+import org.agbrothers.englishbot.constant.State;
 import org.agbrothers.englishbot.entity.Word;
 import org.agbrothers.englishbot.processing.ProcessingExchange;
 import org.agbrothers.englishbot.processing.processor.Processor;
@@ -18,21 +19,25 @@ public class DeleteWordDictionaryProcessor implements Processor {
     public void process(ProcessingExchange exchange) {
         String messageText = exchange.getMessageText();
         if (messageText.equals(REMOVE_WORD)) {
-            exchange.setResponseMessageText("Введіть слово англійською");
+            exchange.appendResponseMessageText("Введіть слово англійською");
+            exchange.setExchangeState(State.READY_TO_SEND);
             return;
         }
         if (!messageText.matches("^[a-zA-Z]+$")) {
-            exchange.setResponseMessageText("Помилка в написанні слова англійською," +
+            exchange.appendResponseMessageText("Помилка в написанні слова англійською," +
                     " воно має бути написано тільки латиницею.");
+            exchange.setExchangeState(State.READY_TO_SEND);
             return;
         }
         Word wordInDictionary = dictionaryService.getWordByEnglishValue(messageText.toLowerCase());
         if (wordInDictionary == null) {
-            exchange.setResponseMessageText("Слово " + messageText.toLowerCase() + " відсутнє у Вашому словнику.");
+            exchange.appendResponseMessageText("Слово " + messageText.toLowerCase() + " відсутнє у Вашому словнику.");
+            exchange.setExchangeState(State.READY_TO_SEND);
             return;
         }
         dictionaryService.deleteWord(wordInDictionary);
-        exchange.setResponseMessageText("Слово " + wordInDictionary + " було видалено словника.");
+        exchange.appendResponseMessageText("Слово " + wordInDictionary.getEnglishValue() + " було видалено словника.");
+        exchange.setExchangeState(State.READY_TO_SEND);
     }
 
     @Autowired

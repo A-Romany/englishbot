@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 class WordPoolServiceTest {
 
     private final WordRepository wordRepository = mock(WordRepository.class);
-    private final WordPoolService wordPoolService = new WordPoolService(wordRepository);
+    private final WordService wordPoolService = new WordService(wordRepository);
 
     @Test
     void getRandomWordPool() {

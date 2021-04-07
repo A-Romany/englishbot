@@ -8,8 +8,9 @@ import java.util.Map;
 public class ProcessingExchange {
     private User user;
     private String messageText;
-    private String responseMessageText;
+    private String responseMessageText = "";
     private List <Map<String, String>> responseButtons;
+    private String exchangeState;
 
     public ProcessingExchange(User user, String messageText) {
         this.user = user;
@@ -32,8 +33,8 @@ public class ProcessingExchange {
         return responseMessageText;
     }
 
-    public void setResponseMessageText(String responseMessageText) {
-        this.responseMessageText = responseMessageText;
+    public void appendResponseMessageText(String responseMessageText) {
+        this.responseMessageText = this.responseMessageText + "\n" + responseMessageText;
     }
 
     public List<Map<String, String>> getResponseButtons() {
@@ -42,5 +43,13 @@ public class ProcessingExchange {
 
     public void setResponseButtons(List <Map<String, String>> responseButtons) {
         this.responseButtons = responseButtons;
+    }
+
+    public String getExchangeState() {
+        return exchangeState;
+    }
+
+    public void setExchangeState(String exchangeState) {
+        this.exchangeState = exchangeState;
     }
 }

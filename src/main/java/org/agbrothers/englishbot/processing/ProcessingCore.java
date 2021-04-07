@@ -41,10 +41,14 @@ public class ProcessingCore {
         applyUserSate(messageText, user);
 
         ProcessingExchange exchange = new ProcessingExchange(user, messageText);
-
         Processor processor = processorFactory.getProcessorByState(user.getStateId());
+
         try {
             processor.process(exchange);
+            while(!State.READY_TO_SEND.equals(exchange.getExchangeState())){
+                processor = processorFactory.getProcessorByState(exchange.getExchangeState());
+                processor.process(exchange);
+            }
         } catch (ProcessingException e) {
             //log and send error message
             telegramBot.sendTextMessage(user.getChatId(), CommonPhrase.ERROR_MESSAGE);

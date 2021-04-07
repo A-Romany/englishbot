@@ -1,5 +1,6 @@
 package org.agbrothers.englishbot.processing.processor.dictionary;
 
+import org.agbrothers.englishbot.constant.State;
 import org.agbrothers.englishbot.entity.Word;
 import org.agbrothers.englishbot.processing.ProcessingExchange;
 import org.agbrothers.englishbot.processing.processor.Processor;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-import static org.agbrothers.englishbot.constant.CommonPhrase.RETURN_MAIN_MENU;
 import static org.agbrothers.englishbot.constant.MessageLabel.MAKE_CHOICE;
 
 @Component
@@ -22,13 +22,14 @@ public class PrintWordsDictionaryProcessor implements Processor {
         List<Word> allWordsSorted = getAllWordsSorted();
 
         if (allWordsSorted.size() < 13) {
-            exchange.setResponseMessageText(printWords(allWordsSorted) + "\n" + RETURN_MAIN_MENU);
+            exchange.appendResponseMessageText(printWords(allWordsSorted));
         }
         else {
             String messageText = exchange.getMessageText();
-            exchange.setResponseMessageText(getResponseMessageText(allWordsSorted, messageText));
+            exchange.appendResponseMessageText(getResponseMessageText(allWordsSorted, messageText));
             exchange.setResponseButtons(getKeyboardButtons(getWordListsByFirstWord(allWordsSorted)));
         }
+        exchange.setExchangeState(State.READY_TO_SEND);
     }
 
     private String getResponseMessageText(List<Word> list, String messageText) {
