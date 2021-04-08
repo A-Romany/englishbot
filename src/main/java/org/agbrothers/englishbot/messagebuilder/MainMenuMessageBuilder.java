@@ -1,12 +1,13 @@
 package org.agbrothers.englishbot.messagebuilder;
 
+import org.agbrothers.englishbot.constant.CommonPhrase;
 import org.springframework.stereotype.Component;
 
 import static org.agbrothers.englishbot.constant.CommonPhrase.RETURN_MAIN_MENU;
 import static org.agbrothers.englishbot.constant.ButtonLabel.DICTIONARY;
 import static org.agbrothers.englishbot.constant.ButtonLabel.LESSONS;
-import static org.agbrothers.englishbot.constant.LinkLabel.MAIN_MENU;
-import static org.agbrothers.englishbot.constant.MessageLabel.MAKE_CHOICE;
+import static org.agbrothers.englishbot.constant.CommonPhrase.MAIN_MENU;
+import static org.agbrothers.englishbot.constant.CommonPhrase.MAKE_CHOICE;
 
 @Component
 public class MainMenuMessageBuilder extends MessageBuilder {
@@ -21,7 +22,7 @@ public class MainMenuMessageBuilder extends MessageBuilder {
             case LESSONS:
                 return getChoiceMadeText(LESSONS) + MAKE_CHOICE;
             default:
-                return "Не розумію, що ти маєш на увазі?" + RETURN_MAIN_MENU;
+                return CommonPhrase.INCORRECT_MESSAGE + RETURN_MAIN_MENU;
         }
     }
 }

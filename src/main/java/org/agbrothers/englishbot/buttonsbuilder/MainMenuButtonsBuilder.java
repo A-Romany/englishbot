@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 import static org.agbrothers.englishbot.constant.ButtonLabel.*;
-import static org.agbrothers.englishbot.constant.LinkLabel.MAIN_MENU;
+import static org.agbrothers.englishbot.constant.CommonPhrase.MAIN_MENU;
 
 @Component
 public class MainMenuButtonsBuilder extends ButtonsBuilder {
@@ -19,8 +19,8 @@ public class MainMenuButtonsBuilder extends ButtonsBuilder {
         Map<String, String> keyboardMap = new LinkedHashMap<>();
         switch (messageText) {
             case LESSONS:
-                keyboardMap.put(ButtonLabel.ENGLISH, "From English to Ukrainian");
-                keyboardMap.put(ButtonLabel.UKRAINIAN, "From Ukrainian to English");
+                keyboardMap.put(ButtonLabel.ENGLISH, ButtonLabel.ENGLISH);
+                keyboardMap.put(ButtonLabel.UKRAINIAN, ButtonLabel.UKRAINIAN);
                 keyboardMaps.add(keyboardMap);
                 return keyboardMaps;
 

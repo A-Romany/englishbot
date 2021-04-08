@@ -1,8 +1,9 @@
 package org.agbrothers.englishbot.processing.processor.lesson;
 
 import org.agbrothers.englishbot.constant.ButtonLabel;
-import org.agbrothers.englishbot.constant.MessageLabel;
+import org.agbrothers.englishbot.constant.CommonPhrase;
 import org.agbrothers.englishbot.constant.State;
+import org.agbrothers.englishbot.constant.StringPart;
 import org.agbrothers.englishbot.entity.Lesson;
 import org.agbrothers.englishbot.entity.Word;
 import org.agbrothers.englishbot.processing.ProcessingExchange;
@@ -43,16 +44,16 @@ public abstract class LessonProcessor implements Processor {
             String correctAnswer = getCorrectAnswer(lesson.getCurrentWord());
             if (correctAnswer.equals(messageText)) {
                 lesson.setCountCorrectAnswers(lesson.getCountCorrectAnswers() + 1);
-                result = MessageLabel.CORRECT_ANSWER;
+                result = CommonPhrase.CORRECT_ANSWER;
             } else {
                 lesson.setCountIncorrectAnswer(lesson.getCountIncorrectAnswer() + 1);
-                result = MessageLabel.INCORRECT_ANSWER + correctAnswer + MessageLabel.NEWLINE;
+                result = CommonPhrase.INCORRECT_ANSWER + correctAnswer + StringPart.NEWLINE;
             }
         }
 
         Word wordQuestion = lessonService.getNextWord(lesson);
         if (wordQuestion == null) {
-            return result + String.format(MessageLabel.LESSON_ENDING,
+            return result + String.format(CommonPhrase.LESSON_ENDING,
                     lesson.getCountCorrectAnswers(),
                     (lesson.getCountIncorrectAnswer() + lesson.getCountCorrectAnswers()));
         } else {
@@ -71,8 +72,8 @@ public abstract class LessonProcessor implements Processor {
     protected List<Map<String, String>> getMenuButtons() {
         List<Map<String, String>> keyboardMaps = new ArrayList<>();
         Map<String, String> keyboardMap = new LinkedHashMap<>();
-        keyboardMap.put(ButtonLabel.ENGLISH, "From English to Ukrainian");
-        keyboardMap.put(ButtonLabel.UKRAINIAN, "From Ukrainian to English");
+        keyboardMap.put(ButtonLabel.ENGLISH, ButtonLabel.ENGLISH);
+        keyboardMap.put(ButtonLabel.UKRAINIAN, ButtonLabel.UKRAINIAN);
         keyboardMaps.add(keyboardMap);
 
         return keyboardMaps;

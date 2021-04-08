@@ -1,6 +1,8 @@
 package org.agbrothers.englishbot.processing.processor.dictionary;
 
+import org.agbrothers.englishbot.constant.CommonPhrase;
 import org.agbrothers.englishbot.constant.State;
+import org.agbrothers.englishbot.constant.StringPart;
 import org.agbrothers.englishbot.entity.Word;
 import org.agbrothers.englishbot.processing.ProcessingExchange;
 import org.agbrothers.englishbot.processing.processor.Processor;
@@ -10,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-import static org.agbrothers.englishbot.constant.MessageLabel.MAKE_CHOICE;
+import static org.agbrothers.englishbot.constant.CommonPhrase.MAKE_CHOICE;
 
 @Component
 public class PrintWordsDictionaryProcessor implements Processor {
@@ -36,7 +38,7 @@ public class PrintWordsDictionaryProcessor implements Processor {
         String result = MAKE_CHOICE;
         Map<String, List<Word>> wordListsByFirstWord = getWordListsByFirstWord(list);
         if ((list.size() > 12) && (!wordListsByFirstWord.containsKey(messageText))) {
-            result = "У словнику більше 10 слів. Будь ласка виберіть діапазон слів для перегляду:";
+            result = CommonPhrase.SELECT_RANGE;
         }
         else if (wordListsByFirstWord.containsKey(messageText)) {
             result = printWords(wordListsByFirstWord.get(messageText));
@@ -70,7 +72,7 @@ public class PrintWordsDictionaryProcessor implements Processor {
         for (Map.Entry<String, List<Word>> entry : wordListsByFirstWord.entrySet()) {
             String firstWordOfDozen = entry.getKey();
             String lastWordOfDozen = entry.getValue().get(entry.getValue().size() - 1).getEnglishValue();
-            resultMap.put(firstWordOfDozen, firstWordOfDozen + " - " + lastWordOfDozen);
+            resultMap.put(firstWordOfDozen, firstWordOfDozen + StringPart.HYPHEN + lastWordOfDozen);
         }
         resultMaps.add(resultMap);
 
@@ -87,8 +89,8 @@ public class PrintWordsDictionaryProcessor implements Processor {
     private String printWords(List<Word> list) {
         StringBuilder printWords = new StringBuilder();
         for (Word word : list) {
-            printWords.append(word.getEnglishValue()).append(" - ").
-                    append(word.getUkrainianValue()).append("\n");
+            printWords.append(word.getEnglishValue()).append(StringPart.HYPHEN).
+                    append(word.getUkrainianValue()).append(StringPart.NEWLINE);
         }
         return printWords.toString();
     }

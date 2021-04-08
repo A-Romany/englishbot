@@ -10,12 +10,10 @@ public class DictionaryMessageBuilder extends MessageBuilder {
 
     @Override
     public String getResponseMessageText(String label) {
-        switch (label) {
-            case EDIT_DICTIONARY:
-                return getChoiceMadeText(EDIT_DICTIONARY) + " Триває розробка редагування слів зі словника" +
-                        CommonPhrase.RETURN_MAIN_MENU;
-            default:
-                return "Я вас не розумію. Повернутися в головне меню? " + CommonPhrase.RETURN_MAIN_MENU;
+        if (EDIT_DICTIONARY.equals(label)) {
+            return getChoiceMadeText(EDIT_DICTIONARY) + CommonPhrase.DEVELOPMENT_OF_DIRECTION +
+                    CommonPhrase.RETURN_MAIN_MENU;
         }
+        return CommonPhrase.INCORRECT_MESSAGE + CommonPhrase.RETURN_MAIN_MENU;
     }
 }
