@@ -4,10 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -17,7 +16,7 @@ import java.net.URI;
 
 @Profile("development")
 @Component
-public class SetupTelegramWebHookEvent implements ApplicationListener<ContextRefreshedEvent> {
+public class SetupTelegramWebHookEvent implements ApplicationListener<ApplicationReadyEvent> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SetupTelegramWebHookEvent.class);
 
@@ -31,8 +30,9 @@ public class SetupTelegramWebHookEvent implements ApplicationListener<ContextRef
     private NgrokTunnelStarter ngrokTunnelStarter;
 
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextStartedEvent) {
+    public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         String serverUrl = ngrokTunnelStarter.getNgrokBotServerUrl();
+        LOGGER.info("Acquired ngrok tunnel URL: {}", serverUrl);
 
         String url = TELEGRAM_URL_TEMPLATE.replace("{bot_token}", botToken).replace("{bot_server_url}", serverUrl);
 
@@ -43,7 +43,7 @@ public class SetupTelegramWebHookEvent implements ApplicationListener<ContextRef
             throw new RuntimeException("Setting web hook failed. Check configuration.");
         }
 
-        LOGGER.info("Web hook was set to " + serverUrl);
+        LOGGER.info("Web hook was set to {}", serverUrl);
     }
 
     @Autowired

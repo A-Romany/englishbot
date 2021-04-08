@@ -13,7 +13,7 @@ import static org.mockito.Mockito.*;
 
 class LessonServiceTest {
     final LessonRepository lessonRepository = mock(LessonRepository.class);
-    final WordPoolService wordPoolService = mock(WordPoolService.class);
+    final WordService wordPoolService = mock(WordService.class);
     final LessonService lessonService = new LessonService(wordPoolService, lessonRepository);
 
     @Test

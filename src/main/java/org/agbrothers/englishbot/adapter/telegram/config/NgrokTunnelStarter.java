@@ -1,5 +1,6 @@
 package org.agbrothers.englishbot.adapter.telegram.config;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,9 +88,17 @@ public class NgrokTunnelStarter {
 
         String ngrokUrl;
         try {
-            ngrokUrl = new ObjectMapper().readTree(responseEntity.getBody()).get("tunnels").get(0).get("public_url").asText();
+            JsonNode tunnels = new ObjectMapper().readTree(responseEntity.getBody()).get("tunnels");
+            JsonNode tunnel = tunnels.get(0);
+            if("http".equals(tunnel.get("proto").asText())) {
+                tunnel = tunnels.get(1);
+            }
+            ngrokUrl = tunnel.get("public_url").asText();
         } catch (IOException e) {
             throw new RuntimeException("Failed to obtain ngrok server url.", e);
+        } catch (Exception exception) {
+            LOGGER.error("Ngrok api tunnels body got: {}", responseEntity.getBody());
+            throw new RuntimeException("Failed to obtain ngrok server url.", exception);
         }
         return ngrokUrl;
     }

@@ -1,5 +1,6 @@
 package org.agbrothers.englishbot.processing.processor.dictionary;
 
+import org.agbrothers.englishbot.constant.State;
 import org.agbrothers.englishbot.messagebuilder.DictionaryMessageBuilder;
 import org.agbrothers.englishbot.processing.ProcessingExchange;
 import org.agbrothers.englishbot.processing.processor.Processor;
@@ -14,7 +15,8 @@ public class DictionaryProcessor implements Processor {
     @Override
     public void process(ProcessingExchange exchange) {
         String responseMessageText = dictionaryMessageBuilder.getResponseMessageText(exchange.getMessageText());
-        exchange.setResponseMessageText(responseMessageText);
+        exchange.appendResponseMessageText(responseMessageText);
+        exchange.setExchangeState(State.READY_TO_SEND);
     }
 
     @Autowired
