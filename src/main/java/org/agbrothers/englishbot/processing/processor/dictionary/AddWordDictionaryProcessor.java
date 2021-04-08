@@ -1,5 +1,6 @@
 package org.agbrothers.englishbot.processing.processor.dictionary;
 
+import org.agbrothers.englishbot.constant.State;
 import org.agbrothers.englishbot.entity.Word;
 import org.agbrothers.englishbot.processing.ProcessingExchange;
 import org.agbrothers.englishbot.processing.processor.Processor;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import static org.agbrothers.englishbot.constant.ButtonLabel.ADD_WORD;
+import static org.agbrothers.englishbot.constant.CommonPhrase.TYPED_WORD_ERROR;
 
 @Component
 public class AddWordDictionaryProcessor implements Processor {
@@ -17,7 +19,8 @@ public class AddWordDictionaryProcessor implements Processor {
     public void process(ProcessingExchange exchange) {
         String messageText = exchange.getMessageText();
         if (messageText.equals(ADD_WORD)) {
-            exchange.setResponseMessageText("Введіть слово англійською та його переклад через пробіл");
+            exchange.appendResponseMessageText("Введіть слово англійською та його переклад через пробіл");
+            exchange.setExchangeState(State.READY_TO_SEND);
             return;
         }
 
@@ -28,13 +31,15 @@ public class AddWordDictionaryProcessor implements Processor {
         String[] wordData = messageText.split(" ");
         String errorMessage = validateWordData(wordData);
         if (errorMessage != null) {
-            exchange.setResponseMessageText(errorMessage);
+            exchange.appendResponseMessageText(errorMessage);
+            exchange.setExchangeState(State.READY_TO_SEND);
             return;
         }
         String englishValue = wordData[0].toLowerCase();
         String ukrainianValue = wordData[1].toLowerCase();
         dictionaryService.addWord(new Word(englishValue, ukrainianValue));
-        exchange.setResponseMessageText("Слово " + englishValue + " - " + ukrainianValue + " було додано до словника.");
+        exchange.appendResponseMessageText("Слово " + englishValue + " - " + ukrainianValue + " було додано до словника.");
+        exchange.setExchangeState(State.READY_TO_SEND);
     }
 
     @Autowired
@@ -48,8 +53,7 @@ public class AddWordDictionaryProcessor implements Processor {
      */
     private String validateWordData(String[] wordData) {
         if (isValidWordData(wordData)) {
-            return "Помилка в слові англійською або перекладі слова. " +
-                    "Слово англійською має бути латиницею, переклад - лише кирилицею.";
+            return TYPED_WORD_ERROR;
         }
         Word wordInDictionary = dictionaryService.getWordByEnglishValue(wordData[0].toLowerCase());
         if (wordInDictionary != null) {
