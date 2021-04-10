@@ -10,7 +10,6 @@ on:
       - master
     types:
       - opened
-      - edited
 
 jobs:
   build:

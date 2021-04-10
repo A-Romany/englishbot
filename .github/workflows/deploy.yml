@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - feature/EN-57-prepare-prod
 
 jobs:
   deploy:
