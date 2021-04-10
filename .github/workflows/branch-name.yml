@@ -2,7 +2,7 @@ name: Verify branch name
 
 on:
   pull_request:
-    types: [ opened, edited ]
+    types: [ opened ]
 
 jobs:
   branch_name:
