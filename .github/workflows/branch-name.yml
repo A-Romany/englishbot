@@ -1,0 +1,15 @@
+name: Verify branch name
+
+on:
+  push:
+    branches-ignore: [master, develop]
+
+jobs:
+  branch_name:
+    runs-on: ubuntu-latest
+    name: Branch Name
+    steps:
+      - uses: deepakputhraya/action-branch-name@master
+        with:
+          allowed_prefixes: 'feature/,bug/'
+          ignore: master,develop
