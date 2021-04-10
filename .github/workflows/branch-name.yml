@@ -1,8 +1,8 @@
 name: Verify branch name
 
 on:
-  push:
-    branches-ignore: [master, develop]
+  pull_request:
+    types: [ opened ]
 
 jobs:
   branch_name:
