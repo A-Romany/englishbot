@@ -14,4 +14,4 @@ jobs:
           branch_pattern: '^feature/|^bug/'
           comment_for_invalid_branch_name: 'Invalid branch name. Allowed name patterns: feature/** or bug/**'
           fail_if_invalid_branch_name: 'true'
-          ignore_branch_pattern: '^master$|^develop$'
+          ignore_branch_pattern: '^master$'
