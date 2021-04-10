@@ -2,6 +2,7 @@ package org.agbrothers.englishbot.processing.processor.lesson;
 
 import org.agbrothers.englishbot.constant.ButtonLabel;
 import org.agbrothers.englishbot.constant.MessageLabel;
+import org.agbrothers.englishbot.constant.State;
 import org.agbrothers.englishbot.entity.Lesson;
 import org.agbrothers.englishbot.entity.Word;
 import org.agbrothers.englishbot.processing.ProcessingExchange;
@@ -30,9 +31,10 @@ public abstract class LessonProcessor implements Processor {
         String messageText = exchange.getMessageText();
 
         String responseMessageText = getResponseMessageText(messageText, lesson);
-        exchange.setResponseMessageText(responseMessageText);
+        exchange.appendResponseMessageText(responseMessageText);
 
         exchange.setResponseButtons(getKeyboardButtons(lesson));
+        exchange.setExchangeState(State.READY_TO_SEND);
     }
 
     protected String getResponseMessageText(String messageText, Lesson lesson) {
