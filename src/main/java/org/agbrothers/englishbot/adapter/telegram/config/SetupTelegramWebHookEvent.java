@@ -32,7 +32,7 @@ public abstract class SetupTelegramWebHookEvent {
             throw new RuntimeException("Setting web hook failed. Check configuration.");
         }
 
-        LOGGER.info("Web hook was set to " + botUrl);
+        LOGGER.info("Web hook was set to {}", botUrl);
     }
 
     @Autowired

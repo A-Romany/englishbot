@@ -1,0 +1,17 @@
+name: Verify branch name
+
+on:
+  push:
+    branches-ignore: [master, develop]
+
+jobs:
+  branch_name:
+    runs-on: ubuntu-latest
+    name: Branch Name
+    steps:
+      - uses: AlbertHernandez/branch-name-action@v1
+        with:
+          branch_pattern: '^feature/|^bug/'
+          comment_for_invalid_branch_name: 'Invalid branch name. Allowed name patterns: feature/** or bug/**'
+          fail_if_invalid_branch_name: 'true'
+          ignore_branch_pattern: '^master$|^develop$'

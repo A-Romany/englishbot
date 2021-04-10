@@ -60,9 +60,9 @@ spring:
             non_contextual_creation: true
 
 telegram:
-  token: 1154875410:AAHor7XVEQ2EJGuEJU2y_PFDx122P2ePAcs
+  token: 1729302779:AAHTcA88NVAFoEttLC4WVzLOq3uYNXmcFB0
   bot-url: https://agenglishbot.herokuapp.com/
-  name: English bot
+  name: AhEnglishBot
 
 server:
   servlet:
