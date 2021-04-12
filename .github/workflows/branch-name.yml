@@ -13,3 +13,4 @@ jobs:
         with:
           allowed_prefixes: 'feature/,bug/'
           ignore: master,develop
+          
