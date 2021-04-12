@@ -12,4 +12,5 @@ public final class ButtonLabel {
     public static final String REMOVE_WORD = "Видалити слово";
     public static final String ENGLISH = "From English to Ukrainian";
     public static final String UKRAINIAN = "From Ukrainian to English";
+    public static final String RETURN_MAIN_MENU = "Повернутись в головне меню";
 }

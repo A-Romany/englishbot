@@ -2,7 +2,9 @@ package org.agbrothers.englishbot.processing.processor;
 
 import org.agbrothers.englishbot.buttonsbuilder.MainMenuButtonsBuilder;
 import org.agbrothers.englishbot.constant.ButtonLabel;
+import org.agbrothers.englishbot.constant.CommonPhrase;
 import org.agbrothers.englishbot.constant.State;
+import org.agbrothers.englishbot.constant.StringPart;
 import org.agbrothers.englishbot.messagebuilder.MainMenuMessageBuilder;
 import org.agbrothers.englishbot.processing.ProcessingExchange;
 import org.agbrothers.englishbot.repository.WordRepository;
@@ -24,8 +26,7 @@ public class MainMenuProcessor implements Processor {
         if (exchange.getMessageText().equals(ButtonLabel.LESSONS) && (getNumberOfWord() < 10)) {
             int numberOfWord = getNumberOfWord();
 
-            exchange.appendResponseMessageText("У Вас в словнику менше 10 слів. Для проходження уроку необхідно додати "
-                    + (10 - numberOfWord) + " слів. Зараз у Вашому словнику знаходяться наступні слова:\n");
+            exchange.appendResponseMessageText(String.format(CommonPhrase.ADD_WORDS, (10 - numberOfWord)) + StringPart.NEWLINE);
             exchange.setExchangeState(State.PRINTING_WORDS);
             List<Map<String, String>> keyboardButtons = mainMenuButtonsBuilder.getKeyboardButtons(State.DICTIONARY);
             exchange.setResponseButtons(keyboardButtons);

@@ -1,6 +1,8 @@
 package org.agbrothers.englishbot.processing.processor.dictionary;
 
+import org.agbrothers.englishbot.constant.CommonPhrase;
 import org.agbrothers.englishbot.constant.State;
+import org.agbrothers.englishbot.constant.StringPart;
 import org.agbrothers.englishbot.entity.Word;
 import org.agbrothers.englishbot.processing.ProcessingExchange;
 import org.agbrothers.englishbot.processing.processor.Processor;
@@ -19,7 +21,7 @@ public class AddWordDictionaryProcessor implements Processor {
     public void process(ProcessingExchange exchange) {
         String messageText = exchange.getMessageText();
         if (messageText.equals(ADD_WORD)) {
-            exchange.appendResponseMessageText("Введіть слово англійською та його переклад через пробіл");
+            exchange.appendResponseMessageText(CommonPhrase.ENTER_ENGLISH_UKRAINIAN_WORD);
             exchange.setExchangeState(State.READY_TO_SEND);
             return;
         }
@@ -28,7 +30,7 @@ public class AddWordDictionaryProcessor implements Processor {
 
         exchange.setMessageText(messageText);
 
-        String[] wordData = messageText.split(" ");
+        String[] wordData = messageText.split(StringPart.SPACE);
         String errorMessage = validateWordData(wordData);
         if (errorMessage != null) {
             exchange.appendResponseMessageText(errorMessage);
@@ -38,7 +40,7 @@ public class AddWordDictionaryProcessor implements Processor {
         String englishValue = wordData[0].toLowerCase();
         String ukrainianValue = wordData[1].toLowerCase();
         dictionaryService.addWord(new Word(englishValue, ukrainianValue));
-        exchange.appendResponseMessageText("Слово " + englishValue + " - " + ukrainianValue + " було додано до словника.");
+        exchange.appendResponseMessageText(String.format (CommonPhrase.WORD_ADDED, englishValue, ukrainianValue));
         exchange.setExchangeState(State.READY_TO_SEND);
     }
 
@@ -57,8 +59,7 @@ public class AddWordDictionaryProcessor implements Processor {
         }
         Word wordInDictionary = dictionaryService.getWordByEnglishValue(wordData[0].toLowerCase());
         if (wordInDictionary != null) {
-            return "Слово " + wordInDictionary.getEnglishValue() +
-                    " - " + wordInDictionary.getUkrainianValue() + " вже існує у Вашому словнику.";
+            return String.format(CommonPhrase.WORD_EXISTS_IN_VOCABULARY, wordInDictionary.getEnglishValue(), wordInDictionary.getUkrainianValue());
         }
         return null;
     }

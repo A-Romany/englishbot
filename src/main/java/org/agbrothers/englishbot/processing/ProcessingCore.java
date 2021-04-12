@@ -3,7 +3,6 @@ package org.agbrothers.englishbot.processing;
 import org.agbrothers.englishbot.adapter.telegram.TelegramBot;
 import org.agbrothers.englishbot.constant.ButtonLabel;
 import org.agbrothers.englishbot.constant.CommonPhrase;
-import org.agbrothers.englishbot.constant.LinkLabel;
 import org.agbrothers.englishbot.constant.State;
 import org.agbrothers.englishbot.entity.User;
 import org.agbrothers.englishbot.messagebuilder.MessageBuilder;
@@ -18,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.agbrothers.englishbot.constant.LinkLabel.MAIN_MENU;
+import static org.agbrothers.englishbot.constant.CommonPhrase.MAIN_MENU;
 
 @Component
 public class ProcessingCore {
@@ -70,7 +69,7 @@ public class ProcessingCore {
 
     private void applyUserSate(String messageText, User user) {
         switch (messageText) {
-            case LinkLabel.MAIN_MENU:
+            case CommonPhrase.MAIN_MENU:
                 user.setStateId(State.MAIN_MENU);
                 lessonService.removeLesson(user.getLesson(), user);
                 break;
@@ -97,7 +96,7 @@ public class ProcessingCore {
 
     private Map<String, String> getMainMenuButton() {
         Map<String, String> mainMenuButton = new LinkedHashMap<>();
-        mainMenuButton.put(MAIN_MENU, "Повернутись в головне меню");
+        mainMenuButton.put(MAIN_MENU, ButtonLabel.RETURN_MAIN_MENU);
         return mainMenuButton;
     }
 
