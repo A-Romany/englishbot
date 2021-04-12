@@ -37,3 +37,33 @@ server:
   port: 8090
   servlet:
     context-path: /
+
+
+---
+spring:
+  profiles: production
+  datasource:
+    url: jdbc:postgresql://ec2-54-155-208-5.eu-west-1.compute.amazonaws.com:5432/d1jm225heaha02
+    driverClassName: org.postgresql.Driver
+    username: iosuyotdecsxag
+    password: 75128467b3dfdfce279518531d20164e75e6d4230cc518e1c2f809482a974743
+    initialization-mode: always
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+telegram:
+  token: 1729302779:AAHTcA88NVAFoEttLC4WVzLOq3uYNXmcFB0
+  bot-url: https://agenglishbot.herokuapp.com/
+  name: AhEnglishBot
+
+server:
+  servlet:
+    context-path: /
