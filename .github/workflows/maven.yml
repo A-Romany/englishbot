@@ -3,20 +3,17 @@ name: Build
 on:
   push:
     branches:
-      - master
       - develop
       - 'feature/**'
   pull_request:
     branches:
       - master
-      - develop
-      - 'feature/**'
+    types:
+      - opened
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 1.8
