@@ -26,9 +26,9 @@ public class EnglishLessonProcessor extends LessonProcessor {
     protected List <Map<String, String>> formAnswersMap(List<Word> answers) {
         List <Map<String, String>> keyboardMaps = new ArrayList<>();
         Map<String, String> keyboardMap =  new LinkedHashMap<>();
-        for (Word answer : answers) {
-            keyboardMap.put(answer.getUkrainianValue(), answer.getUkrainianValue());
-        }
+
+        answers.forEach(word -> keyboardMap.put(word.getUkrainianValue(), word.getUkrainianValue() ));
+
         keyboardMaps.add(keyboardMap);
         return keyboardMaps;
     }

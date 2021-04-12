@@ -3,10 +3,8 @@ package org.agbrothers.englishbot.processing.processor.lesson;
 import org.agbrothers.englishbot.entity.Word;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -26,10 +24,21 @@ public class UkrainianLessonProcessor extends LessonProcessor {
     protected List <Map<String, String>> formAnswersMap(List<Word> answers) {
         List <Map<String, String>> keyboardMaps = new ArrayList<>();
         Map<String, String> keyboardMap =  new LinkedHashMap<>();
+
+        answers.forEach(wrd -> keyboardMap.put(wrd.getEnglishValue(), wrd.getEnglishValue()));
+
+//        Set<String> filteredWords = answers.stream()
+//                .filter(word -> word.getEnglishValue().startsWith("a"))
+//                .map(Word::getEnglishValue)
+//                .collect(Collectors.toSet());
+
         for (Word answer : answers) {
             keyboardMap.put(answer.getEnglishValue(), answer.getEnglishValue());
         }
+
+
         keyboardMaps.add(keyboardMap);
         return keyboardMaps;
     }
 }
+
