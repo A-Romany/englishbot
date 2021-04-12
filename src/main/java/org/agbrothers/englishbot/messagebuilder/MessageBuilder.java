@@ -1,26 +1,19 @@
 package org.agbrothers.englishbot.messagebuilder;
 
-import org.agbrothers.englishbot.constant.MessageLabel;
+import org.agbrothers.englishbot.constant.CommonPhrase;
+import org.agbrothers.englishbot.constant.StringPart;
 import org.springframework.stereotype.Component;
-
-import static org.agbrothers.englishbot.constant.LinkLabel.MAIN_MENU;
 
 @Component
 public abstract class MessageBuilder {
 
-    private static final String HELLO_MESSAGE = "Привіт, я дуже радий, що ти хочеш покращити свої знання англійської мови!!!" +
-            " Маю надію, що я тобі в цьому допоможу!)) "+
-            "Для початку навчання натисни "+MAIN_MENU;
-    protected static final String YOU_CHOOSE = "Ви вибрали ";
-
-    public static String getHelloMessage(){
-        return HELLO_MESSAGE;
+    public static String getHelloMessage() {
+        return CommonPhrase.HELLO_MESSAGE;
     }
 
     public abstract String getResponseMessageText(String messageText);
 
-    protected String getChoiceMadeText(String chosenLabel){
-        return YOU_CHOOSE + chosenLabel + MessageLabel.POINT;
+    protected String getChoiceMadeText(String chosenLabel) {
+        return CommonPhrase.YOU_CHOOSE + chosenLabel + StringPart.POINT;
     }
-
 }
