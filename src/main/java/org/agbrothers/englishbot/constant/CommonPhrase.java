@@ -5,6 +5,7 @@ public final class CommonPhrase {
     private CommonPhrase() {}
 
     public static final String MAIN_MENU = "/main_menu";
+    public static final String START = "/start";
     public static final String ERROR_MESSAGE = "Сталась прикра технічна помилка. " +
             "Спробуйте перейти в головне меню - " + MAIN_MENU;
     public static final String RETURN_TO_MAIN_MENU = "  Для повернення в головне меню натисніть " + MAIN_MENU;
@@ -14,8 +15,7 @@ public final class CommonPhrase {
     public static final String INCORRECT_ANSWER = "Відповідь не вірна! Правильна відповідь - ";
     public static final String MAKE_CHOICE = "Будь ласка, зробіть свій вибір";
     public static final String HELLO_MESSAGE = "Привіт, я дуже радий, що ти хочеш покращити свої знання англійської мови!!!" +
-            " Маю надію, що я тобі в цьому допоможу!)) " +
-            "Для початку навчання натисни " + MAIN_MENU;
+            " Маю надію, що я тобі в цьому допоможу!)) ";
     public static final String YOU_CHOOSE = "Ви вибрали ";
     public static final String INCORRECT_MESSAGE = "Не розумію, що ти маєш на увазі? ";
     public static final String DEVELOPMENT_OF_DIRECTION = " Триває розробка даного напрямку ";
