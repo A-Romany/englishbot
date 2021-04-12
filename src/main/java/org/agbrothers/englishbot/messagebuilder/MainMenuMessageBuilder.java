@@ -3,7 +3,7 @@ package org.agbrothers.englishbot.messagebuilder;
 import org.agbrothers.englishbot.constant.CommonPhrase;
 import org.springframework.stereotype.Component;
 
-import static org.agbrothers.englishbot.constant.CommonPhrase.RETURN_MAIN_MENU;
+import static org.agbrothers.englishbot.constant.CommonPhrase.RETURN_TO_MAIN_MENU;
 import static org.agbrothers.englishbot.constant.ButtonLabel.DICTIONARY;
 import static org.agbrothers.englishbot.constant.ButtonLabel.LESSONS;
 import static org.agbrothers.englishbot.constant.CommonPhrase.MAIN_MENU;
@@ -22,7 +22,7 @@ public class MainMenuMessageBuilder extends MessageBuilder {
             case LESSONS:
                 return getChoiceMadeText(LESSONS) + MAKE_CHOICE;
             default:
-                return CommonPhrase.INCORRECT_MESSAGE + RETURN_MAIN_MENU;
+                return CommonPhrase.INCORRECT_MESSAGE + RETURN_TO_MAIN_MENU;
         }
     }
 }

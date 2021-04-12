@@ -7,7 +7,7 @@ public final class CommonPhrase {
     public static final String MAIN_MENU = "/main_menu";
     public static final String ERROR_MESSAGE = "Сталась прикра технічна помилка. " +
             "Спробуйте перейти в головне меню - " + MAIN_MENU;
-    public static final String RETURN_MAIN_MENU = "  Для повернення в головне меню натисніть " + MAIN_MENU;
+    public static final String RETURN_TO_MAIN_MENU = "  Для повернення в головне меню натисніть " + MAIN_MENU;
     public static final String TYPED_WORD_ERROR = "Помилка в слові англійською або перекладі слова. Слово англійською має бути латиницею, переклад - лише кирилицею.";
     public static final String LESSON_ENDING = "Урок закінчено. Правильних відповідей - %d із %d.\n"; //count of words in lesson
     public static final String CORRECT_ANSWER = "Ви відповіли правильно! \n";
