@@ -15,6 +15,6 @@ public class SetupTelegramWebHookEventProd extends SetupTelegramWebHookEvent imp
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        setUpWebHook(botUrl);
+        System.out.println("Webhook will be set manually");
     }
 }

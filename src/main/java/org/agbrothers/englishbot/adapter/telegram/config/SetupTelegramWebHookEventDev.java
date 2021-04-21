@@ -19,9 +19,6 @@ public class SetupTelegramWebHookEventDev extends SetupTelegramWebHookEvent impl
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        String serverUrl = ngrokTunnelStarter.getNgrokBotServerUrl();
-        LOGGER.info("Acquired ngrok tunnel URL: {}", serverUrl);
-
-        setUpWebHook(serverUrl);
+        LOGGER.info("Webhook will be set manually");
     }
 }
