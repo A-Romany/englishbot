@@ -29,10 +29,11 @@ public abstract class SetupTelegramWebHookEvent {
         ResponseEntity<String> responseEntity = restTemplate.exchange(uri, HttpMethod.GET, null, String.class);
 
         if (responseEntity.getStatusCodeValue() != 200) {
-            throw new RuntimeException("Setting web hook failed. Check configuration.");
+            LOGGER.error("Setting web hook failed. Check configuration.");
+            LOGGER.error("Response from telegram API: " + responseEntity.getBody());
+        } else {
+            LOGGER.info("Web hook was set to {}", botUrl);
         }
-
-        LOGGER.info("Web hook was set to {}", botUrl);
     }
 
     @Autowired
