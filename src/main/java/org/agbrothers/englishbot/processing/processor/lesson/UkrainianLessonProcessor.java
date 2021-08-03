@@ -23,12 +23,12 @@ public class UkrainianLessonProcessor extends LessonProcessor {
     }
 
     @Override
-    protected List <Map<String, String>> formAnswersMap(List<Word> answers) {
-        List <Map<String, String>> keyboardMaps = new ArrayList<>();
-        Map<String, String> keyboardMap =  new LinkedHashMap<>();
-        for (Word answer : answers) {
-            keyboardMap.put(answer.getEnglishValue(), answer.getEnglishValue());
-        }
+    protected List<Map<String, String>> formAnswersMap(List<Word> answers) {
+        List<Map<String, String>> keyboardMaps = new ArrayList<>();
+        Map<String, String> keyboardMap = new LinkedHashMap<>();
+
+        answers.forEach(wrd -> keyboardMap.put(wrd.getEnglishValue(), wrd.getEnglishValue()));
+
         keyboardMaps.add(keyboardMap);
         return keyboardMaps;
     }

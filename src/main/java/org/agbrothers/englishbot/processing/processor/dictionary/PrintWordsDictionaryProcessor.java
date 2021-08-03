@@ -10,7 +10,11 @@ import org.agbrothers.englishbot.service.DictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.agbrothers.englishbot.constant.CommonPhrase.MAKE_CHOICE;
 
@@ -25,8 +29,7 @@ public class PrintWordsDictionaryProcessor implements Processor {
 
         if (allWordsSorted.size() < 13) {
             exchange.appendResponseMessageText(printWords(allWordsSorted));
-        }
-        else {
+        } else {
             String messageText = exchange.getMessageText();
             exchange.appendResponseMessageText(getResponseMessageText(allWordsSorted, messageText));
             exchange.setResponseButtons(getKeyboardButtons(getWordListsByFirstWord(allWordsSorted)));
@@ -39,8 +42,7 @@ public class PrintWordsDictionaryProcessor implements Processor {
         Map<String, List<Word>> wordListsByFirstWord = getWordListsByFirstWord(list);
         if ((list.size() > 12) && (!wordListsByFirstWord.containsKey(messageText))) {
             result = CommonPhrase.SELECT_RANGE;
-        }
-        else if (wordListsByFirstWord.containsKey(messageText)) {
+        } else if (wordListsByFirstWord.containsKey(messageText)) {
             result = printWords(wordListsByFirstWord.get(messageText));
         }
         return result;
@@ -56,8 +58,7 @@ public class PrintWordsDictionaryProcessor implements Processor {
             int firstWordIndex = i * 10; //currentDozen
             if (i + 1 == dozensCount) {
                 result.put(allWordsSorted.get(firstWordIndex).getEnglishValue(), allWordsSorted.subList(firstWordIndex, allWordsSorted.size()));
-            }
-            else {
+            } else {
                 result.put(allWordsSorted.get(firstWordIndex).getEnglishValue(), allWordsSorted.subList(firstWordIndex, firstWordIndex + 10));
             }
         }
@@ -88,10 +89,8 @@ public class PrintWordsDictionaryProcessor implements Processor {
 
     private String printWords(List<Word> list) {
         StringBuilder printWords = new StringBuilder();
-        for (Word word : list) {
-            printWords.append(word.getEnglishValue()).append(StringPart.HYPHEN).
-                    append(word.getUkrainianValue()).append(StringPart.NEWLINE);
-        }
+        list.forEach(w -> printWords.append(w.getEnglishValue()).append(StringPart.HYPHEN).
+                append(w.getUkrainianValue()).append(StringPart.NEWLINE));
         return printWords.toString();
     }
 

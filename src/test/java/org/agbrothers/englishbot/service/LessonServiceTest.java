@@ -6,7 +6,11 @@ import org.agbrothers.englishbot.entity.Word;
 import org.agbrothers.englishbot.repository.LessonRepository;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -140,10 +144,9 @@ class LessonServiceTest {
     @Test
     void getAnswers_HasCurrentWordInLesson_ExpectAnswerList() {
         User user = new User();
-        List<Word> words = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            words.add(new Word());
-        }
+
+        List<Word> words = Stream.generate(Word::new).limit(10).collect(Collectors.toList());
+
         Lesson lesson = new Lesson(words, words, user);
         lesson.setCurrentWord(words.get(0));
 

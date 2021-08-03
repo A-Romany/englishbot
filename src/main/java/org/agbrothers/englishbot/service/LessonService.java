@@ -7,7 +7,11 @@ import org.agbrothers.englishbot.repository.LessonRepository;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LessonService {
@@ -37,7 +41,7 @@ public class LessonService {
     }
 
     public void removeLesson(Lesson lesson, User user) {
-        if(lessonRepository.findLessonByUser(user) != null) {
+        if (lessonRepository.findLessonByUser(user) != null) {
             lessonRepository.delete(lesson);
         }
     }
@@ -54,19 +58,20 @@ public class LessonService {
     }
 
     public List<Word> getAnswers(Lesson lesson) {
-        if (lesson.getCurrentWord() == null) {
+        Word currentWord = lesson.getCurrentWord();
+        if (currentWord == null) {
             return Collections.emptyList();
         }
-        List<Word> answers = new ArrayList<>();
-        answers.add(lesson.getCurrentWord());
 
         List<Word> answersPool = lesson.getAnswersPool();
         Collections.shuffle(answersPool, new SecureRandom());
-        for (int i = 0; answers.size() < 5; i++) {
-            if (!answersPool.get(i).equals(lesson.getCurrentWord())) {
-                answers.add(answersPool.get(i));
-            }
-        }
+
+        List<Word> answers = answersPool.stream()
+                .filter(word -> !(currentWord.equals(word)))
+                .limit(4)
+                .collect(Collectors.toList());
+        answers.add(currentWord);
+
         Collections.shuffle(answers, new SecureRandom());
         return answers;
     }
