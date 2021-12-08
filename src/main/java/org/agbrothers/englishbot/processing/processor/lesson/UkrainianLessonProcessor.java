@@ -18,7 +18,7 @@ public class UkrainianLessonProcessor extends LessonProcessor {
     }
 
     @Override
-    protected String getValueToTranslate(Word word) {
+    protected String getMessageToTranslate(Word word) {
         return word.getUkrainianValue();
     }
 

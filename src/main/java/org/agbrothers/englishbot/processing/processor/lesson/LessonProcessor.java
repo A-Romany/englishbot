@@ -22,7 +22,7 @@ public abstract class LessonProcessor implements Processor {
 
     protected abstract String getCorrectAnswer(Word word);
 
-    protected abstract String getValueToTranslate(Word word);
+    protected abstract String getMessageToTranslate(Word word);
 
     protected abstract List<Map<String, String>> formAnswersMap(List<Word> answers);
 
@@ -57,7 +57,7 @@ public abstract class LessonProcessor implements Processor {
                     lesson.getCountCorrectAnswers(),
                     (lesson.getCountIncorrectAnswer() + lesson.getCountCorrectAnswers()));
         } else {
-            return result + getValueToTranslate(wordQuestion);
+            return result + getMessageToTranslate(wordQuestion);
         }
     }
 
@@ -73,6 +73,7 @@ public abstract class LessonProcessor implements Processor {
         List<Map<String, String>> keyboardMaps = new ArrayList<>();
         Map<String, String> keyboardMap = new LinkedHashMap<>();
         keyboardMap.put(ButtonLabel.ENGLISH, ButtonLabel.ENGLISH);
+        keyboardMap.put(ButtonLabel.ENGLISH_AUDIO, ButtonLabel.ENGLISH_AUDIO);
         keyboardMap.put(ButtonLabel.UKRAINIAN, ButtonLabel.UKRAINIAN);
         keyboardMaps.add(keyboardMap);
 
@@ -82,5 +83,9 @@ public abstract class LessonProcessor implements Processor {
     @Autowired
     public void setLessonService(LessonService lessonService) {
         this.lessonService = lessonService;
+    }
+
+    public LessonService getLessonService() {
+        return lessonService;
     }
 }

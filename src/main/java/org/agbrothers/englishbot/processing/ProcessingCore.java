@@ -54,6 +54,10 @@ public class ProcessingCore {
             return;
         }
 
+        if(exchange.getAudio() != null) {
+            telegramBot.sendAudioMessage(user.getChatId(), exchange.getAudio());
+        }
+
         if (exchange.getResponseButtons() == null) {
             telegramBot.sendTextMessage(user.getChatId(), exchange.getResponseMessageText());
         } else {
@@ -75,6 +79,9 @@ public class ProcessingCore {
                 break;
             case ButtonLabel.ENGLISH:
                 user.setStateId(State.ENGLISH_LESSON);
+                break;
+            case ButtonLabel.ENGLISH_AUDIO:
+                user.setStateId(State.ENGLISH_AUDIO_LESSON);
                 break;
             case ButtonLabel.UKRAINIAN:
                 user.setStateId(State.UKRAINIAN_LESSON);

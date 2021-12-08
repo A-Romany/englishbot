@@ -7,7 +7,9 @@ import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
+import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -15,6 +17,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import javax.annotation.PostConstruct;
+import javax.sound.sampled.AudioFormat;
 import java.util.*;
 
 /**
@@ -62,6 +65,21 @@ public class TelegramBot extends TelegramWebhookBot {
     }
 
     /**
+     * Send audio message to telegram chat
+     *
+     * @param chatId the id of the user
+     * @param audio  the audio message
+     */
+    public void sendAudioMessage(String chatId, InputFile audio) {
+        SendAudio sendAudio = new SendAudio().setChatId(chatId).setAudio(audio);
+        try {
+            execute(sendAudio);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Send quick reply message (with buttons) to telegram chat
      *
      * @param chatId   the id of the user
@@ -84,6 +102,10 @@ public class TelegramBot extends TelegramWebhookBot {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+    }
+
+    private void sendAudio(String chatId, AudioFormat audioFormat){
+
     }
 
     private List<List<InlineKeyboardButton>> createInlineKeyboardButtonsRows(List <Map <String, String>> buttonsMaps) {
