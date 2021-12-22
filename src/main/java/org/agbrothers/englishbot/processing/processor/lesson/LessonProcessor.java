@@ -5,6 +5,7 @@ import org.agbrothers.englishbot.constant.CommonPhrase;
 import org.agbrothers.englishbot.constant.State;
 import org.agbrothers.englishbot.constant.StringPart;
 import org.agbrothers.englishbot.entity.Lesson;
+import org.agbrothers.englishbot.entity.ResponseMessage;
 import org.agbrothers.englishbot.entity.Word;
 import org.agbrothers.englishbot.processing.ProcessingExchange;
 import org.agbrothers.englishbot.processing.processor.Processor;
@@ -22,7 +23,7 @@ public abstract class LessonProcessor implements Processor {
 
     protected abstract String getCorrectAnswer(Word word);
 
-    protected abstract String getMessageToTranslate(Word word);
+    protected abstract String getValueToTranslate(Word word);
 
     protected abstract List<Map<String, String>> formAnswersMap(List<Word> answers);
 
@@ -31,10 +32,14 @@ public abstract class LessonProcessor implements Processor {
         Lesson lesson = lessonService.getLesson(exchange.getUser());
         String messageText = exchange.getMessageText();
 
+        ResponseMessage responseMessage = new ResponseMessage();
+        exchange.getResponseMessageList().add(responseMessage);
+
         String responseMessageText = getResponseMessageText(messageText, lesson);
         exchange.appendResponseMessageText(responseMessageText);
 
-        exchange.setResponseButtons(getKeyboardButtons(lesson));
+        responseMessage.setResponseButtons(getKeyboardButtons(lesson));
+
         exchange.setExchangeState(State.READY_TO_SEND);
     }
 
@@ -57,7 +62,7 @@ public abstract class LessonProcessor implements Processor {
                     lesson.getCountCorrectAnswers(),
                     (lesson.getCountIncorrectAnswer() + lesson.getCountCorrectAnswers()));
         } else {
-            return result + getMessageToTranslate(wordQuestion);
+            return result + getValueToTranslate(wordQuestion);
         }
     }
 

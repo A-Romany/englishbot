@@ -4,6 +4,7 @@ import org.agbrothers.englishbot.adapter.telegram.TelegramBot;
 import org.agbrothers.englishbot.constant.ButtonLabel;
 import org.agbrothers.englishbot.constant.CommonPhrase;
 import org.agbrothers.englishbot.constant.State;
+import org.agbrothers.englishbot.entity.ResponseMessage;
 import org.agbrothers.englishbot.entity.User;
 import org.agbrothers.englishbot.messagebuilder.MessageBuilder;
 import org.agbrothers.englishbot.processing.processor.Processor;
@@ -44,7 +45,7 @@ public class ProcessingCore {
 
         try {
             processor.process(exchange);
-            while(!State.READY_TO_SEND.equals(exchange.getExchangeState())){
+            while (!State.READY_TO_SEND.equals(exchange.getExchangeState())) {
                 processor = processorFactory.getProcessorByState(exchange.getExchangeState());
                 processor.process(exchange);
             }
@@ -54,20 +55,19 @@ public class ProcessingCore {
             return;
         }
 
-        if(exchange.getAudio() != null) {
-            telegramBot.sendAudioMessage(user.getChatId(), exchange.getAudio());
-        }
-
-        if (exchange.getResponseButtons() == null) {
-            telegramBot.sendTextMessage(user.getChatId(), exchange.getResponseMessageText());
-        } else {
-            List<Map<String, String>> responseButtons = exchange.getResponseButtons();
-            if (!State.MAIN_MENU.equals(user.getChatId())) {
-                responseButtons.add(getMainMenuButton());
+        for (ResponseMessage responseMessage : exchange.getResponseMessageList()) {
+            if (responseMessage.getAudio() != null) {
+                telegramBot.sendAudioMessage(user.getChatId(), responseMessage.getAudio());
+            } else if (responseMessage.getResponseButtons() == null) {
+                telegramBot.sendTextMessage(user.getChatId(), responseMessage.getResponseMessageText());
+            } else {
+                List<Map<String, String>> responseButtons = responseMessage.getResponseButtons();
+                if (!State.MAIN_MENU.equals(user.getChatId())) {
+                    responseButtons.add(getMainMenuButton());
+                }
+                telegramBot.sendMessageWithKeyboard(user.getChatId(), responseMessage.getResponseMessageText(), responseButtons);
             }
-            telegramBot.sendMessageWithKeyboard(user.getChatId(), exchange.getResponseMessageText(), responseButtons);
         }
-
         userService.saveAndFlushUser(user);
     }
 

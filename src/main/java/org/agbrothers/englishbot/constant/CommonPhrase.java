@@ -14,6 +14,7 @@ public final class CommonPhrase {
     public static final String CORRECT_ANSWER = "Ви відповіли правильно! \n";
     public static final String INCORRECT_ANSWER = "Відповідь не вірна! Правильна відповідь - ";
     public static final String MAKE_CHOICE = "Будь ласка, зробіть свій вибір";
+    public static final String MAKE_CHOICE_AUDIO = "Прослухайте аудіофайл і виберіть правильну відповідність: ";
     public static final String HELLO_MESSAGE = "Привіт, я дуже радий, що ти хочеш покращити свої знання англійської мови!!!" +
             " Маю надію, що я тобі в цьому допоможу!)) ";
     public static final String YOU_CHOOSE = "Ви вибрали ";

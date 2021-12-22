@@ -1,18 +1,17 @@
 package org.agbrothers.englishbot.processing;
 
+import org.agbrothers.englishbot.entity.ResponseMessage;
 import org.agbrothers.englishbot.entity.User;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ProcessingExchange {
     private User user;
     private String messageText;
-    private String responseMessageText = "";
-    private List <Map<String, String>> responseButtons;
+    private List<ResponseMessage> responseMessageList = new ArrayList<>();
     private String exchangeState;
-    private InputFile audio;
+
 
     public ProcessingExchange(User user, String messageText) {
         this.user = user;
@@ -23,7 +22,7 @@ public class ProcessingExchange {
         return user;
     }
 
-     public String getMessageText() {
+    public String getMessageText() {
         return messageText;
     }
 
@@ -31,24 +30,20 @@ public class ProcessingExchange {
         this.messageText = messageText;
     }
 
-    public String getResponseMessageText() {
-        return responseMessageText;
-    }
+    public void appendResponseMessageText(String textToAppend) {
 
-    public void appendResponseMessageText(String responseMessageText) {
-        if (this.responseMessageText.equals("")) {
-            this.responseMessageText = responseMessageText;
-        } else {
-            this.responseMessageText = this.responseMessageText + "\n" + responseMessageText;
+        if (responseMessageList.size() < 1) {
+            responseMessageList.add(new ResponseMessage());
         }
-    }
 
-    public List<Map<String, String>> getResponseButtons() {
-        return responseButtons;
-    }
+        ResponseMessage responseMessage = getResponseMessageList().get(0);
+        String responseMessageText = responseMessage.getResponseMessageText();
 
-    public void setResponseButtons(List <Map<String, String>> responseButtons) {
-        this.responseButtons = responseButtons;
+        if (responseMessageText.equals("")) {
+            responseMessage.setResponseMessageText(textToAppend);
+        } else {
+            responseMessage.setResponseMessageText(responseMessageText + "\n" + textToAppend);
+        }
     }
 
     public String getExchangeState() {
@@ -59,12 +54,8 @@ public class ProcessingExchange {
         this.exchangeState = exchangeState;
     }
 
-    public InputFile getAudio() {
-        return audio;
-    }
-
-    public void setAudio(InputFile audio) {
-        this.audio = audio;
+    public List<ResponseMessage> getResponseMessageList() {
+        return responseMessageList;
     }
 
 }

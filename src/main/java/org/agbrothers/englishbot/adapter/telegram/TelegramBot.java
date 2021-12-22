@@ -17,8 +17,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import javax.annotation.PostConstruct;
-import javax.sound.sampled.AudioFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a telegram bot that sends response messages to the user.
@@ -86,7 +87,7 @@ public class TelegramBot extends TelegramWebhookBot {
      * @param messageText   the text of the message
      * @param buttonLabels  the labels for buttons
      */
-    public void sendMessageWithKeyboard(String chatId, String messageText, List <Map<String, String>> buttonLabels) {
+    public void sendMessageWithKeyboard(String chatId, String messageText, List<Map<String, String>> buttonLabels) {
         SendMessage sendMessage = new SendMessage();
         InlineKeyboardMarkup replyKeyboard = new InlineKeyboardMarkup();
         // add answers to the keyboard
@@ -102,10 +103,6 @@ public class TelegramBot extends TelegramWebhookBot {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-    }
-
-    private void sendAudio(String chatId, AudioFormat audioFormat){
-
     }
 
     private List<List<InlineKeyboardButton>> createInlineKeyboardButtonsRows(List <Map <String, String>> buttonsMaps) {

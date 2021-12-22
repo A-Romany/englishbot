@@ -12,7 +12,7 @@ class EnglishLessonProcessorTest {
         EnglishLessonProcessor englishLessonProcessor = new EnglishLessonProcessor();
         Word word = new Word("word", "слово");
 
-        String result = englishLessonProcessor.getMessageToTranslate(word);
+        String result = englishLessonProcessor.getValueToTranslate(word);
 
         assertEquals("word", result);
     }

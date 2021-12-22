@@ -5,6 +5,7 @@ import org.agbrothers.englishbot.constant.ButtonLabel;
 import org.agbrothers.englishbot.constant.CommonPhrase;
 import org.agbrothers.englishbot.constant.State;
 import org.agbrothers.englishbot.constant.StringPart;
+import org.agbrothers.englishbot.entity.ResponseMessage;
 import org.agbrothers.englishbot.messagebuilder.MainMenuMessageBuilder;
 import org.agbrothers.englishbot.processing.ProcessingExchange;
 import org.agbrothers.englishbot.repository.WordRepository;
@@ -29,14 +30,16 @@ public class MainMenuProcessor implements Processor {
             exchange.appendResponseMessageText(String.format(CommonPhrase.ADD_WORDS, (10 - numberOfWord)) + StringPart.NEWLINE);
             exchange.setExchangeState(State.PRINTING_WORDS);
             List<Map<String, String>> keyboardButtons = mainMenuButtonsBuilder.getKeyboardButtons(State.DICTIONARY);
-            exchange.setResponseButtons(keyboardButtons);
+            ResponseMessage responseButtons = new ResponseMessage();
+            responseButtons.setResponseButtons(keyboardButtons);
+            exchange.getResponseMessageList().add(responseButtons);
         } else {
             String requestMessageText = exchange.getMessageText();
             String responseMessageText = mainMenuMessageBuilder.getResponseMessageText(requestMessageText);
             exchange.appendResponseMessageText(responseMessageText);
 
             List<Map<String, String>> keyboardButtons = mainMenuButtonsBuilder.getKeyboardButtons(requestMessageText);
-            exchange.setResponseButtons(keyboardButtons);
+            exchange.getResponseMessageList().get(0).setResponseButtons(keyboardButtons);
             exchange.setExchangeState(State.READY_TO_SEND);
         }
     }

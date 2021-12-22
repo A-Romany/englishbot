@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class EnglishLessonProcessor extends AbstractEnglishLessonProcessor {
 
     @Override
-    protected String getMessageToTranslate(Word word) {
+    protected String getValueToTranslate(Word word) {
         return word.getEnglishValue();
     }
 
