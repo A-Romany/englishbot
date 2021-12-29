@@ -25,23 +25,28 @@ public class MainMenuProcessor implements Processor {
     @Override
     public void process(ProcessingExchange exchange) {
         if (exchange.getMessageText().equals(ButtonLabel.LESSONS) && (getNumberOfWord() < 10)) {
-            int numberOfWord = getNumberOfWord();
-
-            exchange.appendResponseMessageText(String.format(CommonPhrase.ADD_WORDS, (10 - numberOfWord)) + StringPart.NEWLINE);
-            exchange.setExchangeState(State.PRINTING_WORDS);
-            List<Map<String, String>> keyboardButtons = mainMenuButtonsBuilder.getKeyboardButtons(State.DICTIONARY);
-            ResponseMessage responseButtons = new ResponseMessage();
-            responseButtons.setResponseButtons(keyboardButtons);
-            exchange.getResponseMessageList().add(responseButtons);
+            sendMessageNotEnoughWordsWithDictionaryButtons(exchange);
         } else {
+            ResponseMessage responseMessage = new ResponseMessage();
+
             String requestMessageText = exchange.getMessageText();
-            String responseMessageText = mainMenuMessageBuilder.getResponseMessageText(requestMessageText);
-            exchange.appendResponseMessageText(responseMessageText);
 
             List<Map<String, String>> keyboardButtons = mainMenuButtonsBuilder.getKeyboardButtons(requestMessageText);
-            exchange.getResponseMessageList().get(0).setResponseButtons(keyboardButtons);
-            exchange.setExchangeState(State.READY_TO_SEND);
+            responseMessage.setResponseButtons(keyboardButtons);
+            exchange.getResponseMessages().add(responseMessage);
+
+            String responseMessageText = mainMenuMessageBuilder.getResponseMessageText(requestMessageText);
+            exchange.appendResponseMessageText(responseMessageText);
         }
+        exchange.setExchangeState(State.READY_TO_SEND);
+    }
+
+    private void sendMessageNotEnoughWordsWithDictionaryButtons(ProcessingExchange exchange) {
+        exchange.appendResponseMessageText(String.format(CommonPhrase.ADD_WORDS, (10 - getNumberOfWord())) + StringPart.NEWLINE);
+        exchange.setExchangeState(State.PRINTING_WORDS);
+        List<Map<String, String>> keyboardButtons = mainMenuButtonsBuilder.getKeyboardButtons(State.DICTIONARY);
+
+        exchange.getResponseMessages().get(0).setResponseButtons(keyboardButtons);
     }
 
     @Autowired

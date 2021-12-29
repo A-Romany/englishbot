@@ -9,7 +9,7 @@ import java.util.List;
 public class ProcessingExchange {
     private User user;
     private String messageText;
-    private List<ResponseMessage> responseMessageList = new ArrayList<>();
+    private List<ResponseMessage> responseMessages = new ArrayList<>();
     private String exchangeState;
 
 
@@ -32,11 +32,11 @@ public class ProcessingExchange {
 
     public void appendResponseMessageText(String textToAppend) {
 
-        if (responseMessageList.size() < 1) {
-            responseMessageList.add(new ResponseMessage());
+        if (responseMessages.isEmpty()) {
+            responseMessages.add(new ResponseMessage());
         }
 
-        ResponseMessage responseMessage = getResponseMessageList().get(0);
+        ResponseMessage responseMessage = getResponseMessages().get(0);
         String responseMessageText = responseMessage.getResponseMessageText();
 
         if (responseMessageText.equals("")) {
@@ -54,8 +54,8 @@ public class ProcessingExchange {
         this.exchangeState = exchangeState;
     }
 
-    public List<ResponseMessage> getResponseMessageList() {
-        return responseMessageList;
+    public List<ResponseMessage> getResponseMessages() {
+        return responseMessages;
     }
 
 }

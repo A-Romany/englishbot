@@ -33,7 +33,7 @@ public abstract class LessonProcessor implements Processor {
         String messageText = exchange.getMessageText();
 
         ResponseMessage responseMessage = new ResponseMessage();
-        exchange.getResponseMessageList().add(responseMessage);
+        exchange.getResponseMessages().add(responseMessage);
 
         String responseMessageText = getResponseMessageText(messageText, lesson);
         exchange.appendResponseMessageText(responseMessageText);

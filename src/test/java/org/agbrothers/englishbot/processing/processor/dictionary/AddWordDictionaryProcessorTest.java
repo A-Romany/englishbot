@@ -32,7 +32,7 @@ class AddWordDictionaryProcessorTest {
 
         addWordDictionaryProcessor.process(exchange);
 
-        String result = exchange.getResponseMessageList().get(0).getResponseMessageText();
+        String result = exchange.getResponseMessages().get(0).getResponseMessageText();
         assertEquals("Введіть слово англійською та його переклад через пробіл", result);
         verify(dictionaryService, never()).addWord(any(Word.class));
     }
@@ -46,7 +46,7 @@ class AddWordDictionaryProcessorTest {
 
         addWordDictionaryProcessor.process(exchange1);
 
-        String result1 = exchange1.getResponseMessageList().get(0).getResponseMessageText();
+        String result1 = exchange1.getResponseMessages().get(0).getResponseMessageText();
         assertEquals("Слово sea - море було додано до словника.", result1);
 
         ArgumentCaptor<Word> captor = ArgumentCaptor.forClass(Word.class);
@@ -54,7 +54,7 @@ class AddWordDictionaryProcessorTest {
         assertEquals("sea", captor.getValue().getEnglishValue());
 
         addWordDictionaryProcessor.process(exchange2);
-        String result2 = exchange2.getResponseMessageList().get(0).getResponseMessageText();
+        String result2 = exchange2.getResponseMessages().get(0).getResponseMessageText();
         assertEquals("Слово fly - муха було додано до словника.", result2);
 
         verify(dictionaryService, times(2)).addWord(captor.capture());
@@ -71,7 +71,7 @@ class AddWordDictionaryProcessorTest {
 
         addWordDictionaryProcessor.process(exchange);
 
-        String result = exchange.getResponseMessageList().get(0).getResponseMessageText();
+        String result = exchange.getResponseMessages().get(0).getResponseMessageText();
         assertEquals("Слово sea - море вже існує у Вашому словнику.", result);
         verify(dictionaryService, never()).addWord(any(Word.class));
     }
@@ -86,13 +86,13 @@ class AddWordDictionaryProcessorTest {
         addWordDictionaryProcessor.process(exchange2);
         addWordDictionaryProcessor.process(exchange3);
 
-        String result1 = exchange1.getResponseMessageList().get(0).getResponseMessageText();
+        String result1 = exchange1.getResponseMessages().get(0).getResponseMessageText();
         assertEquals(TYPED_WORD_ERROR, result1);
 
-        String result2 = exchange2.getResponseMessageList().get(0).getResponseMessageText();
+        String result2 = exchange2.getResponseMessages().get(0).getResponseMessageText();
         assertEquals(TYPED_WORD_ERROR, result2);
 
-        String result3 = exchange3.getResponseMessageList().get(0).getResponseMessageText();
+        String result3 = exchange3.getResponseMessages().get(0).getResponseMessageText();
         assertEquals(TYPED_WORD_ERROR, result3);
 
         verify(dictionaryService, never()).addWord(any(Word.class));

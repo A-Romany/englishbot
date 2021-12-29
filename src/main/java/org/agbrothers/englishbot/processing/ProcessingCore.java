@@ -41,21 +41,10 @@ public class ProcessingCore {
         applyUserSate(messageText, user);
 
         ProcessingExchange exchange = new ProcessingExchange(user, messageText);
-        Processor processor = processorFactory.getProcessorByState(user.getStateId());
 
-        try {
-            processor.process(exchange);
-            while (!State.READY_TO_SEND.equals(exchange.getExchangeState())) {
-                processor = processorFactory.getProcessorByState(exchange.getExchangeState());
-                processor.process(exchange);
-            }
-        } catch (ProcessingException e) {
-            //log and send error message
-            telegramBot.sendTextMessage(user.getChatId(), CommonPhrase.ERROR_MESSAGE);
-            return;
-        }
+        processExchange(exchange);
 
-        for (ResponseMessage responseMessage : exchange.getResponseMessageList()) {
+        for (ResponseMessage responseMessage : exchange.getResponseMessages()) {
             if (responseMessage.getAudio() != null) {
                 telegramBot.sendAudioMessage(user.getChatId(), responseMessage.getAudio());
             } else if (responseMessage.getResponseButtons() == null) {
@@ -69,6 +58,20 @@ public class ProcessingCore {
             }
         }
         userService.saveAndFlushUser(user);
+    }
+
+    private void processExchange(ProcessingExchange exchange) {
+        Processor processor = processorFactory.getProcessorByState(exchange.getUser().getStateId());
+
+        try {
+            do {
+                processor.process(exchange);
+            }
+            while (!State.READY_TO_SEND.equals(exchange.getExchangeState()));
+        } catch (ProcessingException e) {
+            //log and send error message
+            telegramBot.sendTextMessage(exchange.getUser().getChatId(), CommonPhrase.ERROR_MESSAGE);
+        }
     }
 
     private void applyUserSate(String messageText, User user) {
