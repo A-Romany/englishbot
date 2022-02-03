@@ -28,7 +28,7 @@ class AddWordDictionaryProcessorTest {
 
     @Test
     void process_messageTextEqualsAddWord_EnterWord() {
-        ProcessingExchange exchange = new ProcessingExchange(user, ADD_WORD);
+        ProcessingExchange exchange = new ProcessingExchange(user, ADD_WORD, user.getStateId());
 
         addWordDictionaryProcessor.process(exchange);
 
@@ -39,8 +39,8 @@ class AddWordDictionaryProcessorTest {
 
     @Test
     void process_receiveWordAndTranslation_AddingWord() {
-        ProcessingExchange exchange1 = new ProcessingExchange(user, "sea море");
-        ProcessingExchange exchange2 = new ProcessingExchange(user, "  fly   муха ");
+        ProcessingExchange exchange1 = new ProcessingExchange(user, "sea море", user.getStateId());
+        ProcessingExchange exchange2 = new ProcessingExchange(user, "  fly   муха ", user.getStateId());
 
         when(dictionaryService.getWordByEnglishValue("sea")).thenReturn(null);
 
@@ -65,7 +65,7 @@ class AddWordDictionaryProcessorTest {
 
     @Test
     void process_messageTextValidatedNewWord_NotAddingWord() {
-        ProcessingExchange exchange = new ProcessingExchange(user, "sea море");
+        ProcessingExchange exchange = new ProcessingExchange(user, "sea море", user.getStateId());
 
         when(dictionaryService.getWordByEnglishValue("sea")).thenReturn(new Word("sea", "море"));
 
@@ -78,9 +78,9 @@ class AddWordDictionaryProcessorTest {
 
     @Test
     void process_messageTextValidatedNewWord_NotValidatedWord() {
-        ProcessingExchange exchange1 = new ProcessingExchange(user, "se4a море");
-        ProcessingExchange exchange2 = new ProcessingExchange(user, "море sea");
-        ProcessingExchange exchange3 = new ProcessingExchange(user, "sea мор7е");
+        ProcessingExchange exchange1 = new ProcessingExchange(user, "se4a море", user.getStateId());
+        ProcessingExchange exchange2 = new ProcessingExchange(user, "море sea", user.getStateId());
+        ProcessingExchange exchange3 = new ProcessingExchange(user, "sea мор7е", user.getStateId());
 
         addWordDictionaryProcessor.process(exchange1);
         addWordDictionaryProcessor.process(exchange2);

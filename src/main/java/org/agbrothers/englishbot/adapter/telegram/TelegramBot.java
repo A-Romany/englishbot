@@ -1,5 +1,6 @@
 package org.agbrothers.englishbot.adapter.telegram;
 
+import org.agbrothers.englishbot.constant.Constant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.ApiContextInitializer;
@@ -36,8 +37,6 @@ public class TelegramBot extends TelegramWebhookBot {
 
     @Value("${telegram.name}")
     private String botName;
-
-    private static final int BUTTONS_IN_ROW = 2;
 
     /**
      * Register this component to be used for processing Telegram updates.
@@ -111,7 +110,7 @@ public class TelegramBot extends TelegramWebhookBot {
 
         for (Map<String, String> buttonsMap : buttonsMaps) {
             for (Map.Entry<String, String> button : buttonsMap.entrySet()) {
-                if (row == null || row.size() == BUTTONS_IN_ROW) {
+                if (row == null || row.size() == Constant.BUTTONS_IN_ROW) {
                     row = new ArrayList<>();
                     result.add(row);
                 }

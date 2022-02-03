@@ -1,5 +1,6 @@
 package org.agbrothers.englishbot.service;
 
+import org.agbrothers.englishbot.constant.Constant;
 import org.agbrothers.englishbot.entity.Lesson;
 import org.agbrothers.englishbot.entity.User;
 import org.agbrothers.englishbot.entity.Word;
@@ -68,7 +69,7 @@ public class LessonService {
 
         List<Word> answers = answersPool.stream()
                 .filter(word -> !(currentWord.equals(word)))
-                .limit(4)
+                .limit(Constant.NUMBER_OF_ANSWER_OPTIONS - 1)
                 .collect(Collectors.toList());
         answers.add(currentWord);
 

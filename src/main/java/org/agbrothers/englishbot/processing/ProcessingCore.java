@@ -40,7 +40,7 @@ public class ProcessingCore {
 
         applyUserSate(messageText, user);
 
-        ProcessingExchange exchange = new ProcessingExchange(user, messageText);
+        ProcessingExchange exchange = new ProcessingExchange(user, messageText, user.getStateId());
 
         processExchange(exchange);
 
@@ -61,13 +61,13 @@ public class ProcessingCore {
     }
 
     private void processExchange(ProcessingExchange exchange) {
-        Processor processor = processorFactory.getProcessorByState(exchange.getUser().getStateId());
+        Processor processor;
 
         try {
             do {
+                processor = processorFactory.getProcessorByState(exchange.getExchangeState());
                 processor.process(exchange);
-            }
-            while (!State.READY_TO_SEND.equals(exchange.getExchangeState()));
+            } while (!State.READY_TO_SEND.equals(exchange.getExchangeState()));
         } catch (ProcessingException e) {
             //log and send error message
             telegramBot.sendTextMessage(exchange.getUser().getChatId(), CommonPhrase.ERROR_MESSAGE);

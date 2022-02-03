@@ -10,17 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 
-import static org.agbrothers.englishbot.constant.CommonPhrase.MAKE_CHOICE_AUDIO;
+import static org.agbrothers.englishbot.constant.CommonPhrase.LISTEN_TO_AUDIO;
+import static org.agbrothers.englishbot.constant.CommonPhrase.MAKE_CHOICE;
 
 @Component
 public class EnglishAudioLessonProcessor extends AbstractEnglishLessonProcessor {
 
-    @Autowired
+
     private TextToSpeechClient voicerssTextToSpeechClient;
 
     @Override
     public String getValueToTranslate(Word word) {
-        return "";
+        return ""; //TODO: EN-67 (appendResponseMessageText)
     }
 
     @Override
@@ -30,8 +31,8 @@ public class EnglishAudioLessonProcessor extends AbstractEnglishLessonProcessor 
         addTextMessage(exchange, lesson);
 
         if (lesson.getCurrentWord() != null) {
-            exchange.appendResponseMessageText(MAKE_CHOICE_AUDIO);
-            addAudioMessage(exchange, lesson);
+            exchange.appendResponseMessageText(LISTEN_TO_AUDIO); //TODO: EN-67 (appendResponseMessageText)
+            addResponseWithAudio(exchange, lesson);
             addTextMessageWithButtons(exchange, lesson);
         }
 
@@ -39,17 +40,17 @@ public class EnglishAudioLessonProcessor extends AbstractEnglishLessonProcessor 
     }
 
     private void addTextMessage(ProcessingExchange exchange, Lesson lesson) {
-        ResponseMessage textResponseMessage = new ResponseMessage();
+        ResponseMessage responseMessage = new ResponseMessage();
         String responseMessageText = getResponseMessageText(exchange.getMessageText(), lesson);
 
-        textResponseMessage.setResponseMessageText(responseMessageText);
+        responseMessage.setResponseMessageText(responseMessageText);
         if (lesson.getCurrentWord() == null) {
-            textResponseMessage.setResponseButtons(getKeyboardButtons(lesson));
+            responseMessage.setResponseButtons(getKeyboardButtons(lesson));
         }
-        exchange.getResponseMessages().add(textResponseMessage);
+        exchange.getResponseMessages().add(responseMessage);
     }
 
-    private void addAudioMessage(ProcessingExchange exchange, Lesson lesson) {
+    private void addResponseWithAudio(ProcessingExchange exchange, Lesson lesson) {
         InputFile inputFile = new InputFile(voicerssTextToSpeechClient.getAudioFile(lesson.getCurrentWord().getEnglishValue()), "audio");
 
         ResponseMessage audioResponseMessage =  new ResponseMessage();
@@ -61,10 +62,19 @@ public class EnglishAudioLessonProcessor extends AbstractEnglishLessonProcessor 
     private void addTextMessageWithButtons(ProcessingExchange exchange, Lesson lesson) {
         ResponseMessage responseMessageWithButtons =  new ResponseMessage();
 
-
-        responseMessageWithButtons.setResponseMessageText("Виберіть правильну відповідь:");
+        responseMessageWithButtons.setResponseMessageText(MAKE_CHOICE);
         responseMessageWithButtons.setResponseButtons(getKeyboardButtons(lesson));
 
         exchange.getResponseMessages().add(responseMessageWithButtons);
+    }
+
+
+    @Autowired
+    public void setVoicerssTextToSpeechClient(TextToSpeechClient voicerssTextToSpeechClient) {
+        this.voicerssTextToSpeechClient = voicerssTextToSpeechClient;
+    }
+
+    public TextToSpeechClient getVoicerssTextToSpeechClient() {
+        return voicerssTextToSpeechClient;
     }
 }

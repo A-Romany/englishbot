@@ -33,7 +33,7 @@ public abstract class LessonProcessor implements Processor {
         String messageText = exchange.getMessageText();
 
         ResponseMessage responseMessage = new ResponseMessage();
-        exchange.getResponseMessages().add(responseMessage);
+        exchange.getResponseMessages().add(responseMessage); //TODO: EN-67 (appendResponseMessageText)
 
         String responseMessageText = getResponseMessageText(messageText, lesson);
         exchange.appendResponseMessageText(responseMessageText);
@@ -66,9 +66,9 @@ public abstract class LessonProcessor implements Processor {
         }
     }
 
-    protected List <Map<String, String>> getKeyboardButtons(Lesson lesson) {
+    protected List<Map<String, String>> getKeyboardButtons(Lesson lesson) {
         List<Word> answers = lessonService.getAnswers(lesson);
-         if (!answers.isEmpty()) {
+        if (!answers.isEmpty()) {
             return formAnswersMap(answers);
         }
         return getMenuButtons();

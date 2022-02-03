@@ -15,7 +15,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 class AbstractEnglishLessonProcessorTest {
 
-    AbstractEnglishLessonProcessor abstractEnglishLessonProcessor = Mockito.mock(AbstractEnglishLessonProcessor.class);
+    private final AbstractEnglishLessonProcessor abstractEnglishLessonProcessor = Mockito.mock(AbstractEnglishLessonProcessor.class);
 
     @BeforeEach
     public void setUp() {

@@ -12,10 +12,10 @@ public class ProcessingExchange {
     private List<ResponseMessage> responseMessages = new ArrayList<>();
     private String exchangeState;
 
-
-    public ProcessingExchange(User user, String messageText) {
+    public ProcessingExchange(User user, String messageText, String exchangeState) {
         this.user = user;
         this.messageText = messageText;
+        this.exchangeState = exchangeState;
     }
 
     public User getUser() {
@@ -31,7 +31,6 @@ public class ProcessingExchange {
     }
 
     public void appendResponseMessageText(String textToAppend) {
-
         if (responseMessages.isEmpty()) {
             responseMessages.add(new ResponseMessage());
         }
@@ -57,5 +56,4 @@ public class ProcessingExchange {
     public List<ResponseMessage> getResponseMessages() {
         return responseMessages;
     }
-
 }
