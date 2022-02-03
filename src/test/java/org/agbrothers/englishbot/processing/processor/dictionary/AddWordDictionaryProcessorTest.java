@@ -28,25 +28,25 @@ class AddWordDictionaryProcessorTest {
 
     @Test
     void process_messageTextEqualsAddWord_EnterWord() {
-        ProcessingExchange exchange = new ProcessingExchange(user, ADD_WORD);
+        ProcessingExchange exchange = new ProcessingExchange(user, ADD_WORD, user.getStateId());
 
         addWordDictionaryProcessor.process(exchange);
 
-        String result = exchange.getResponseMessageText();
+        String result = exchange.getResponseMessages().get(0).getResponseMessageText();
         assertEquals("Введіть слово англійською та його переклад через пробіл", result);
         verify(dictionaryService, never()).addWord(any(Word.class));
     }
 
     @Test
     void process_receiveWordAndTranslation_AddingWord() {
-        ProcessingExchange exchange1 = new ProcessingExchange(user, "sea море");
-        ProcessingExchange exchange2 = new ProcessingExchange(user, "  fly   муха ");
+        ProcessingExchange exchange1 = new ProcessingExchange(user, "sea море", user.getStateId());
+        ProcessingExchange exchange2 = new ProcessingExchange(user, "  fly   муха ", user.getStateId());
 
         when(dictionaryService.getWordByEnglishValue("sea")).thenReturn(null);
 
         addWordDictionaryProcessor.process(exchange1);
 
-        String result1 = exchange1.getResponseMessageText();
+        String result1 = exchange1.getResponseMessages().get(0).getResponseMessageText();
         assertEquals("Слово sea - море було додано до словника.", result1);
 
         ArgumentCaptor<Word> captor = ArgumentCaptor.forClass(Word.class);
@@ -54,7 +54,7 @@ class AddWordDictionaryProcessorTest {
         assertEquals("sea", captor.getValue().getEnglishValue());
 
         addWordDictionaryProcessor.process(exchange2);
-        String result2 = exchange2.getResponseMessageText();
+        String result2 = exchange2.getResponseMessages().get(0).getResponseMessageText();
         assertEquals("Слово fly - муха було додано до словника.", result2);
 
         verify(dictionaryService, times(2)).addWord(captor.capture());
@@ -65,34 +65,34 @@ class AddWordDictionaryProcessorTest {
 
     @Test
     void process_messageTextValidatedNewWord_NotAddingWord() {
-        ProcessingExchange exchange = new ProcessingExchange(user, "sea море");
+        ProcessingExchange exchange = new ProcessingExchange(user, "sea море", user.getStateId());
 
         when(dictionaryService.getWordByEnglishValue("sea")).thenReturn(new Word("sea", "море"));
 
         addWordDictionaryProcessor.process(exchange);
 
-        String result = exchange.getResponseMessageText();
+        String result = exchange.getResponseMessages().get(0).getResponseMessageText();
         assertEquals("Слово sea - море вже існує у Вашому словнику.", result);
         verify(dictionaryService, never()).addWord(any(Word.class));
     }
 
     @Test
     void process_messageTextValidatedNewWord_NotValidatedWord() {
-        ProcessingExchange exchange1 = new ProcessingExchange(user, "se4a море");
-        ProcessingExchange exchange2 = new ProcessingExchange(user, "море sea");
-        ProcessingExchange exchange3 = new ProcessingExchange(user, "sea мор7е");
+        ProcessingExchange exchange1 = new ProcessingExchange(user, "se4a море", user.getStateId());
+        ProcessingExchange exchange2 = new ProcessingExchange(user, "море sea", user.getStateId());
+        ProcessingExchange exchange3 = new ProcessingExchange(user, "sea мор7е", user.getStateId());
 
         addWordDictionaryProcessor.process(exchange1);
         addWordDictionaryProcessor.process(exchange2);
         addWordDictionaryProcessor.process(exchange3);
 
-        String result1 = exchange1.getResponseMessageText();
+        String result1 = exchange1.getResponseMessages().get(0).getResponseMessageText();
         assertEquals(TYPED_WORD_ERROR, result1);
 
-        String result2 = exchange2.getResponseMessageText();
+        String result2 = exchange2.getResponseMessages().get(0).getResponseMessageText();
         assertEquals(TYPED_WORD_ERROR, result2);
 
-        String result3 = exchange3.getResponseMessageText();
+        String result3 = exchange3.getResponseMessages().get(0).getResponseMessageText();
         assertEquals(TYPED_WORD_ERROR, result3);
 
         verify(dictionaryService, never()).addWord(any(Word.class));

@@ -1,5 +1,6 @@
 package org.agbrothers.englishbot.adapter.telegram;
 
+import org.agbrothers.englishbot.constant.Constant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.ApiContextInitializer;
@@ -7,7 +8,9 @@ import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
+import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -15,7 +18,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a telegram bot that sends response messages to the user.
@@ -32,8 +37,6 @@ public class TelegramBot extends TelegramWebhookBot {
 
     @Value("${telegram.name}")
     private String botName;
-
-    private static final int BUTTONS_IN_ROW = 2;
 
     /**
      * Register this component to be used for processing Telegram updates.
@@ -62,13 +65,28 @@ public class TelegramBot extends TelegramWebhookBot {
     }
 
     /**
+     * Send audio message to telegram chat
+     *
+     * @param chatId the id of the user
+     * @param audio  the audio message
+     */
+    public void sendAudioMessage(String chatId, InputFile audio) {
+        SendAudio sendAudio = new SendAudio().setChatId(chatId).setAudio(audio);
+        try {
+            execute(sendAudio);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Send quick reply message (with buttons) to telegram chat
      *
      * @param chatId   the id of the user
      * @param messageText   the text of the message
      * @param buttonLabels  the labels for buttons
      */
-    public void sendMessageWithKeyboard(String chatId, String messageText, List <Map<String, String>> buttonLabels) {
+    public void sendMessageWithKeyboard(String chatId, String messageText, List<Map<String, String>> buttonLabels) {
         SendMessage sendMessage = new SendMessage();
         InlineKeyboardMarkup replyKeyboard = new InlineKeyboardMarkup();
         // add answers to the keyboard
@@ -92,7 +110,7 @@ public class TelegramBot extends TelegramWebhookBot {
 
         for (Map<String, String> buttonsMap : buttonsMaps) {
             for (Map.Entry<String, String> button : buttonsMap.entrySet()) {
-                if (row == null || row.size() == BUTTONS_IN_ROW) {
+                if (row == null || row.size() == Constant.BUTTONS_IN_ROW) {
                     row = new ArrayList<>();
                     result.add(row);
                 }

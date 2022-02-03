@@ -1,27 +1,28 @@
 package org.agbrothers.englishbot.processing;
 
+import org.agbrothers.englishbot.entity.ResponseMessage;
 import org.agbrothers.englishbot.entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ProcessingExchange {
     private User user;
     private String messageText;
-    private String responseMessageText = "";
-    private List <Map<String, String>> responseButtons;
+    private List<ResponseMessage> responseMessages = new ArrayList<>();
     private String exchangeState;
 
-    public ProcessingExchange(User user, String messageText) {
+    public ProcessingExchange(User user, String messageText, String exchangeState) {
         this.user = user;
         this.messageText = messageText;
+        this.exchangeState = exchangeState;
     }
 
     public User getUser() {
         return user;
     }
 
-     public String getMessageText() {
+    public String getMessageText() {
         return messageText;
     }
 
@@ -29,24 +30,19 @@ public class ProcessingExchange {
         this.messageText = messageText;
     }
 
-    public String getResponseMessageText() {
-        return responseMessageText;
-    }
-
-    public void appendResponseMessageText(String responseMessageText) {
-        if (this.responseMessageText.equals("")) {
-            this.responseMessageText = responseMessageText;
-        } else {
-            this.responseMessageText = this.responseMessageText + "\n" + responseMessageText;
+    public void appendResponseMessageText(String textToAppend) {
+        if (responseMessages.isEmpty()) {
+            responseMessages.add(new ResponseMessage());
         }
-    }
 
-    public List<Map<String, String>> getResponseButtons() {
-        return responseButtons;
-    }
+        ResponseMessage responseMessage = getResponseMessages().get(0);
+        String responseMessageText = responseMessage.getResponseMessageText();
 
-    public void setResponseButtons(List <Map<String, String>> responseButtons) {
-        this.responseButtons = responseButtons;
+        if (responseMessageText.equals("")) {
+            responseMessage.setResponseMessageText(textToAppend);
+        } else {
+            responseMessage.setResponseMessageText(responseMessageText + "\n" + textToAppend);
+        }
     }
 
     public String getExchangeState() {
@@ -55,5 +51,9 @@ public class ProcessingExchange {
 
     public void setExchangeState(String exchangeState) {
         this.exchangeState = exchangeState;
+    }
+
+    public List<ResponseMessage> getResponseMessages() {
+        return responseMessages;
     }
 }

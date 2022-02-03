@@ -20,6 +20,7 @@ public class MainMenuButtonsBuilder extends ButtonsBuilder {
         switch (messageText) {
             case LESSONS:
                 keyboardMap.put(ButtonLabel.ENGLISH, ButtonLabel.ENGLISH);
+                keyboardMap.put(ButtonLabel.ENGLISH_AUDIO, ButtonLabel.ENGLISH_AUDIO);
                 keyboardMap.put(ButtonLabel.UKRAINIAN, ButtonLabel.UKRAINIAN);
                 keyboardMaps.add(keyboardMap);
                 return keyboardMaps;

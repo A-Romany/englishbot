@@ -17,6 +17,7 @@ public class ProcessorFactory {
         processorNameByState = new HashMap<>();
         processorNameByState.put(State.MAIN_MENU, "mainMenuProcessor");
         processorNameByState.put(State.ENGLISH_LESSON, "englishLessonProcessor");
+        processorNameByState.put(State.ENGLISH_AUDIO_LESSON, "englishAudioLessonProcessor");
         processorNameByState.put(State.UKRAINIAN_LESSON, "ukrainianLessonProcessor");
         processorNameByState.put(State.DICTIONARY, "dictionaryProcessor");
         processorNameByState.put(State.ADD_WORD_TO_DICTIONARY, "addWordDictionaryProcessor");

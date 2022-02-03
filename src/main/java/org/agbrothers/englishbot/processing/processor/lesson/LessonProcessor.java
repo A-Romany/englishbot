@@ -5,6 +5,7 @@ import org.agbrothers.englishbot.constant.CommonPhrase;
 import org.agbrothers.englishbot.constant.State;
 import org.agbrothers.englishbot.constant.StringPart;
 import org.agbrothers.englishbot.entity.Lesson;
+import org.agbrothers.englishbot.entity.ResponseMessage;
 import org.agbrothers.englishbot.entity.Word;
 import org.agbrothers.englishbot.processing.ProcessingExchange;
 import org.agbrothers.englishbot.processing.processor.Processor;
@@ -31,10 +32,14 @@ public abstract class LessonProcessor implements Processor {
         Lesson lesson = lessonService.getLesson(exchange.getUser());
         String messageText = exchange.getMessageText();
 
+        ResponseMessage responseMessage = new ResponseMessage();
+        exchange.getResponseMessages().add(responseMessage); //TODO: EN-67 (appendResponseMessageText)
+
         String responseMessageText = getResponseMessageText(messageText, lesson);
         exchange.appendResponseMessageText(responseMessageText);
 
-        exchange.setResponseButtons(getKeyboardButtons(lesson));
+        responseMessage.setResponseButtons(getKeyboardButtons(lesson));
+
         exchange.setExchangeState(State.READY_TO_SEND);
     }
 
@@ -61,9 +66,9 @@ public abstract class LessonProcessor implements Processor {
         }
     }
 
-    protected List <Map<String, String>> getKeyboardButtons(Lesson lesson) {
+    protected List<Map<String, String>> getKeyboardButtons(Lesson lesson) {
         List<Word> answers = lessonService.getAnswers(lesson);
-         if (!answers.isEmpty()) {
+        if (!answers.isEmpty()) {
             return formAnswersMap(answers);
         }
         return getMenuButtons();
@@ -73,6 +78,7 @@ public abstract class LessonProcessor implements Processor {
         List<Map<String, String>> keyboardMaps = new ArrayList<>();
         Map<String, String> keyboardMap = new LinkedHashMap<>();
         keyboardMap.put(ButtonLabel.ENGLISH, ButtonLabel.ENGLISH);
+        keyboardMap.put(ButtonLabel.ENGLISH_AUDIO, ButtonLabel.ENGLISH_AUDIO);
         keyboardMap.put(ButtonLabel.UKRAINIAN, ButtonLabel.UKRAINIAN);
         keyboardMaps.add(keyboardMap);
 
@@ -82,5 +88,9 @@ public abstract class LessonProcessor implements Processor {
     @Autowired
     public void setLessonService(LessonService lessonService) {
         this.lessonService = lessonService;
+    }
+
+    public LessonService getLessonService() {
+        return lessonService;
     }
 }

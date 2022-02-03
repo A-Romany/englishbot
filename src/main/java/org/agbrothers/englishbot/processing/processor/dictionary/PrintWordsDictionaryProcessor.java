@@ -32,7 +32,7 @@ public class PrintWordsDictionaryProcessor implements Processor {
         } else {
             String messageText = exchange.getMessageText();
             exchange.appendResponseMessageText(getResponseMessageText(allWordsSorted, messageText));
-            exchange.setResponseButtons(getKeyboardButtons(getWordListsByFirstWord(allWordsSorted)));
+            exchange.getResponseMessages().get(0).setResponseButtons(getKeyboardButtons(getWordListsByFirstWord(allWordsSorted)));
         }
         exchange.setExchangeState(State.READY_TO_SEND);
     }

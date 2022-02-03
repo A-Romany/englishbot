@@ -3,8 +3,10 @@ package org.agbrothers.englishbot.processing.processor;
 import org.agbrothers.englishbot.buttonsbuilder.MainMenuButtonsBuilder;
 import org.agbrothers.englishbot.constant.ButtonLabel;
 import org.agbrothers.englishbot.constant.CommonPhrase;
+import org.agbrothers.englishbot.constant.Constant;
 import org.agbrothers.englishbot.constant.State;
 import org.agbrothers.englishbot.constant.StringPart;
+import org.agbrothers.englishbot.entity.ResponseMessage;
 import org.agbrothers.englishbot.messagebuilder.MainMenuMessageBuilder;
 import org.agbrothers.englishbot.processing.ProcessingExchange;
 import org.agbrothers.englishbot.repository.WordRepository;
@@ -23,22 +25,29 @@ public class MainMenuProcessor implements Processor {
 
     @Override
     public void process(ProcessingExchange exchange) {
-        if (exchange.getMessageText().equals(ButtonLabel.LESSONS) && (getNumberOfWord() < 10)) {
-            int numberOfWord = getNumberOfWord();
-
-            exchange.appendResponseMessageText(String.format(CommonPhrase.ADD_WORDS, (10 - numberOfWord)) + StringPart.NEWLINE);
-            exchange.setExchangeState(State.PRINTING_WORDS);
-            List<Map<String, String>> keyboardButtons = mainMenuButtonsBuilder.getKeyboardButtons(State.DICTIONARY);
-            exchange.setResponseButtons(keyboardButtons);
+        if (exchange.getMessageText().equals(ButtonLabel.LESSONS) && (getNumberOfWord() < Constant.MIN_WORD_OF_WORDS)) {
+            processNotEnoughWords(exchange);
         } else {
+            ResponseMessage responseMessage = new ResponseMessage();
+
             String requestMessageText = exchange.getMessageText();
-            String responseMessageText = mainMenuMessageBuilder.getResponseMessageText(requestMessageText);
-            exchange.appendResponseMessageText(responseMessageText);
 
             List<Map<String, String>> keyboardButtons = mainMenuButtonsBuilder.getKeyboardButtons(requestMessageText);
-            exchange.setResponseButtons(keyboardButtons);
+            responseMessage.setResponseButtons(keyboardButtons);
+            exchange.getResponseMessages().add(responseMessage);
+
+            String responseMessageText = mainMenuMessageBuilder.getResponseMessageText(requestMessageText);
+            exchange.appendResponseMessageText(responseMessageText);
             exchange.setExchangeState(State.READY_TO_SEND);
         }
+    }
+
+    private void processNotEnoughWords(ProcessingExchange exchange) {
+        exchange.appendResponseMessageText(String.format(CommonPhrase.ADD_WORDS, (Constant.MIN_WORD_OF_WORDS - getNumberOfWord())) + StringPart.NEWLINE);
+        exchange.setExchangeState(State.PRINTING_WORDS);
+        List<Map<String, String>> keyboardButtons = mainMenuButtonsBuilder.getKeyboardButtons(State.DICTIONARY);
+
+        exchange.getResponseMessages().get(0).setResponseButtons(keyboardButtons);
     }
 
     @Autowired
